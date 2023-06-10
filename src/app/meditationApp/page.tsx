@@ -5,24 +5,28 @@ import classes from './page.module.scss'
 import React, { useEffect, useRef, useState } from 'react';
 
 export default function MeditationApp() {
-  const song = React.useRef() as React.MutableRefObject<HTMLAudioElement>
-  const outline = React.useRef() as React.MutableRefObject<SVGSVGElement>
-  const video = React.useRef() as React.MutableRefObject<HTMLVideoElement>
+  const song = useRef() as React.MutableRefObject<HTMLAudioElement>
+  const outline = useRef() as React.MutableRefObject<SVGCircleElement>
+  const video = useRef() as React.MutableRefObject<HTMLVideoElement>
   // time display
-  const timeDisplay = React.useRef() as React.MutableRefObject<HTMLHeadingElement>
+  const timeDisplay = useRef() as React.MutableRefObject<HTMLHeadingElement>
   useEffect(() => {
-    console.log(song.current)
-    console.log(outline.current)
+    console.log(song)
     console.log(video.current)
-    console.log(timeDisplay.current)
+    console.log(timeDisplay)
   }, [])
-  // get the length of outline
-  // const outlineLength = outline.current.getTotalLength();
+  
   // Duration
   const [fakeDuration, setFakeDuration] = useState<number>(600);
   console.log(fakeDuration)
-  // outline.style.strokeDasharray = outlineLength;
-  // outline.style.strokeDashoffset = outlineLength;
+  useEffect(() => {
+    // https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumber
+    // get the length of outline
+    const outlineLength = outline.current.pathLength.animVal;
+    console.log(outlineLength)
+    outline.current.style.strokeDasharray = outlineLength.toString();
+    outline.current.style.strokeDashoffset = outlineLength.toString();
+  }, [])
 
   function pickDifferentSound() {
     console.log("sound")
@@ -49,11 +53,24 @@ export default function MeditationApp() {
   function selectSound(e: React.MouseEvent) {
     const dataTime = e.currentTarget.getAttribute("data-time")
     setFakeDuration(Number(dataTime))
-    timeDisplay.textContent = `${Math.floor(fakeDuration / 60)}:${Math.floor(fakeDuration % 60)}`;
+    timeDisplay.current.childNodes[0].textContent = `${Math.floor(fakeDuration / 60)}:${Math.floor(fakeDuration % 60)}`;
   }
 
   // we can animate the circle
-  // song.ontimeupdate = () => {
+  useEffect(() => {
+    const currentSong = song.current
+
+    currentSong.ontimeupdate = () => {
+      let currentTime = currentSong.currentTime
+      let elapsed = fakeDuration - currentTime;
+      let seconds = Math.floor(elapsed % 60);
+      let minutes = Math.floor(elapsed / 60);
+      // console.log(currentTime)
+
+      // Animate the circle
+    }
+  }, [])
+  // song.current.ontimeupdate = () => {
   //   let currentTime = song.currentTime;
   //   let elapsed = fakeDuration - currentTime;
   //   let seconds = Math.floor(elapsed % 60);
@@ -114,7 +131,6 @@ export default function MeditationApp() {
         </svg>
         <svg
           className="moving-outline"
-          ref={outline}
           width="453"
           height="453"
           viewBox="0 0 453 453"
@@ -122,6 +138,7 @@ export default function MeditationApp() {
           xmlns="http://www.w3.org/2000/svg"
         >
           <circle
+            ref={outline}
             cx="226.5"
             cy="226.5"
             r="216.5"
