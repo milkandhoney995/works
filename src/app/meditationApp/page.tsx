@@ -8,6 +8,7 @@ export default function MeditationApp() {
   const song = useRef() as React.MutableRefObject<HTMLAudioElement>
   const outline = useRef() as React.MutableRefObject<SVGCircleElement>
   const video = useRef() as React.MutableRefObject<HTMLVideoElement>
+  const play = useRef() as React.MutableRefObject<HTMLImageElement>
   // time display
   const timeDisplay = useRef() as React.MutableRefObject<HTMLHeadingElement>
   useEffect(() => {
@@ -36,17 +37,17 @@ export default function MeditationApp() {
   function checkPlaying(song: HTMLAudioElement) {
     if (song.paused) {
       song.play();
-      // video.play();
-      // play.src = "../../assets/svg/pause.svg";
+      video.current.play();
+      play.current.src = "../../assets/svg/pause.svg";
     } else {
       song.pause();
-      // video.pause();
-      // play.src = "../../assets/svg/play.svg";
+      video.current.pause();
+      play.current.src = "../../assets/svg/play.svg";
     }
   };
 
   function playSound() {
-    console.log("playing")
+    checkPlaying(song.current)
   }
 
   // Select sound
@@ -109,6 +110,7 @@ export default function MeditationApp() {
         <Image
           src={'../../../assets/svg/play.svg'}
           alt="play" className="play"
+          ref={play}
           width={90}
           height={90}
           onClick={() => playSound()}
