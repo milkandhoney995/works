@@ -9,21 +9,49 @@ export default function MeditationApp() {
   const outline = useRef() as React.MutableRefObject<SVGCircleElement>
   const video = useRef() as React.MutableRefObject<HTMLVideoElement>
   const play = useRef() as React.MutableRefObject<HTMLImageElement>
+  const sound = useRef() as React.MutableRefObject<HTMLButtonElement>
   // time display
   const timeDisplay = useRef() as React.MutableRefObject<HTMLHeadingElement>
 
   // Duration
   const [fakeDuration, setFakeDuration] = useState<number>(600);
+
+  // we can animate the circle
   useEffect(() => {
     // https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumber
     // get the length of outline
     const outlineLength = outline.current.getTotalLength()
     outline.current.style.strokeDasharray = outlineLength.toString();
     outline.current.style.strokeDashoffset = outlineLength.toString();
-  }, [])
 
-  function pickDifferentSound() {
-    console.log("sound")
+    const currentSong = song.current
+
+    currentSong.ontimeupdate = () => {
+      let currentTime = currentSong.currentTime
+      let elapsed = fakeDuration - currentTime;
+      let seconds = Math.floor(elapsed % 60);
+      let minutes = Math.floor(elapsed / 60);
+
+      // Animate the circle
+      let progress = outlineLength - (currentTime / fakeDuration) * outlineLength;
+      // Animate the text
+      outline.current.style.strokeDashoffset = progress.toString();
+
+      timeDisplay.current.childNodes[0].textContent = `${minutes}:${seconds}`;
+
+      if (currentTime >= fakeDuration) {
+        currentSong.pause();
+        currentSong.currentTime = 0
+        play.current.src = "../../assets/svg/play.svg"
+        video.current.pause()
+      }
+    }
+  })
+
+  function pickDifferentSound(e: React.MouseEvent) {
+    console.log(e.currentTarget.getAttribute("data-sound"))
+    console.log(e.currentTarget.getAttribute("data-video"))
+    checkPlaying(song.current)
   }
 
   // Stop and play the sound
@@ -50,33 +78,6 @@ export default function MeditationApp() {
     setFakeDuration(Number(dataTime))
     timeDisplay.current.childNodes[0].textContent = `${Math.floor(fakeDuration / 60)}:${Math.floor(fakeDuration % 60)}`;
   }
-
-  // we can animate the circle
-  useEffect(() => {
-    const currentSong = song.current
-
-    currentSong.ontimeupdate = () => {
-      let currentTime = currentSong.currentTime
-      let elapsed = fakeDuration - currentTime;
-      let seconds = Math.floor(elapsed % 60);
-      let minutes = Math.floor(elapsed / 60);
-
-      // Animate the circle
-      const outlineLength = outline.current.getTotalLength()
-      let progress = outlineLength - (currentTime / fakeDuration) * outlineLength;
-      // Animate the text
-      outline.current.style.strokeDashoffset = progress.toString();
-
-      timeDisplay.current.childNodes[0].textContent = `${minutes}:${seconds}`;
-
-      if (currentTime >= fakeDuration) {
-        currentSong.pause();
-        currentSong.currentTime = 0
-        play.current.src = "../../assets/svg/play.svg"
-        video.current.pause()
-      }
-    }
-  })
 
   return (
     <div className={classes.app}>
@@ -141,14 +142,16 @@ export default function MeditationApp() {
         <button
           data-sound="../../../assets/sounds/rain.mp3"
           data-video="../../assets/video/rain.mp4"
-          onClick={() => pickDifferentSound()}
+          onClick={(e) => pickDifferentSound(e)}
+          ref={sound}
         >
           <Image src={'../../../assets/svg/rain.svg'} width={60} height={60} alt="rain" />
         </button>
         <button
           data-sound="../../../assets/sounds/beach.mp3"
           data-video="../../assets/video/beach.mp4"
-          onClick={() => pickDifferentSound()}
+          onClick={(e) => pickDifferentSound(e)}
+          ref={sound}
         >
           <Image src={'../../../assets/svg/beach.svg'} width={60} height={60} alt="beach" />
         </button>
