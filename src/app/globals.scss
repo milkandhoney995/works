@@ -1,3 +1,6 @@
+@use '../../styles/variables/mixin' as m;
+@use '../../styles/variables/variables' as v;
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
