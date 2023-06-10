@@ -5,13 +5,13 @@ export class CalculatorClass {
   currentOperand?: string
   previousOperand?: string
   number?: number
-  operation?: string | undefined
+  operation?: string
 
   constructor(
     previousOperandTextElement: HTMLDivElement,
     currentOperandTextElement: HTMLDivElement,
     currentOperand?: string, previousOperand?: string, number?: number,
-    operation?: string | undefined
+    operation?: string
   ) {
     this.previousOperandTextElement = previousOperandTextElement
     this.currentOperandTextElement = currentOperandTextElement
@@ -19,25 +19,23 @@ export class CalculatorClass {
     this.previousOperand = previousOperand
     this.number = number
     this.operation = operation
-    this.clear()
   }
   clear() {
     this.currentOperand = ''
     this.previousOperand = ''
     this.operation = undefined
-    console.log("delete")
   }
 
   delete() {
-    this.currentOperand = this.currentOperand!.toString().slice(0, -1)
+    this.currentOperand = this.currentOperand!.slice(0, -1)
   }
 
   appendNumber(number: string | number) {
     if (number === '.' && this.currentOperand!.includes('.')) return
-    this.currentOperand = this.currentOperand!.toString() + number.toString()
+    this.currentOperand = this.currentOperand! + number.toString()
   }
 
-  chooseOperation(operation: string | undefined) {
+  chooseOperation(operation: string) {
     if (this.currentOperand === '') return
     if (this.previousOperand !== '') this.compute()
     this.operation = operation
@@ -78,14 +76,14 @@ export class CalculatorClass {
     const decimalDigits = stringNumber.split('.')[1]
     let integerDisplay
     if (isNaN(integerDigits)) {
-        integerDisplay = ''
+      integerDisplay = ''
     } else {
-        integerDisplay = integerDigits.toLocaleString('en', { maximumFractionDigits: 0 })
+      integerDisplay = integerDigits.toLocaleString('en', { maximumFractionDigits: 0 })
     }
     if (decimalDigits != null) {
-        return `${integerDisplay}.${decimalDigits}`
+      return `${integerDisplay}.${decimalDigits}`
     } else {
-        return integerDisplay
+      return integerDisplay
     }
   }
   updateDisplay() {
