@@ -6,16 +6,20 @@ import React, { useEffect, useRef, useState } from 'react';
 
 export default function MeditationApp() {
   const song = useRef() as React.MutableRefObject<HTMLAudioElement>
+  const songSrc = useRef() as React.MutableRefObject<HTMLSourceElement>
   const outline = useRef() as React.MutableRefObject<SVGCircleElement>
   const video = useRef() as React.MutableRefObject<HTMLVideoElement>
+  const videoSrc = useRef() as React.MutableRefObject<HTMLSourceElement>
   const play = useRef() as React.MutableRefObject<HTMLImageElement>
   const sound = useRef() as React.MutableRefObject<HTMLButtonElement>
   // time display
   const timeDisplay = useRef() as React.MutableRefObject<HTMLHeadingElement>
-
   // Duration
   const [fakeDuration, setFakeDuration] = useState<number>(600);
-
+  // CurrentSongSrc
+  const [currentSongSrc, setCurrentSongSrc] = useState<string>("");
+  // CurrentVideoSrc
+  const [currentVideoSrc, setCurrentVideoSrc] = useState<string>("");
   // we can animate the circle
   useEffect(() => {
     // https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumber
@@ -48,9 +52,7 @@ export default function MeditationApp() {
     }
   })
 
-  function pickDifferentSound(e: React.MouseEvent) {
-    console.log(e.currentTarget.getAttribute("data-sound"))
-    console.log(e.currentTarget.getAttribute("data-video"))
+  const pickDifferentSound = (e: React.MouseEvent)  => {
     checkPlaying(song.current)
   }
 
@@ -83,7 +85,7 @@ export default function MeditationApp() {
     <div className={classes.app}>
       <div className={classes.vidContainer}>
         <video className={classes.video} ref={video} loop>
-          <source src="../../assets/video/rain.mp4" type="video/mp4" />
+          <source ref={videoSrc} src="../../assets/video/rain.mp4" type="video/mp4" />
         </video>
       </div>
       <div className={classes.timeSelect}>
@@ -93,7 +95,7 @@ export default function MeditationApp() {
       </div>
       <div className={classes.playerContainer}>
         <audio className="song" ref={song}>
-          <source src="../../../assets/sounds/rain.mp3" />
+          <source ref={songSrc} src="../../../assets/sounds/rain.mp3" />
         </audio>
         <Image
           src={'../../../assets/svg/play.svg'}
