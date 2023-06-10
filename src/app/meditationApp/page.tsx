@@ -2,18 +2,22 @@
 
 import Image from 'next/image'
 import classes from './page.module.scss'
-import { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export default function MeditationApp() {
-  const song = document.querySelector('.song')
-  const outline = document.querySelector('.moving-outline circle') as Element;
-  const video = document.querySelector(classes.video);
-
+  const song = React.useRef() as React.MutableRefObject<HTMLAudioElement>
+  const outline = React.useRef() as React.MutableRefObject<SVGSVGElement>
+  const video = React.useRef() as React.MutableRefObject<HTMLVideoElement>
   // time display
-  const timeDisplay = document.querySelector(classes.timeDisplay);
-  const timeSelect = document.querySelectorAll(`${classes.timeSelect} button`);
+  const timeDisplay = React.useRef() as React.MutableRefObject<HTMLHeadingElement>
+  useEffect(() => {
+    console.log(song.current)
+    console.log(outline.current)
+    console.log(video.current)
+    console.log(timeDisplay.current)
+  }, [])
   // get the length of outline
-  // const outlineLength = outline.getTotalLength();
+  // const outlineLength = outline.current.getTotalLength();
   // Duration
   const [fakeDuration, setFakeDuration] = useState<number>(600);
   console.log(fakeDuration)
@@ -45,7 +49,7 @@ export default function MeditationApp() {
   function selectSound(e: React.MouseEvent) {
     const dataTime = e.currentTarget.getAttribute("data-time")
     setFakeDuration(Number(dataTime))
-    timeDisplay!.textContent = `${Math.floor(fakeDuration / 60)}:${Math.floor(fakeDuration % 60)}`;
+    timeDisplay.textContent = `${Math.floor(fakeDuration / 60)}:${Math.floor(fakeDuration % 60)}`;
   }
 
   // we can animate the circle
@@ -72,7 +76,7 @@ export default function MeditationApp() {
   return (
     <div className={classes.app}>
       <div className={classes.vidContainer}>
-        <video className={classes.video} loop>
+        <video className={classes.video} ref={video} loop>
           <source src="../../assets/video/rain.mp4" type="video/mp4" />
         </video>
       </div>
@@ -82,7 +86,7 @@ export default function MeditationApp() {
         <button data-time="600" onClick={(e) => selectSound(e)}>10 Minutes</button>
       </div>
       <div className={classes.playerContainer}>
-        <audio className="song">
+        <audio className="song" ref={song}>
           <source src="../../../assets/sounds/rain.mp3" />
         </audio>
         <Image
@@ -110,6 +114,7 @@ export default function MeditationApp() {
         </svg>
         <svg
           className="moving-outline"
+          ref={outline}
           width="453"
           height="453"
           viewBox="0 0 453 453"
@@ -124,7 +129,7 @@ export default function MeditationApp() {
             stroke-width="20"
           />
         </svg>
-        <h3 className={classes.timeDisplay}>0:00</h3>
+        <h3 className={classes.timeDisplay} ref={timeDisplay}>0:00</h3>
       </div>
       <div className={classes.soundPicker}>
         <button
