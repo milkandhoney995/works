@@ -23,6 +23,17 @@ export default function Home() {
           </h2>
           <p>Calculator with React + TypeScript.</p>
         </Link>
+        <Link
+          className={styles.card}
+          target="_blank"
+          rel="noopener noreferrer"
+          href="/meditationApp"
+        >
+        <h2>
+           Meditation App <span>-&gt;</span>
+          </h2>
+          <p>Meditation App with React + TypeScript.</p>
+        </Link>
       </div>
     </main>
   )

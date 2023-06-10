@@ -14,7 +14,8 @@ export default function Calculator() {
   const [previousOperand, setPreviousOperand] = useState<string>('')
   const [currentOperand, setCurrentOperand] = useState<string>('')
 
-  console.log(previousOperandTextElement)
+  console.log(previousOperandTextElement.current)
+  console.log(currentOperandTextElement.current)
   const calculator = new CalculatorClass(
     previousOperandTextElement.current!, currentOperandTextElement.current!,
     previousOperand, currentOperand
