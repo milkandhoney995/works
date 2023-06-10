@@ -11,20 +11,13 @@ export default function MeditationApp() {
   const play = useRef() as React.MutableRefObject<HTMLImageElement>
   // time display
   const timeDisplay = useRef() as React.MutableRefObject<HTMLHeadingElement>
-  useEffect(() => {
-    console.log(song)
-    console.log(video.current)
-    console.log(timeDisplay)
-  }, [])
-  
+
   // Duration
   const [fakeDuration, setFakeDuration] = useState<number>(600);
-  console.log(fakeDuration)
   useEffect(() => {
     // https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumber
     // get the length of outline
-    const outlineLength = outline.current.pathLength.animVal;
-    console.log(outlineLength)
+    const outlineLength = outline.current.getTotalLength()
     outline.current.style.strokeDasharray = outlineLength.toString();
     outline.current.style.strokeDashoffset = outlineLength.toString();
   }, [])
@@ -53,6 +46,7 @@ export default function MeditationApp() {
   // Select sound
   function selectSound(e: React.MouseEvent) {
     const dataTime = e.currentTarget.getAttribute("data-time")
+    // TODO: 2回押さないと値が変わらない
     setFakeDuration(Number(dataTime))
     timeDisplay.current.childNodes[0].textContent = `${Math.floor(fakeDuration / 60)}:${Math.floor(fakeDuration % 60)}`;
   }
@@ -66,31 +60,24 @@ export default function MeditationApp() {
       let elapsed = fakeDuration - currentTime;
       let seconds = Math.floor(elapsed % 60);
       let minutes = Math.floor(elapsed / 60);
-      // console.log(currentTime)
 
       // Animate the circle
+      const outlineLength = outline.current.getTotalLength()
+      let progress = outlineLength - (currentTime / fakeDuration) * outlineLength;
+      // Animate the text
+      outline.current.style.strokeDashoffset = progress.toString();
+
+      timeDisplay.current.childNodes[0].textContent = `${minutes}:${seconds}`;
+
+      if (currentTime >= fakeDuration) {
+        currentSong.pause();
+        currentSong.currentTime = 0
+        play.current.src = "../../assets/svg/play.svg"
+        video.current.pause()
+      }
     }
-  }, [])
-  // song.current.ontimeupdate = () => {
-  //   let currentTime = song.currentTime;
-  //   let elapsed = fakeDuration - currentTime;
-  //   let seconds = Math.floor(elapsed % 60);
-  //   minutes = Math.floor(elapsed / 60);
+  })
 
-  //   // Animate the circle
-  //   let progress = outlineLength - (currentTime / fakeDuration) * outlineLength;
-  //   outline.style.strokeDashoffset = progress;
-
-  //   // Animate the text
-  //   timeDisplay.textContent = `${minutes}:${seconds}`;
-
-  //   if (currentTime >= fakeDuration) {
-  //       song.pause();
-  //       song.currentTime = 0;
-  //       play.src = "./svg/play.svg";
-  //       video.pause();
-  //   };
-  // }
   return (
     <div className={classes.app}>
       <div className={classes.vidContainer}>
@@ -128,7 +115,7 @@ export default function MeditationApp() {
             cy="226.5"
             r="216.5"
             stroke="white"
-            stroke-width="20"
+            strokeWidth="20"
           />
         </svg>
         <svg
@@ -145,7 +132,7 @@ export default function MeditationApp() {
             cy="226.5"
             r="216.5"
             stroke="#018EBA"
-            stroke-width="20"
+            strokeWidth="20"
           />
         </svg>
         <h3 className={classes.timeDisplay} ref={timeDisplay}>0:00</h3>
