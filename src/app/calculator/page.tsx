@@ -9,12 +9,12 @@ export default function Calculator() {
 
   // you can use when you are sure that the value is never null by adding the ! operator to the end of your statement
   // https://stackoverflow.com/questions/63520680/argument-of-type-htmlelement-null-is-not-assignable-to-parameter-of-type-el
-  const previousOperandTextElement = useRef<HTMLDivElement>(null)
+  const previousOperandTextElement = useRef<HTMLDivElement>(null);
   const currentOperandTextElement = useRef<HTMLDivElement>(null)
   const [previousOperand, setPreviousOperand] = useState<string>('')
   const [currentOperand, setCurrentOperand] = useState<string>('')
-  // const [selectednumber, setSelectednumber] = useState<HTMLElement | null>(null);
 
+  console.log(previousOperandTextElement)
   const calculator = new CalculatorClass(
     previousOperandTextElement.current!, currentOperandTextElement.current!,
     previousOperand, currentOperand
@@ -29,7 +29,9 @@ export default function Calculator() {
   function operate(e: React.MouseEvent) {
     const element = e.target as HTMLDivElement;
     const selectedOperand = element.innerHTML
-    console.log(selectedOperand)
+
+    setPreviousOperand(currentOperand)
+    setCurrentOperand(selectedOperand)
     calculator.chooseOperation(selectedOperand)
     calculator.updateDisplay()
   }
