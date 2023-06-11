@@ -32,6 +32,7 @@ export default function Calculator() {
     const selectednumber = element.innerHTML
     calculator.appendNumber(selectednumber)
     calculator.updateDisplay()
+    console.log(`getNumber: ${selectednumber}`)
   }
   function operate(e: React.MouseEvent) {
     const element = e.target as HTMLDivElement;

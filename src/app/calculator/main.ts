@@ -80,15 +80,17 @@ export class CalculatorClass {
       integerDisplay = ''
     } else {
       integerDisplay = integerDigits.toLocaleString('en', { maximumFractionDigits: 0 })
-      console.log(integerDisplay)
     }
+    console.log(decimalDigits != null)
     if (decimalDigits != null) {
       return `${integerDisplay}.${decimalDigits}`
-    } else {
-      return integerDisplay
     }
+    console.log(integerDisplay)
+    return integerDisplay
+
   }
   updateDisplay() {
+    console.log(this.getDisplayNumber(Number(this.currentOperand)))
     this.currentOperandTextElement.innerText =
       this.getDisplayNumber(Number(this.currentOperand))
     if (this.operation !== null) {
