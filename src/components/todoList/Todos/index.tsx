@@ -8,7 +8,7 @@ interface Item {
 }
 type propTypes = {
   todos: Array<Item>,
-  markComplete: () => void,
+  markComplete: (id: number) => void,
   delTodo: () => void,
 }
 

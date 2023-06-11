@@ -1,10 +1,10 @@
 'use client'
 
 import Header from "@/components/todoList/header";
-import Todos from "@/components/todoList/Todos";
 import AddTodo from "@/components/todoList/addTodo";
 import axios from 'axios';
 import { useState } from "react";
+import TodoItem from "@/components/todoList/todoItem";
 
 interface todoInterface {
   id: number,
@@ -15,7 +15,9 @@ interface todoInterface {
 
 export default function TodoList() {
   const [todos, setTodos] = useState<Array<todoInterface>>([])
-
+  axios.get("https://jsonplaceholder.typicode.com/todos").then(res => {
+    setTodos(res.data)
+  })
   // Toggle complete
   function markComplete(id: number) {
     setTodos(todos.map(todo => {
@@ -48,7 +50,15 @@ export default function TodoList() {
       <div className="">
         <Header />
         <AddTodo addTodo={() => addTodo('')} markComplete={() => markComplete(1)} delTodo={() => deleteTodo(1)} />
-        <Todos todos={todos} markComplete={() => markComplete(1)} delTodo={() => deleteTodo(1)} />
+        {
+          todos.map((todo, index) => (
+            <TodoItem
+              key={index} todo={todo}
+              markComplete={() => markComplete(todo.id)}
+              delTodo={() => deleteTodo(todo.id)}
+            />
+          ))
+        }
       </div>
     </div>
   );
