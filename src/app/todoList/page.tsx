@@ -42,7 +42,9 @@ export default function TodoList() {
     })
       .then(res => {
         console.log(res)
-        setTodos(todos.push(res))
+        const clonedTodos = [...todos]
+        clonedTodos.push(res.data)
+        setTodos(clonedTodos)
       })
   }
   return (
