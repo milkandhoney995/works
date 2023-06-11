@@ -1,0 +1,16 @@
+.form {
+  display: flex;
+  &__input:first-child {
+    flex: 10;
+    padding: 0.4rem;
+  }
+  &__input:last-child {
+    display: inline-block;
+    border: none;
+    background: #555;
+    color: #fff;
+    padding: 7px 20px;
+    cursor: pointer;
+    flex: 1;
+  }
+}
