@@ -47,6 +47,7 @@ export class CalculatorClass {
     let computation: number
     const prev = parseFloat(this.previousOperand!)
     const current = parseFloat(this.currentOperand!)
+    console.log(this.previousOperand)
     if (isNaN(prev) || isNaN(current)) return
     switch (this.operation) {
       case '+':
@@ -79,6 +80,7 @@ export class CalculatorClass {
       integerDisplay = ''
     } else {
       integerDisplay = integerDigits.toLocaleString('en', { maximumFractionDigits: 0 })
+      console.log(integerDisplay)
     }
     if (decimalDigits != null) {
       return `${integerDisplay}.${decimalDigits}`
@@ -88,12 +90,12 @@ export class CalculatorClass {
   }
   updateDisplay() {
     this.currentOperandTextElement.innerText =
-        this.getDisplayNumber(Number(this.currentOperand))
-    if (this.operation != null) {
-        this.previousOperandTextElement.innerText =
+      this.getDisplayNumber(Number(this.currentOperand))
+    if (this.operation !== null) {
+      this.previousOperandTextElement.innerText =
         `${this.getDisplayNumber(Number(this.previousOperand))} ${this.operation}`
     } else {
-        this.previousOperandTextElement.innerText = ''
+      this.previousOperandTextElement.innerText = ''
     }
   }
 }

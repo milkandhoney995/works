@@ -15,17 +15,16 @@ export default function Calculator() {
   const [currentOperandTextElement, setCurrentOperandTextElement] = useState<HTMLDivElement>()
   const [previousOperand, setPreviousOperand] = useState<string>('')
   const [currentOperand, setCurrentOperand] = useState<string>('')
+  const [number, setNumber] = useState<string>("")
 
   useEffect(() => {
     setPreviousOperandTextElement(previousOperandTextElementRef.current!)
     setCurrentOperandTextElement(currentOperandTextElementRef.current!)
-    console.log(previousOperandTextElement)
-    console.log(currentOperandTextElement)
   })
 
   const calculator = new CalculatorClass(
     previousOperandTextElement!, currentOperandTextElement!,
-    previousOperand, currentOperand
+    previousOperand, currentOperand, 0, currentOperand
   )
 
   function getNumber(e: React.MouseEvent) {
@@ -41,6 +40,7 @@ export default function Calculator() {
     setPreviousOperand(currentOperand)
     setCurrentOperand(selectedOperand)
     calculator.chooseOperation(selectedOperand)
+
     calculator.updateDisplay()
   }
   function equal() {
