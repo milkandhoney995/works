@@ -23,11 +23,11 @@ export default function Home() {
           description={'Meditation App with React + TypeScript.'}
           href={'/meditationApp'}
         />
-        <Card
+        {/* <Card
           title={'todoList'}
           description={'todoList App with React + TypeScript.'}
           href={'/todoList'}
-        />
+        /> */}
       </div>
     </main>
   )
