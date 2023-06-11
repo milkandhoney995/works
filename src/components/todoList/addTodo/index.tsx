@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import classes from './addTodo.module.scss'
 
 // PropTypes
-
 type propsType = {
   addTodo: (title: string) => void,
-  markComplete: () => void,
-  delTodo: () => void
+  markComplete: (id: number) => void,
+  delTodo: (id: number) => void
 }
 
 export default function AddTodo(props: propsType) {

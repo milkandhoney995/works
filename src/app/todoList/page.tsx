@@ -7,16 +7,17 @@ import axios from 'axios';
 import { useState } from "react";
 
 interface todoInterface {
-  id: string,
+  id: number,
   title: string,
   completed: boolean
+  userId: string
 }
 
 export default function TodoList() {
   const [todos, setTodos] = useState<Array<todoInterface>>([])
 
   // Toggle complete
-  function markComplete(id: string) {
+  function markComplete(id: number) {
     setTodos(todos.map(todo => {
       if (todo.id === id) {
         todo.completed = !todo.completed
@@ -25,7 +26,7 @@ export default function TodoList() {
     }))
   }
   // delete todo
-  function deleteTodo(id: string): void {
+  function deleteTodo(id: number): void {
     axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
       .then(res => {
         const remains = todos.filter(todo => todo.id !== id)
@@ -38,15 +39,16 @@ export default function TodoList() {
       title, completed: false
     })
       .then(res => {
-        setTodos(todos.push(res.data))
+        console.log(res)
+        setTodos(todos.push(res))
       })
   }
   return (
     <div className="app">
       <div className="">
         <Header />
-        <AddTodo addTodo={addTodo('')} />
-        <Todos delTodo={deleteTodo('')} todos={todos} />
+        <AddTodo addTodo={() => addTodo('')} markComplete={() => markComplete(1)} delTodo={() => deleteTodo(1)} />
+        <Todos todos={todos} markComplete={() => markComplete(1)} delTodo={() => deleteTodo(1)} />
       </div>
     </div>
   );

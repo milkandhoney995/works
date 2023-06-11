@@ -2,7 +2,7 @@ import classes from "./todoItem.module.scss"
 
 // PropTypes
 type propTypes = {
-  todo: { title: string, id: string, completed: boolean},
+  todo: { title: string, id: number, completed: boolean},
   markComplete: () => void,
   delTodo: () => void,
 }
