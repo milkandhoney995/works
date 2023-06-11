@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import styles from './page.module.scss'
 import Link from 'next/link'
+import Card from '@/components/card'
 
 export default function Home() {
   return (
@@ -12,28 +13,21 @@ export default function Home() {
       </div>
 
       <div className={styles.grid}>
-        <Link
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-          href="/calculator"
-        >
-        <h2>
-           Calculator <span>-&gt;</span>
-          </h2>
-          <p>Calculator with React + TypeScript.</p>
-        </Link>
-        <Link
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-          href="/meditationApp"
-        >
-        <h2>
-           Meditation App <span>-&gt;</span>
-          </h2>
-          <p>Meditation App with React + TypeScript.</p>
-        </Link>
+        <Card
+          title={'Calculator'}
+          description={'Calculator with React + TypeScript.'}
+          href={'/calculator'}
+        />
+        <Card
+          title={'Meditation App'}
+          description={'Meditation App with React + TypeScript.'}
+          href={'/meditationApp'}
+        />
+        <Card
+          title={'todoList'}
+          description={'todoList App with React + TypeScript.'}
+          href={'/todoList'}
+        />
       </div>
     </main>
   )

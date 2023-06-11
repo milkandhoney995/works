@@ -1,7 +1,7 @@
 @use './variables' as v;
 $breakpoint: (
   sp: 'screen and (max-width: 450px)',
-  tab: 'screen and (max-width: 880px)',
+  tab: 'screen and (max-width: 700px)',
   pc: 'screen and (min-width: 1025px)'
 );
 

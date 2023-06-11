@@ -4,6 +4,6 @@ import AddTodo from "@/components/todoList/addTodo";
 
 export default function todoList() {
   return (
-
+    <div className="">todoList</div>
   );
 }
