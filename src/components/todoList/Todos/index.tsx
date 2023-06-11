@@ -1,4 +1,3 @@
-import { JsxElement } from 'typescript';
 import TodoItem from '../todoItem';
 
 export default function Todos(props: propTypes) {
@@ -15,6 +14,6 @@ interface Item {
 }
 type propTypes = {
   todos: Array<Item>,
-  markComplete: () => boolean,
-  delTodo: () => Element,
+  markComplete: () => void,
+  delTodo: () => void,
 }

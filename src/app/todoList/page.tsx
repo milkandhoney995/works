@@ -1,3 +1,5 @@
+'use client'
+
 import Header from "@/components/todoList/header";
 import Todos from "@/components/todoList/Todos";
 import AddTodo from "@/components/todoList/addTodo";
@@ -6,6 +8,7 @@ import { useState } from "react";
 
 interface todoInterface {
   id: string,
+  title: string,
   completed: boolean
 }
 
@@ -22,7 +25,7 @@ export default function TodoList() {
     }))
   }
   // delete todo
-  function deleteTodo(id: string) {
+  function deleteTodo(id: string): void {
     axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
       .then(res => {
         const remains = todos.filter(todo => todo.id !== id)
@@ -42,8 +45,8 @@ export default function TodoList() {
     <div className="app">
       <div className="">
         <Header />
-        <AddTodo addTodo={addTodo()} />
-        <Todos delTodo={deleteTodo()} />
+        <AddTodo addTodo={addTodo('')} />
+        <Todos delTodo={deleteTodo('')} todos={todos} />
       </div>
     </div>
   );

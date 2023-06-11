@@ -3,8 +3,8 @@ import classes from "./todoItem.module.scss"
 // PropTypes
 type propTypes = {
   todo: { title: string, id: string, completed: boolean},
-  markComplete: () => boolean,
-  delTodo: () => boolean,
+  markComplete: () => void,
+  delTodo: () => void,
 }
 
 export default function TodoItem(props: propTypes) {

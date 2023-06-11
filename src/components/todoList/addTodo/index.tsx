@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import classes from './addTodo.module.scss'
 
 // PropTypes
-AddTodo.propTypes = {
-  addTodo: PropTypes.func.isRequired,
-  markComplete: PropTypes.func.isRequired,
-  delTodo: PropTypes.func.isRequired
+
+type propsType = {
+  addTodo: (title: string) => void,
+  markComplete: () => void,
+  delTodo: () => void
 }
 
-export default function AddTodo() {
+export default function AddTodo(props: propsType) {
   const [title, setTitle] = useState<string>("")
 
     function handleChange(e: React.ChangeEvent) {
@@ -19,13 +19,9 @@ export default function AddTodo() {
 
     function handleSubmit(e: React.FormEvent) {
       e.preventDefault();
+      props.addTodo(title)
       setTitle("")
     }
-    // onSubmit = (e) => {
-    //     e.preventDefault();
-    //     this.props.addTodo(this.state.title);
-    //     this.setState({ title: ''});
-    // }
 
     return (
       <form onSubmit={(e) => handleSubmit(e)} className={classes.form}>
