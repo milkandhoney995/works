@@ -5,81 +5,79 @@ import { CalculatorClass } from "./main"
 import classes from "./page.module.scss"
 
 export default function Calculator() {
-  // const calculator = new CalculatorClass(previousOperandTextElementRef, currentOperandTextElementRef, '+', '+', 2, '+')
-
-  // you can use when you are sure that the value is never null by adding the ! operator to the end of your statement
-  // https://stackoverflow.com/questions/63520680/argument-of-type-htmlelement-null-is-not-assignable-to-parameter-of-type-el
-  const previousOperandTextElementRef = useRef<HTMLDivElement>(null);
-  const currentOperandTextElementRef = useRef<HTMLDivElement>(null)
+  const previousOperandRef = useRef<HTMLDivElement>(null);
+  const currentOperandRef = useRef<HTMLDivElement>(null);
+  const [calculator, setCalculator] = useState<CalculatorClass | null>(null);
   const [previousOperandTextElement, setPreviousOperandTextElement] = useState<HTMLDivElement>()
   const [currentOperandTextElement, setCurrentOperandTextElement] = useState<HTMLDivElement>()
   const [previousOperand, setPreviousOperand] = useState<string>('')
   const [currentOperand, setCurrentOperand] = useState<string>('')
   const [number, setNumber] = useState<string>("")
 
+   // 初回マウント時に CalculatorClass を生成
   useEffect(() => {
-    setPreviousOperandTextElement(previousOperandTextElementRef.current!)
-    setCurrentOperandTextElement(currentOperandTextElementRef.current!)
-  })
+    if (previousOperandRef.current && currentOperandRef.current) {
+      const calc = new CalculatorClass(previousOperandRef.current, currentOperandRef.current);
+      calc.clear();
+      calc.updateDisplay();
+      setCalculator(calc);
+    }
+  }, [])
 
-  const calculator = new CalculatorClass(
-    previousOperandTextElement!, currentOperandTextElement!,
-    previousOperand, currentOperand, 0, currentOperand
-  )
+  const handleNumber = (value: string) => {
+    if (!calculator) return;
+    calculator.appendNumber(value);
+    calculator.updateDisplay();
+  };
 
-  function getNumber(e: React.MouseEvent) {
-    const element = e.target as HTMLDivElement;
-    const selectednumber = element.innerHTML
-    calculator.appendNumber(selectednumber)
-    calculator.updateDisplay()
-    console.log(`getNumber: ${selectednumber}`)
-  }
-  function operate(e: React.MouseEvent) {
-    const element = e.target as HTMLDivElement;
-    const selectedOperand = element.innerHTML
+  const handleOperation = (value: string) => {
+    if (!calculator) return;
+    calculator.chooseOperation(value);
+    calculator.updateDisplay();
+  };
 
-    setPreviousOperand(currentOperand)
-    setCurrentOperand(selectedOperand)
-    calculator.chooseOperation(selectedOperand)
+  const handleEqual = () => {
+    if (!calculator) return;
+    calculator.compute();
+    calculator.updateDisplay();
+  };
 
-    calculator.updateDisplay()
-  }
-  function equal() {
-    calculator.compute()
-    calculator.updateDisplay()
-  }
-  function allClear(){
-    calculator.clear()
-    calculator.updateDisplay()
-  }
-  function deleteButton() {
-    calculator.delete()
-    calculator.updateDisplay()
-  }
+  const handleAllClear = () => {
+    if (!calculator) return;
+    calculator.clear();
+    calculator.updateDisplay();
+  };
+
+  const handleDelete = () => {
+    if (!calculator) return;
+    calculator.delete();
+    calculator.updateDisplay();
+  };
+
   return (
     <div className={classes.calculator}>
       <div className={classes.output}>
-        <div className={classes.previousOperand} ref={previousOperandTextElementRef}></div>
-        <div className={classes.currentOperand} ref={currentOperandTextElementRef}></div>
+        <div className={classes.previousOperand} ref={previousOperandRef}></div>
+        <div className={classes.currentOperand} ref={currentOperandRef}></div>
       </div>
-      <button className={classes.spanTwo} onClick={() => allClear()}>AC</button>
-      <button onClick={() => deleteButton()}>DEL</button>
-      <button onClick={(e) => operate(e)}>÷</button>
-      <button onClick={(e) => getNumber(e)}>1</button>
-      <button onClick={(e) => getNumber(e)}>2</button>
-      <button onClick={(e) => getNumber(e)}>3</button>
-      <button onClick={(e) => operate(e)}>*</button>
-      <button onClick={(e) => getNumber(e)}>4</button>
-      <button onClick={(e) => getNumber(e)}>5</button>
-      <button onClick={(e) => getNumber(e)}>6</button>
-      <button onClick={(e) => operate(e)}>+</button>
-      <button onClick={(e) => getNumber(e)}>7</button>
-      <button onClick={(e) => getNumber(e)}>8</button>
-      <button onClick={(e) => getNumber(e)}>9</button>
-      <button onClick={(e) => operate(e)}>-</button>
-      <button onClick={(e) => getNumber(e)}>.</button>
-      <button onClick={(e) => getNumber(e)}>0</button>
-      <button className={classes.spanTwo} onClick={() => equal()}>=</button>
+      <button className={classes.spanTwo} onClick={() => handleAllClear()}>AC</button>
+      <button onClick={() => handleDelete()}>DEL</button>
+      <button onClick={() => handleOperation('÷')}>÷</button>
+      <button onClick={() => handleNumber('1')}>1</button>
+      <button onClick={() => handleNumber('2')}>2</button>
+      <button onClick={() => handleNumber('3')}>3</button>
+      <button onClick={() => handleOperation('*')}>*</button>
+      <button onClick={() => handleNumber('4')}>4</button>
+      <button onClick={() => handleNumber('5')}>5</button>
+      <button onClick={() => handleNumber('6')}>6</button>
+      <button onClick={() => handleOperation('+')}>+</button>
+      <button onClick={() => handleNumber('7')}>7</button>
+      <button onClick={() => handleNumber('8')}>8</button>
+      <button onClick={() => handleNumber('9')}>9</button>
+      <button onClick={() => handleOperation('-')}>-</button>
+      <button onClick={() => handleNumber('.')}>.</button>
+      <button onClick={() => handleNumber('0')}>0</button>
+      <button className={classes.spanTwo} onClick={handleEqual}>=</button>
     </div>
   )
 }

@@ -90,14 +90,13 @@ export class CalculatorClass {
 
   }
   updateDisplay() {
-    console.log(this.getDisplayNumber(Number(this.currentOperand)))
     this.currentOperandTextElement.innerText =
-      this.getDisplayNumber(Number(this.currentOperand))
-    if (this.operation !== null) {
+      this.currentOperand ? this.getDisplayNumber(Number(this.currentOperand)) : '';
+    if (this.operation != null && this.previousOperand) {
       this.previousOperandTextElement.innerText =
-        `${this.getDisplayNumber(Number(this.previousOperand))} ${this.operation}`
+        `${this.getDisplayNumber(Number(this.previousOperand))} ${this.operation}`;
     } else {
-      this.previousOperandTextElement.innerText = ''
+      this.previousOperandTextElement.innerText = '';
     }
   }
 }
