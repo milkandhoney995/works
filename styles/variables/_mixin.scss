@@ -1,4 +1,6 @@
 @use './variables' as v;
+@use "sass:map";
+
 $breakpoint: (
   sp: 'screen and (max-width: 450px)',
   tab: 'screen and (max-width: 700px)',
@@ -6,8 +8,8 @@ $breakpoint: (
 );
 
 @mixin mq($bp) {
-  @media #{map-get($breakpoint, $bp)} {
-   @content;
+  @media #{map.get($breakpoint, $bp)} {
+    @content;
   }
 }
 

@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   sassOptions: {
-    fiber: false
+    includePaths: ['./styles'],
   }
 }
 
