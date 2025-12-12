@@ -1,109 +1,109 @@
 'use client';
 
-import Image from 'next/image'
-import classes from './page.module.scss'
 import React, { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import classes from './page.module.scss';
 
 export default function MeditationApp() {
-  const song = useRef() as React.MutableRefObject<HTMLAudioElement>
-  const songSrc = useRef() as React.MutableRefObject<HTMLSourceElement>
-  const outline = useRef() as React.MutableRefObject<SVGCircleElement>
-  const video = useRef() as React.MutableRefObject<HTMLVideoElement>
-  const videoSrc = useRef() as React.MutableRefObject<HTMLSourceElement>
-  const play = useRef() as React.MutableRefObject<HTMLImageElement>
-  const sound = useRef() as React.MutableRefObject<HTMLButtonElement>
-  // time display
-  const timeDisplay = useRef() as React.MutableRefObject<HTMLHeadingElement>
-  // Duration
+  const song = useRef<HTMLAudioElement>(null);
+  const outline = useRef<SVGCircleElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
+  const timeDisplay = useRef<HTMLHeadingElement>(null);
+
   const [fakeDuration, setFakeDuration] = useState<number>(600);
-  // CurrentSongSrc
-  const [currentSongSrc, setCurrentSongSrc] = useState<string>("");
-  // CurrentVideoSrc
-  const [currentVideoSrc, setCurrentVideoSrc] = useState<string>("");
-  // we can animate the circle
+  const [isPlaying, setIsPlaying] = useState(false);
+
   useEffect(() => {
-    // https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumber
-    // get the length of outline
-    const outlineLength = outline.current.getTotalLength()
+    if (!outline.current) return;
+
+    const outlineLength = outline.current.getTotalLength();
     outline.current.style.strokeDasharray = outlineLength.toString();
     outline.current.style.strokeDashoffset = outlineLength.toString();
 
-    const currentSong = song.current
+    const currentSong = song.current;
+    if (!currentSong) return;
 
-    currentSong.ontimeupdate = () => {
-      let currentTime = currentSong.currentTime
-      let elapsed = fakeDuration - currentTime;
-      let seconds = Math.floor(elapsed % 60);
-      let minutes = Math.floor(elapsed / 60);
+    const onTimeUpdate = () => {
+      const currentTime = currentSong.currentTime;
+      const elapsed = fakeDuration - currentTime;
+      const minutes = Math.floor(elapsed / 60);
+      const seconds = Math.floor(elapsed % 60);
 
-      // Animate the circle
-      let progress = outlineLength - (currentTime / fakeDuration) * outlineLength;
-      // Animate the text
-      outline.current.style.strokeDashoffset = progress.toString();
+      const progress = outlineLength - (currentTime / fakeDuration) * outlineLength;
+      outline.current!.style.strokeDashoffset = progress.toString();
 
-      timeDisplay.current.childNodes[0].textContent = `${minutes}:${seconds}`;
+      if (timeDisplay.current) {
+        timeDisplay.current.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      }
 
       if (currentTime >= fakeDuration) {
         currentSong.pause();
-        currentSong.currentTime = 0
-        play.current.src = "../../assets/svg/play.svg"
-        video.current.pause()
+        currentSong.currentTime = 0;
+        video.current?.pause();
+        setIsPlaying(false);
       }
-    }
-  })
+    };
 
-  const pickDifferentSound = (e: React.MouseEvent)  => {
-    checkPlaying(song.current)
-  }
+    currentSong.addEventListener('timeupdate', onTimeUpdate);
+    return () => currentSong.removeEventListener('timeupdate', onTimeUpdate);
+  }, [fakeDuration]);
 
-  // Stop and play the sound
-  function checkPlaying(song: HTMLAudioElement) {
-    if (song.paused) {
-      song.play();
+  const togglePlay = () => {
+    if (!song.current || !video.current) return;
+
+    if (song.current.paused) {
+      song.current.play();
       video.current.play();
-      play.current.src = "../../assets/svg/pause.svg";
+      setIsPlaying(true);
     } else {
-      song.pause();
+      song.current.pause();
       video.current.pause();
-      play.current.src = "../../assets/svg/play.svg";
+      setIsPlaying(false);
     }
   };
 
-  function playSound() {
-    checkPlaying(song.current)
-  }
+  const selectSound = (soundSrc: string, videoSrc: string, duration: number) => {
+    if (!song.current || !video.current) return;
 
-  // Select sound
-  function selectSound(e: React.MouseEvent) {
-    const dataTime = e.currentTarget.getAttribute("data-time")
-    // TODO: 2回押さないと値が変わらない
-    setFakeDuration(Number(dataTime))
-    timeDisplay.current.childNodes[0].textContent = `${Math.floor(fakeDuration / 60)}:${Math.floor(fakeDuration % 60)}`;
-  }
+    song.current.src = soundSrc;
+    video.current.src = videoSrc;
+    setFakeDuration(duration);
+    song.current.currentTime = 0;
+    video.current.currentTime = 0;
+
+    if (timeDisplay.current) {
+      const minutes = Math.floor(duration / 60);
+      const seconds = Math.floor(duration % 60);
+      timeDisplay.current.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+
+    if (isPlaying) {
+      song.current.play();
+      video.current.play();
+    }
+  };
 
   return (
     <div className={classes.app}>
       <div className={classes.vidContainer}>
-        <video className={classes.video} ref={video} loop>
-          <source ref={videoSrc} src="../../assets/video/rain.mp4" type="video/mp4" />
-        </video>
+        <video className={classes.video} ref={video} loop />
       </div>
+
       <div className={classes.timeSelect}>
-        <button data-time="10" onClick={(e) => selectSound(e)}>2 Minutes</button>
-        <button data-time="300" onClick={(e) => selectSound(e)}>5 Minutes</button>
-        <button data-time="600" onClick={(e) => selectSound(e)}>10 Minutes</button>
+        <button onClick={() => selectSound(song.current?.src || '', video.current?.src || '', 120)}>2 Minutes</button>
+        <button onClick={() => selectSound(song.current?.src || '', video.current?.src || '', 300)}>5 Minutes</button>
+        <button onClick={() => selectSound(song.current?.src || '', video.current?.src || '', 600)}>10 Minutes</button>
       </div>
+
       <div className={classes.playerContainer}>
-        <audio className="song" ref={song}>
-          <source ref={songSrc} src="../../../assets/sounds/rain.mp3" />
-        </audio>
+        <audio ref={song} />
         <Image
-          src={'../../../assets/svg/play.svg'}
-          alt="play" className="play"
-          ref={play}
+          src={isPlaying ? '/assets/svg/pause.svg' : '/assets/svg/play.svg'}
+          alt="play"
           width={90}
           height={90}
-          onClick={() => playSound()}
+          className="play"
+          onClick={togglePlay}
         />
         <svg
           className="track-outline"
@@ -113,13 +113,7 @@ export default function MeditationApp() {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <circle
-            cx="226.5"
-            cy="226.5"
-            r="216.5"
-            stroke="white"
-            strokeWidth="20"
-          />
+          <circle cx="226.5" cy="226.5" r="216.5" stroke="white" strokeWidth="20" />
         </svg>
         <svg
           className="moving-outline"
@@ -129,35 +123,19 @@ export default function MeditationApp() {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <circle
-            ref={outline}
-            cx="226.5"
-            cy="226.5"
-            r="216.5"
-            stroke="#018EBA"
-            strokeWidth="20"
-          />
+          <circle ref={outline} cx="226.5" cy="226.5" r="216.5" stroke="#018EBA" strokeWidth="20" />
         </svg>
         <h3 className={classes.timeDisplay} ref={timeDisplay}>0:00</h3>
       </div>
+
       <div className={classes.soundPicker}>
-        <button
-          data-sound="../../../assets/sounds/rain.mp3"
-          data-video="../../assets/video/rain.mp4"
-          onClick={(e) => pickDifferentSound(e)}
-          ref={sound}
-        >
-          <Image src={'../../../assets/svg/rain.svg'} width={60} height={60} alt="rain" />
+        <button onClick={() => selectSound('/assets/sounds/rain.mp3', '/assets/video/rain.mp4', 600)}>
+          <Image src="/assets/svg/rain.svg" width={60} height={60} alt="rain" />
         </button>
-        <button
-          data-sound="../../../assets/sounds/beach.mp3"
-          data-video="../../assets/video/beach.mp4"
-          onClick={(e) => pickDifferentSound(e)}
-          ref={sound}
-        >
-          <Image src={'../../../assets/svg/beach.svg'} width={60} height={60} alt="beach" />
+        <button onClick={() => selectSound('/assets/sounds/beach.mp3', '/assets/video/beach.mp4', 600)}>
+          <Image src="/assets/svg/beach.svg" width={60} height={60} alt="beach" />
         </button>
       </div>
     </div>
-  )
+  );
 }
