@@ -1,28 +1,22 @@
-import classes from "./todoItem.module.scss"
+'use client';
 
-// PropTypes
-type propTypes = {
-  todo: { title: string, id: number, completed: boolean},
-  markComplete: () => void,
-  delTodo: () => void,
-}
+import { useDispatch } from "react-redux";
+import { toggleComplete, deleteTodo, Todo } from "@/store/todoSlice";
 
-export default function TodoItem(props: propTypes) {
-    function getStyle() {
-      return {
-        textDecoration: props.todo.completed ?
-        'line-through' : 'none'
-      }
-    }
+export default function TodoItem({ todo }: { todo: Todo }) {
+  const dispatch = useDispatch();
 
-    const { id, title } = props.todo;
-    return (
-      <div style={getStyle()} className={classes.item}>
-        <p>
-          <input type="checkbox" onChange={props.markComplete.bind(id)} />{ '' }
-          { title}
-          <button onClick={props.delTodo.bind(id)} className={classes.item__button}>x</button>
-        </p>
-      </div>
-    );
+  return (
+    <div style={{ display: "flex", gap: "10px" }}>
+      <input
+        type="checkbox"
+        checked={todo.completed}
+        onChange={() => dispatch(toggleComplete(todo.id))}
+      />
+      <span style={{ textDecoration: todo.completed ? "line-through" : "none" }}>
+        {todo.title}
+      </span>
+      <button onClick={() => dispatch(deleteTodo(todo.id))}>Delete</button>
+    </div>
+  );
 }

@@ -1,43 +1,31 @@
 import React, { useState } from 'react';
+import { useDispatch } from "react-redux";
+import { addTodo } from "@/store/todoSlice";
 import classes from './addTodo.module.scss'
 
-// PropTypes
-type propsType = {
-  addTodo: (title: string) => void,
-  markComplete: (id: number) => void,
-  delTodo: (id: number) => void
-}
 
-export default function AddTodo(props: propsType) {
+export default function AddTodo() {
   const [title, setTitle] = useState<string>("")
+  const dispatch = useDispatch();
 
-    function handleChange(e: React.ChangeEvent) {
-      console.log(e)
-      // this.setState({ [e.target.name]: e.target.value })
-    }
-
-    function handleSubmit(e: React.FormEvent) {
+    const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
-      props.addTodo(title)
-      setTitle("")
-    }
+      if (!title.trim()) return;
+
+      dispatch(addTodo(title));
+      setTitle("");
+    };
 
     return (
-      <form onSubmit={(e) => handleSubmit(e)} className={classes.form}>
-        <input
-          type="text"
-          name="title"
-          className={classes.form__input}
-          placeholder="Add Todo..."
-          value={title}
-          onChange={(e) => handleChange(e)}
-        />
-        <input
-          type="submit"
-          value="Submit"
-          className={classes.form__input}
-        />
-      </form>
-    )
-
+    <form className={classes.form} onSubmit={handleSubmit}>
+      <input
+        className={classes.form__input}
+        type="text"
+        placeholder="Add Todo..."
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <button className={classes.form__input} type="submit">Submit</button>
+    </form>
+  );
 }

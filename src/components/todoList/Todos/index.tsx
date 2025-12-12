@@ -1,13 +1,9 @@
 import TodoItem from '../todoItem';
+import { Todo } from '@/store/todoSlice';
 
 // PropTypes
-interface Item {
-  title: string
-  id: number
-  completed: boolean
-}
 type propTypes = {
-  todos: Array<Item>,
+  todos: Array<Todo>,
   markComplete: () => void,
   delTodo: () => void,
 }
@@ -15,6 +11,6 @@ type propTypes = {
 export default function Todos(props: propTypes) {
 
   return props.todos.map((todo, index) => (
-    <TodoItem key={index} todo={todo} markComplete={props.markComplete} delTodo={props.delTodo}/>
+    <TodoItem key={index} todo={todo} />
   ));
 }
