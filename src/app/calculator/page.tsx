@@ -8,11 +8,6 @@ export default function Calculator() {
   const previousOperandRef = useRef<HTMLDivElement>(null);
   const currentOperandRef = useRef<HTMLDivElement>(null);
   const [calculator, setCalculator] = useState<CalculatorClass | null>(null);
-  const [previousOperandTextElement, setPreviousOperandTextElement] = useState<HTMLDivElement>()
-  const [currentOperandTextElement, setCurrentOperandTextElement] = useState<HTMLDivElement>()
-  const [previousOperand, setPreviousOperand] = useState<string>('')
-  const [currentOperand, setCurrentOperand] = useState<string>('')
-  const [number, setNumber] = useState<string>("")
 
    // 初回マウント時に CalculatorClass を生成
   useEffect(() => {

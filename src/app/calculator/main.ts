@@ -1,54 +1,51 @@
-// https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html
 export class CalculatorClass {
   previousOperandTextElement: HTMLDivElement;
-  currentOperandTextElement:  HTMLDivElement;
-  currentOperand?: string
-  previousOperand?: string
-  number?: number
-  operation?: string
+  currentOperandTextElement: HTMLDivElement;
+  currentOperand: string = '';
+  previousOperand: string = '';
+  operation?: string;
 
   constructor(
     previousOperandTextElement: HTMLDivElement,
-    currentOperandTextElement: HTMLDivElement,
-    currentOperand?: string, previousOperand?: string, number?: number,
-    operation?: string
+    currentOperandTextElement: HTMLDivElement
   ) {
     this.previousOperandTextElement = previousOperandTextElement
     this.currentOperandTextElement = currentOperandTextElement
-    this.currentOperand = currentOperand
-    this.previousOperand = previousOperand
-    this.number = number
-    this.operation = operation
+    this.clear()
   }
+
   clear() {
     this.currentOperand = ''
     this.previousOperand = ''
     this.operation = undefined
+    this.updateDisplay()
   }
 
   delete() {
-    this.currentOperand = this.currentOperand!.slice(0, -1)
+    this.currentOperand = this.currentOperand.slice(0, -1)
+    this.updateDisplay()
   }
 
   appendNumber(number: string | number) {
-    if (number === '.' && this.currentOperand!.includes('.')) return
-    this.currentOperand = this.currentOperand! + number.toString()
+    if (number === '.' && this.currentOperand.includes('.')) return
+    this.currentOperand = this.currentOperand + number.toString()
+    this.updateDisplay()
   }
 
   chooseOperation(operation: string) {
-    if (this.currentOperand === '') return
-    if (this.previousOperand !== '') this.compute()
+    if (!this.currentOperand) return
+    if (this.previousOperand) this.compute()
     this.operation = operation
     this.previousOperand = this.currentOperand
     this.currentOperand = ''
+    this.updateDisplay()
   }
 
   compute() {
+    if (!this.previousOperand || !this.currentOperand || !this.operation) return
+    const prev = parseFloat(this.previousOperand)
+    const current = parseFloat(this.currentOperand)
     let computation: number
-    const prev = parseFloat(this.previousOperand!)
-    const current = parseFloat(this.currentOperand!)
-    console.log(this.previousOperand)
-    if (isNaN(prev) || isNaN(current)) return
     switch (this.operation) {
       case '+':
         computation = prev + current
@@ -63,36 +60,30 @@ export class CalculatorClass {
         computation = prev / current
         break
       default:
-          return
-
+        return
     }
+
     this.currentOperand = computation.toString()
     this.operation = undefined
     this.previousOperand = ''
+    this.updateDisplay()
   }
 
   getDisplayNumber(number: number) {
+    if (isNaN(number)) return '';
     const stringNumber = number.toString()
-    const integerDigits = parseFloat(stringNumber.split('.')[0])
-    const decimalDigits = stringNumber.split('.')[1]
-    let integerDisplay
-    if (isNaN(integerDigits)) {
-      integerDisplay = ''
-    } else {
-      integerDisplay = integerDigits.toLocaleString('en', { maximumFractionDigits: 0 })
-    }
-    console.log(decimalDigits != null)
-    if (decimalDigits != null) {
-      return `${integerDisplay}.${decimalDigits}`
-    }
-    console.log(integerDisplay)
-    return integerDisplay
-
+    const [integerPart, decimalPart] = stringNumber.split('.')
+    const integerDisplay = parseInt(integerPart).toLocaleString('en')
+    return decimalPart != null ? `${integerDisplay}.${decimalPart}` : integerDisplay
   }
+
   updateDisplay() {
+    // currentOperand が空なら「0」を表示
     this.currentOperandTextElement.innerText =
-      this.currentOperand ? this.getDisplayNumber(Number(this.currentOperand)) : '';
-    if (this.operation != null && this.previousOperand) {
+      this.currentOperand ? this.getDisplayNumber(Number(this.currentOperand)) : '0';
+
+    // previousOperand と operation がある場合のみ表示
+    if (this.previousOperand && this.operation) {
       this.previousOperandTextElement.innerText =
         `${this.getDisplayNumber(Number(this.previousOperand))} ${this.operation}`;
     } else {
