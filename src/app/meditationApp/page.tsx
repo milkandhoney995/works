@@ -1,66 +1,13 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import classes from './page.module.scss';
+import { useMeditationTimer } from '@/hooks/useMeditationTimer';
 
 export default function MeditationApp() {
-  const song = useRef<HTMLAudioElement>(null);
-  const outline = useRef<SVGCircleElement>(null);
-  const video = useRef<HTMLVideoElement>(null);
-  const timeDisplay = useRef<HTMLHeadingElement>(null);
-
   const [fakeDuration, setFakeDuration] = useState<number>(600);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  useEffect(() => {
-    if (!outline.current) return;
-
-    const outlineLength = outline.current.getTotalLength();
-    outline.current.style.strokeDasharray = outlineLength.toString();
-    outline.current.style.strokeDashoffset = outlineLength.toString();
-
-    const currentSong = song.current;
-    if (!currentSong) return;
-
-    const onTimeUpdate = () => {
-      const currentTime = currentSong.currentTime;
-      const elapsed = fakeDuration - currentTime;
-      const minutes = Math.floor(elapsed / 60);
-      const seconds = Math.floor(elapsed % 60);
-
-      const progress = outlineLength - (currentTime / fakeDuration) * outlineLength;
-      outline.current!.style.strokeDashoffset = progress.toString();
-
-      if (timeDisplay.current) {
-        timeDisplay.current.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-      }
-
-      if (currentTime >= fakeDuration) {
-        currentSong.pause();
-        currentSong.currentTime = 0;
-        video.current?.pause();
-        setIsPlaying(false);
-      }
-    };
-
-    currentSong.addEventListener('timeupdate', onTimeUpdate);
-    return () => currentSong.removeEventListener('timeupdate', onTimeUpdate);
-  }, [fakeDuration]);
-
-  const togglePlay = () => {
-    if (!song.current || !video.current) return;
-
-    if (song.current.paused) {
-      song.current.play();
-      video.current.play();
-      setIsPlaying(true);
-    } else {
-      song.current.pause();
-      video.current.pause();
-      setIsPlaying(false);
-    }
-  };
+  const { song, outline, video, timeDisplay, isPlaying, playPause, restartSong } = useMeditationTimer(fakeDuration);
 
   const selectSound = (soundSrc: string, videoSrc: string, duration: number) => {
     if (!song.current || !video.current) return;
@@ -74,7 +21,7 @@ export default function MeditationApp() {
     if (timeDisplay.current) {
       const minutes = Math.floor(duration / 60);
       const seconds = Math.floor(duration % 60);
-      timeDisplay.current.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      timeDisplay.current.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
     }
 
     if (isPlaying) {
@@ -103,7 +50,7 @@ export default function MeditationApp() {
           width={90}
           height={90}
           className="play"
-          onClick={togglePlay}
+          onClick={playPause}
         />
         <svg
           className="track-outline"
