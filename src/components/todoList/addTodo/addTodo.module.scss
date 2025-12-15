@@ -1,16 +1,29 @@
+@use '../../../../styles/variables/variables' as v;
+
 .form {
   display: flex;
+  margin-bottom: 20px;
+
   &__input:first-child {
     flex: 10;
     padding: 0.4rem;
+    border: 1px solid v.$border;
+    border-radius: 4px 0 0 4px;
+    font-size: 1rem;
   }
+
   &__input:last-child {
     display: inline-block;
     border: none;
-    background: #555;
-    color: #fff;
+    background: v.$commonGreen;
+    color: v.$commonWhite;
     padding: 7px 20px;
     cursor: pointer;
-    flex: 1;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.3s;
+
+    &:hover {
+      background: #2a5a2a; /* Darker green */
+    }
   }
 }

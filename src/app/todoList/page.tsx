@@ -4,17 +4,18 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import AddTodo from "@/components/todoList/addTodo";
 import TodoItem from "@/components/todoList/todoItem";
+import classes from './page.module.scss';
 
 export default function TodoList() {
   const todos = useSelector((state: RootState) => state.todo.todos);
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Redux Todo List</h1>
+    <div className={classes.todoList}>
+      <h1 className={classes.todoList__title}>Redux Todo List</h1>
 
       <AddTodo />
 
-      <div style={{ marginTop: 20 }}>
+      <div className={classes.todoList__todos}>
         {todos.map((todo) => (
           <TodoItem key={todo.id} todo={todo} />
         ))}

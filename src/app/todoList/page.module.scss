@@ -1,0 +1,20 @@
+@use '../../../styles/variables/variables' as v;
+@use '../../../styles/variables/mixin' as m;
+
+.todoList {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  background: v.$secondaryBackground;
+
+  &__title {
+    @include m.sectionTitle();
+    color: v.$title;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  &__todos {
+    margin-top: 20px;
+  }
+}
