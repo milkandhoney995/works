@@ -5,6 +5,8 @@ import Image from 'next/image';
 import classes from './page.module.scss';
 import { useMeditationTimer } from '@/hooks/useMeditationTimer';
 
+// todo: 一定時間経過して、時間を追加する機能をつける
+// todo: 設定ボタンをつけて、開くと時間を2分、5分、10分、15分だけでなく、カスタムで設定できるようにする
 export default function MeditationApp() {
   const [fakeDuration, setFakeDuration] = useState<number>(600);
   const { song, outline, video, timeDisplay, isPlaying, playPause, restartSong } = useMeditationTimer(fakeDuration);
