@@ -1,42 +1,32 @@
 'use client';
 
+import { useCallback } from 'react';
 import { useShogi } from '@/hooks/shogi/useShogi';
-import { pieceMap } from '@/hooks/shogi/pieces';
+import { ShogiBoard, ShogiHands } from '@/components/shogi';
 import classes from './page.module.scss';
 
-const Shogi = () => {
+const ShogiPage = () => {
   const { board, selected, legalMoves, hands, handleCellClick, dropPiece } = useShogi();
+  const handleHandSelect = useCallback(
+    (piece: string) => {
+      if (!selected) return;
+      dropPiece(piece, selected.x, selected.y);
+    },
+    [dropPiece, selected]
+  );
 
   return (
     <div className={classes.shogi}>
       <h1 className={classes.shogi__title}>Shogi App</h1>
-      <div className={classes.shogi__board}>
-        {board.map((row, y) => (
-          <div key={y} className={classes.shogi__row}>
-            {row.map((cell, x) => (
-              <div
-                key={x}
-                className={`${classes.shogi__cell}
-                  ${selected?.x === x && selected?.y === y ? classes.selected : ''}
-                  ${legalMoves.some(pos => pos.x === x && pos.y === y) ? classes.legal : ''}`}
-                onClick={() => handleCellClick(x, y)}
-              >
-                {pieceMap[cell]}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-
-      <div className={classes.shogi__hands}>
-        {Object.entries(hands).map(([p, n]) => n > 0 && (
-          <button key={p} onClick={() => console.log(`選択して打つ: ${p}`)}>
-            {pieceMap[p]} × {n}
-          </button>
-        ))}
-      </div>
+      <ShogiBoard
+        board={board}
+        selected={selected}
+        legalMoves={legalMoves}
+        onCellClick={handleCellClick}
+      />
+      <ShogiHands hands={hands} onSelect={handleHandSelect} />
     </div>
   );
 }
 
-export default Shogi;
+export default ShogiPage;
