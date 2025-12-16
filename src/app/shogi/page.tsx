@@ -1,6 +1,8 @@
 'use client';
+
+import { useShogi } from '@/hooks/shogi/useShogi';
+import { pieceMap } from '@/hooks/shogi/pieces';
 import classes from './page.module.scss';
-import { useShogi, pieceMap } from '@/hooks/useShogi';
 
 const Shogi = () => {
   const { board, selected, legalMoves, hands, handleCellClick, dropPiece } = useShogi();
