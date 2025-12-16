@@ -37,7 +37,7 @@ export const goldMoves: MoveFunc = ({x, y}, board, isUpper) => {
   return moves;
 };
 
-// 銀・桂・香・角・飛・歩（前回と同様、必要に応じて追加）
+// 銀・桂・香・角・飛・歩の移動
 export const silverMoves: MoveFunc = ({x, y}, board, isUpper) => {
   const moves: Position[] = [];
   const dir = isUpper?-1:1;
