@@ -1,4 +1,4 @@
-import { Position } from './useShogi';
+import { Position } from "./types";
 
 export type MoveFunc = (pos: Position, board: string[][], isUpper: boolean) => Position[];
 
