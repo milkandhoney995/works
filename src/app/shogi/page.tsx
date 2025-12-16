@@ -3,7 +3,7 @@ import classes from './page.module.scss';
 import { useShogi, pieceMap } from '@/hooks/useShogi';
 
 const Shogi = () => {
-  const { board, selected, legalMoves, handleCellClick } = useShogi();
+  const { board, selected, legalMoves, hands, handleCellClick, dropPiece } = useShogi();
 
   return (
     <div className={classes.shogi}>
@@ -25,7 +25,16 @@ const Shogi = () => {
           </div>
         ))}
       </div>
+
+      <div className={classes.shogi__hands}>
+        {Object.entries(hands).map(([p, n]) => n > 0 && (
+          <button key={p} onClick={() => console.log(`選択して打つ: ${p}`)}>
+            {pieceMap[p]} × {n}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
+
 export default Shogi;
