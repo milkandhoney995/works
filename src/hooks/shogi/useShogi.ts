@@ -5,8 +5,8 @@ import { initialBoard } from './board';
 import { pieceMap, promotable } from './pieces';
 import { kingMoves, goldMoves, MoveFunc, pieceMoves } from './moveRules';
 import { inEnemyCamp } from './helpers';
+import { Position } from './types';
 
-export type Position = { x: number; y: number };
 
 // --- Hook ---
 export function useShogi() {
