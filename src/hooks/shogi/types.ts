@@ -22,4 +22,5 @@ export interface UseShogiReturn {
   handleCellClick: (x: number, y: number) => void;
   promotePiece: (promote: boolean) => void;
   dropPiece: (piece: string, x: number, y: number) => void;
+  onHandSelect: (piece: string) => void;
 }

@@ -1,44 +1,46 @@
-'use client';
-
-import { useCallback, useReducer } from 'react';
+import { useReducer, useState } from 'react';
 import { shogiReducer } from './shogiReducer';
-import { UseShogiReturn } from './types';
-import { initialShogiState } from './shogiState';
+import { initialShogiState, ShogiState, ShogiAction } from './shogiState';
+import { Position, UseShogiReturn } from './types';
 
-export function useShogi(): UseShogiReturn {
+/**
+ * 将棋用カスタムフック
+ */
+export const useShogi = (): UseShogiReturn => {
   const [state, dispatch] = useReducer(shogiReducer, initialShogiState);
 
-  const handleCellClick = useCallback(
-    (x: number, y: number) => {
-      // 成り選択中はセル操作無効
-      if (state.pendingPromotion) return;
+  // 持ち駒選択用の一時 state
+  const [selectedHand, setSelectedHand] = useState<string | null>(null);
 
-      if (state.selected) {
-        dispatch({ type: 'MOVE_PIECE', x, y });
-      } else if (state.board[y][x] !== '') {
-        dispatch({ type: 'SELECT_CELL', x, y });
-      }
-    },
-    [state.selected, state.board, state.pendingPromotion]
-  );
+  /** 盤面セルクリック時の処理 */
+  const handleCellClick = (x: number, y: number) => {
+    if (state.pendingPromotion) return; // 成り選択中は盤面クリック無効
 
-  const dropPiece = useCallback(
-    (piece: string, x: number, y: number) => {
-      // 成り選択中は駒打ち無効
-      if (state.pendingPromotion) return;
+    if (selectedHand) {
+      // 持ち駒を打つ
+      dispatch({ type: 'DROP_PIECE', piece: selectedHand, x, y });
+      setSelectedHand(null);
+      return;
+    }
 
-      dispatch({ type: 'DROP_PIECE', piece, x, y });
-    },
-    [state.pendingPromotion]
-  );
+    if (state.selected) {
+      // 駒を移動
+      dispatch({ type: 'MOVE_PIECE', x, y });
+    } else {
+      // 駒を選択
+      dispatch({ type: 'SELECT_CELL', x, y });
+    }
+  };
 
-  const promotePiece = useCallback(
-    (promote: boolean) => {
-      if (!state.pendingPromotion) return;
-      dispatch({ type: 'PROMOTE', promote });
-    },
-    [state.pendingPromotion]
-  );
+  /** 持ち駒選択時 */
+  const onHandSelect = (piece: string) => {
+    setSelectedHand(piece);
+  };
+
+  /** 成り選択 */
+  const promotePiece = (promote: boolean) => {
+    dispatch({ type: 'PROMOTE', promote });
+  };
 
   return {
     board: state.board,
@@ -47,7 +49,10 @@ export function useShogi(): UseShogiReturn {
     hands: state.hands,
     pendingPromotion: state.pendingPromotion,
     handleCellClick,
-    dropPiece,
     promotePiece,
+    dropPiece: (piece: string, x: number, y: number) => {
+      dispatch({ type: 'DROP_PIECE', piece, x, y });
+    },
+    onHandSelect, // ← ここで追加
   };
-}
+};

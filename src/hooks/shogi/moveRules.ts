@@ -69,11 +69,11 @@ export const knightMoves: MoveFunc = ({x, y}, board, isUpper) => {
 export const lanceMoves: MoveFunc = ({x, y}, board, isUpper) => {
   const moves: Position[] = [];
   const dir = isUpper?-1:1;
-  for(let ny=y+dir; ny>=0 && ny<9 && ny>=0; ny+=dir){
+  for(let ny=y+dir; ny>=0 && ny<9; ny+=dir){
     const target=board[ny][x];
     if(target==='') moves.push({x, y:ny});
     else{
-      if(isUpper? target===target.toLowerCase(): target===target.toUpperCase()) moves.push({x,y:ny});
+      if(isUpper? target===target.toLowerCase(): target===target.toUpperCase()) moves.push({x, y:ny});
       break;
     }
   }
@@ -152,5 +152,9 @@ export const pieceMoves: Record<string, MoveFunc> = {
   p: pawnMoves, P: pawnMoves,
   r: rookMoves, R: rookMoves,
   b: bishopMoves, B: bishopMoves,
-  '+s': goldMoves, '+n': goldMoves, '+l': goldMoves, '+b': bishopMovesWithKingLike, '+r': rookMovesWithKingLike,
+  '+s': goldMoves,
+  '+n': goldMoves,
+  '+l': goldMoves,
+  '+b': bishopMovesWithKingLike,
+  '+r': rookMovesWithKingLike,
 };

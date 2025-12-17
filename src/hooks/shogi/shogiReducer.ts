@@ -1,16 +1,16 @@
 import { ShogiState, ShogiAction } from './shogiState';
 import { Position } from './types';
 import { promotable } from './pieces';
-import { getLegalMoves, inEnemyCamp } from './helpers'; // helpers.ts からインポート
+import { getLegalMoves, inEnemyCamp } from './helpers';
 
 export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState => {
   switch (action.type) {
     case 'SELECT_CELL': {
       const { x, y } = action;
       const piece = state.board[y][x];
-
       if (!piece) return state;
 
+      // 選択可能な駒のみ
       return {
         ...state,
         selected: { x, y },
@@ -47,6 +47,7 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
         (inEnemyCamp(selected.y, isUpper) || inEnemyCamp(y, isUpper));
 
       if (canPromote) {
+        // 成り選択中として保持する
         return {
           ...state,
           board: newBoard,
@@ -57,10 +58,18 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
         };
       }
 
+      // 成らない場合は通常移動
       newBoard[y][x] = movingPiece;
       newBoard[selected.y][selected.x] = '';
 
-      return { ...state, board: newBoard, hands: newHands, selected: null, legalMoves: [], pendingPromotion: null };
+      return {
+        ...state,
+        board: newBoard,
+        hands: newHands,
+        selected: null,
+        legalMoves: [],
+        pendingPromotion: null,
+      };
     }
 
     case 'DROP_PIECE': {
@@ -86,9 +95,18 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
       if (!state.pendingPromotion) return state;
       const { from, to, piece } = state.pendingPromotion;
       const newBoard = state.board.map(row => [...row]);
+
+      // ユーザー選択に応じて成り駒か元駒かをセット
       newBoard[to.y][to.x] = action.promote ? promotable[piece]! : piece;
       newBoard[from.y][from.x] = '';
-      return { ...state, board: newBoard, pendingPromotion: null };
+
+      return {
+        ...state,
+        board: newBoard,
+        pendingPromotion: null,
+        selected: null,
+        legalMoves: [],
+      };
     }
 
     default:
