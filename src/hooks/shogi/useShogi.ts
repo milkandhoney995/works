@@ -1,7 +1,7 @@
 import { useReducer, useState } from 'react';
 import { shogiReducer } from './shogiReducer';
-import { initialShogiState, ShogiState, ShogiAction } from './shogiState';
-import { Position, UseShogiReturn } from './types';
+import { initialShogiState } from './shogiState';
+import { UseShogiReturn } from './types';
 
 /**
  * 将棋用カスタムフック

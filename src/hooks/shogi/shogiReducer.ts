@@ -1,6 +1,5 @@
 // src/hooks/shogi/shogiReducer.ts
 import { ShogiState, ShogiAction } from './shogiState';
-import { Position } from './types';
 import { promotable } from './pieces';
 import { getLegalMoves, inEnemyCamp } from './helpers';
 

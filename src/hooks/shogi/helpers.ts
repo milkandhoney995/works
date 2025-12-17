@@ -1,6 +1,5 @@
 import { Position } from './types';
-import { pieceMovePatterns, MovePattern } from "./movePatterns";
-import { pieceMoves } from './moveRules';
+import { pieceMovePatterns } from "./movePatterns";
 
 /**
  * 敵陣内かどうかを判定するヘルパー関数
