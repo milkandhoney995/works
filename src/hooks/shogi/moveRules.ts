@@ -1,146 +1,211 @@
+/**
+ * 変数名一覧（直感的に変更）
+ *
+ * currentX / currentY       : 現在の駒位置
+ * deltaX / deltaY           : 移動量（相対座標）
+ * targetX / targetY         : 移動先座標
+ * moveDirectionY            : 上下方向の進行方向（上: -1 / 下: 1）
+ * movePattern               : 駒の移動パターン（相対座標の配列）
+ * step                      : 連続移動用の一歩ごとの座標増分
+ * jumpPositions             : ジャンプ移動用の座標（桂馬など）
+ * straightStepY             : 直進移動用のY座標増分（香車など）
+ * promotedMoveFunc          : 成り駒用の移動関数（例: 銀 → 金）
+ */
+
 import { Position } from "./types";
 
 export type MoveFunc = (pos: Position, board: string[][], isUpper: boolean) => Position[];
 
 // --- 移動ルール（簡易版：合法手） ---
 // 王の移動
-export const kingMoves: MoveFunc = ({x, y}, board, isUpper) => {
+export const kingMoves: MoveFunc = ({ x: currentX, y: currentY }, board, isUpper) => {
   const moves: Position[] = [];
-  for(let dx=-1; dx<=1; dx++){
-    for(let dy=-1; dy<=1; dy++){
-      if(dx===0 && dy===0) continue;
-      const nx=x+dx, ny=y+dy;
-      if(nx>=0 && nx<9 && ny>=0 && ny<9){
-        const target = board[ny][nx];
-        if(target === '' || (isUpper ? target===target.toLowerCase() : target===target.toUpperCase())) moves.push({x:nx, y:ny});
+  for (let deltaX = -1; deltaX <= 1; deltaX++) {
+    for (let deltaY = -1; deltaY <= 1; deltaY++) {
+      if (deltaX === 0 && deltaY === 0) continue;
+      const targetX = currentX + deltaX;
+      const targetY = currentY + deltaY;
+      if (targetX >= 0 && targetX < 9 && targetY >= 0 && targetY < 9) {
+        const target = board[targetY][targetX];
+        if (target === '' || (isUpper ? target === target.toLowerCase() : target === target.toUpperCase())) {
+          moves.push({ x: targetX, y: targetY });
+        }
       }
     }
   }
   return moves;
 };
 
-//　金の移動
-export const goldMoves: MoveFunc = ({x, y}, board, isUpper) => {
+// 金の移動
+export const goldMoves: MoveFunc = ({ x: currentX, y: currentY }, board, isUpper) => {
   const moves: Position[] = [];
-  const dir = isUpper ? -1 : 1;
-  const patterns = [
-    {dx:0, dy:dir},{dx:-1, dy:0},{dx:1, dy:0},
-    {dx:0, dy:-dir},{dx:-1, dy:dir},{dx:1, dy:dir}
+  const moveDirectionY = isUpper ? -1 : 1;
+  const movePattern = [
+    { deltaX: 0, deltaY: moveDirectionY },
+    { deltaX: -1, deltaY: 0 },
+    { deltaX: 1, deltaY: 0 },
+    { deltaX: 0, deltaY: -moveDirectionY },
+    { deltaX: -1, deltaY: moveDirectionY },
+    { deltaX: 1, deltaY: moveDirectionY },
   ];
-  for(const {dx, dy} of patterns){
-    const nx=x+dx, ny=y+dy;
-    if(nx>=0 && nx<9 && ny>=0 && ny<9){
-      const target = board[ny][nx];
-      if(target === '' || (isUpper ? target===target.toLowerCase() : target===target.toUpperCase())) moves.push({x:nx, y:ny});
+  for (const { deltaX, deltaY } of movePattern) {
+    const targetX = currentX + deltaX;
+    const targetY = currentY + deltaY;
+    if (targetX >= 0 && targetX < 9 && targetY >= 0 && targetY < 9) {
+      const target = board[targetY][targetX];
+      if (target === '' || (isUpper ? target === target.toLowerCase() : target === target.toUpperCase())) {
+        moves.push({ x: targetX, y: targetY });
+      }
     }
   }
   return moves;
 };
 
-// 銀・桂・香・角・飛・歩の移動
-export const silverMoves: MoveFunc = ({x, y}, board, isUpper) => {
+// 銀の移動
+export const silverMoves: MoveFunc = ({ x: currentX, y: currentY }, board, isUpper) => {
   const moves: Position[] = [];
-  const dir = isUpper?-1:1;
-  const patterns=[{dx:0,dy:dir},{dx:-1,dy:dir},{dx:1,dy:dir},{dx:-1,dy:-dir},{dx:1,dy:-dir}];
-  for(const {dx,dy} of patterns){
-    const nx=x+dx, ny=y+dy;
-    if(nx>=0 && nx<9 && ny>=0 && ny<9){
-      const target=board[ny][nx];
-      if(target==='' || (isUpper? target===target.toLowerCase(): target===target.toUpperCase())) moves.push({x:nx,y:ny});
+  const moveDirectionY = isUpper ? -1 : 1;
+  const movePattern = [
+    { deltaX: 0, deltaY: moveDirectionY },
+    { deltaX: -1, deltaY: moveDirectionY },
+    { deltaX: 1, deltaY: moveDirectionY },
+    { deltaX: -1, deltaY: -moveDirectionY },
+    { deltaX: 1, deltaY: -moveDirectionY },
+  ];
+  for (const { deltaX, deltaY } of movePattern) {
+    const targetX = currentX + deltaX;
+    const targetY = currentY + deltaY;
+    if (targetX >= 0 && targetX < 9 && targetY >= 0 && targetY < 9) {
+      const target = board[targetY][targetX];
+      if (target === '' || (isUpper ? target === target.toLowerCase() : target === target.toUpperCase())) {
+        moves.push({ x: targetX, y: targetY });
+      }
     }
   }
   return moves;
 };
 
-export const knightMoves: MoveFunc = ({x, y}, board, isUpper) => {
+// 桂馬の移動（ジャンプ）
+export const knightMoves: MoveFunc = ({ x: currentX, y: currentY }, board, isUpper) => {
   const moves: Position[] = [];
-  const dir = isUpper?-1:1;
-  const positions=[{dx:-1,dy:2*dir},{dx:1,dy:2*dir}];
-  for(const {dx,dy} of positions){
-    const nx=x+dx, ny=y+dy;
-    if(nx>=0 && nx<9 && ny>=0 && ny<9){
-      const target=board[ny][nx];
-      if(target==='' || (isUpper? target===target.toLowerCase(): target===target.toUpperCase())) moves.push({x:nx,y:ny});
+  const moveDirectionY = isUpper ? -1 : 1;
+  const jumpPositions = [
+    { deltaX: -1, deltaY: 2 * moveDirectionY },
+    { deltaX: 1, deltaY: 2 * moveDirectionY },
+  ];
+  for (const { deltaX, deltaY } of jumpPositions) {
+    const targetX = currentX + deltaX;
+    const targetY = currentY + deltaY;
+    if (targetX >= 0 && targetX < 9 && targetY >= 0 && targetY < 9) {
+      const target = board[targetY][targetX];
+      if (target === '' || (isUpper ? target === target.toLowerCase() : target === target.toUpperCase())) {
+        moves.push({ x: targetX, y: targetY });
+      }
     }
   }
   return moves;
 };
 
-export const lanceMoves: MoveFunc = ({x, y}, board, isUpper) => {
+// 香車の移動（直進）
+export const lanceMoves: MoveFunc = ({ x: currentX, y: currentY }, board, isUpper) => {
   const moves: Position[] = [];
-  const dir = isUpper?-1:1;
-  for(let ny=y+dir; ny>=0 && ny<9; ny+=dir){
-    const target=board[ny][x];
-    if(target==='') moves.push({x, y:ny});
-    else{
-      if(isUpper? target===target.toLowerCase(): target===target.toUpperCase()) moves.push({x, y:ny});
+  const moveDirectionY = isUpper ? -1 : 1;
+  for (let targetY = currentY + moveDirectionY; targetY >= 0 && targetY < 9; targetY += moveDirectionY) {
+    const target = board[targetY][currentX];
+    if (target === '') moves.push({ x: currentX, y: targetY });
+    else {
+      if (isUpper ? target === target.toLowerCase() : target === target.toUpperCase()) moves.push({ x: currentX, y: targetY });
       break;
     }
   }
   return moves;
 };
 
-export const pawnMoves: MoveFunc = ({x,y},board,isUpper)=>{
-  const moves: Position[]=[];
-  const dir=isUpper?-1:1;
-  const ny=y+dir;
-  if(ny>=0 && ny<9){
-    const target=board[ny][x];
-    if(target==='' || (isUpper? target===target.toLowerCase(): target===target.toUpperCase())) moves.push({x, y:ny});
-  }
-  return moves;
-};
-
-export const rookMoves: MoveFunc = ({x,y},board,isUpper)=>{
-  const moves: Position[]=[];
-  const dirs=[{dx:1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:-1}];
-  for(const {dx,dy} of dirs){
-    let nx=x+dx, ny=y+dy;
-    while(nx>=0 && nx<9 && ny>=0 && ny<9){
-      const target=board[ny][nx];
-      if(target==='') moves.push({x:nx,y:ny});
-      else{
-        if(isUpper? target===target.toLowerCase(): target===target.toUpperCase()) moves.push({x:nx,y:ny});
-        break;
-      }
-      nx+=dx; ny+=dy;
+// 歩の移動
+export const pawnMoves: MoveFunc = ({ x: currentX, y: currentY }, board, isUpper) => {
+  const moves: Position[] = [];
+  const moveDirectionY = isUpper ? -1 : 1;
+  const targetY = currentY + moveDirectionY;
+  if (targetY >= 0 && targetY < 9) {
+    const target = board[targetY][currentX];
+    if (target === '' || (isUpper ? target === target.toLowerCase() : target === target.toUpperCase())) {
+      moves.push({ x: currentX, y: targetY });
     }
   }
   return moves;
 };
 
-export const bishopMoves: MoveFunc = ({x,y},board,isUpper)=>{
-  const moves: Position[]=[];
-  const dirs=[{dx:1,dy:1},{dx:-1,dy:1},{dx:1,dy:-1},{dx:-1,dy:-1}];
-  for(const {dx,dy} of dirs){
-    let nx=x+dx, ny=y+dy;
-    while(nx>=0 && nx<9 && ny>=0 && ny<9){
-      const target=board[ny][nx];
-      if(target==='') moves.push({x:nx,y:ny});
-      else{
-        if(isUpper? target===target.toLowerCase(): target===target.toUpperCase()) moves.push({x:nx,y:ny});
+// 飛車の移動
+export const rookMoves: MoveFunc = ({ x: currentX, y: currentY }, board, isUpper) => {
+  const moves: Position[] = [];
+  const directions = [
+    { deltaX: 1, deltaY: 0 },
+    { deltaX: -1, deltaY: 0 },
+    { deltaX: 0, deltaY: 1 },
+    { deltaX: 0, deltaY: -1 },
+  ];
+  for (const { deltaX, deltaY } of directions) {
+    let targetX = currentX + deltaX;
+    let targetY = currentY + deltaY;
+    while (targetX >= 0 && targetX < 9 && targetY >= 0 && targetY < 9) {
+      const target = board[targetY][targetX];
+      if (target === '') moves.push({ x: targetX, y: targetY });
+      else {
+        if (isUpper ? target === target.toLowerCase() : target === target.toUpperCase()) moves.push({ x: targetX, y: targetY });
         break;
       }
-      nx+=dx; ny+=dy;
+      targetX += deltaX;
+      targetY += deltaY;
     }
   }
   return moves;
 };
 
-// 成り駒の移動（王＋角、王＋飛）
+// 角の移動
+export const bishopMoves: MoveFunc = ({ x: currentX, y: currentY }, board, isUpper) => {
+  const moves: Position[] = [];
+  const directions = [
+    { deltaX: 1, deltaY: 1 },
+    { deltaX: -1, deltaY: 1 },
+    { deltaX: 1, deltaY: -1 },
+    { deltaX: -1, deltaY: -1 },
+  ];
+  for (const { deltaX, deltaY } of directions) {
+    let targetX = currentX + deltaX;
+    let targetY = currentY + deltaY;
+    while (targetX >= 0 && targetX < 9 && targetY >= 0 && targetY < 9) {
+      const target = board[targetY][targetX];
+      if (target === '') moves.push({ x: targetX, y: targetY });
+      else {
+        if (isUpper ? target === target.toLowerCase() : target === target.toUpperCase()) moves.push({ x: targetX, y: targetY });
+        break;
+      }
+      targetX += deltaX;
+      targetY += deltaY;
+    }
+  }
+  return moves;
+};
+
+// 成り駒の移動（角＋王）
 export const bishopMovesWithKingLike: MoveFunc = (pos, board, isUpper) => {
   const moves = bishopMoves(pos, board, isUpper);
   moves.push(...kingMoves(pos, board, isUpper));
   return moves;
 };
 
-// 成り駒の移動（王＋飛）
+// 成り駒の移動（飛＋王）
 export const rookMovesWithKingLike: MoveFunc = (pos, board, isUpper) => {
   const moves = rookMoves(pos, board, isUpper);
   moves.push(...kingMoves(pos, board, isUpper));
   return moves;
 };
 
+// 成り駒（銀・桂・香・歩）→ 金と同じ動き
+export const promotedPawnMoves: MoveFunc = goldMoves;
+export const promotedSilverMoves: MoveFunc = goldMoves;
+export const promotedKnightMoves: MoveFunc = goldMoves;
+export const promotedLanceMoves: MoveFunc = goldMoves;
 
 // --- 駒マップ ---
 export const pieceMoves: Record<string, MoveFunc> = {
@@ -152,9 +217,10 @@ export const pieceMoves: Record<string, MoveFunc> = {
   p: pawnMoves, P: pawnMoves,
   r: rookMoves, R: rookMoves,
   b: bishopMoves, B: bishopMoves,
-  '+s': goldMoves,
-  '+n': goldMoves,
-  '+l': goldMoves,
+  '+s': promotedSilverMoves,
+  '+n': promotedKnightMoves,
+  '+l': promotedLanceMoves,
+  '+p': promotedPawnMoves,
   '+b': bishopMovesWithKingLike,
   '+r': rookMovesWithKingLike,
 };
