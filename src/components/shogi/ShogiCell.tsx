@@ -23,6 +23,9 @@ export const ShogiCell = memo(function ShogiCell({
 }: Props) {
   const isSelected = selected?.x === x && selected?.y === y;
 
+  // 後手（大文字）なら反転
+  const isGote = piece !== '' && piece === piece.toUpperCase();
+
   return (
     <div
       className={`${classes.shogi__cell}
@@ -30,7 +33,9 @@ export const ShogiCell = memo(function ShogiCell({
         ${legal ? classes.legal : ''}`}
       onClick={() => onClick(x, y)}
     >
-      {pieceMap[piece]}
+      <span className={isGote ? classes.gote : ''}>
+        {pieceMap[piece]}
+      </span>
     </div>
   );
 });

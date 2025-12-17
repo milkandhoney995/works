@@ -16,22 +16,43 @@ export const ShogiBoard = ({
   onCellClick,
 }: Props) => {
   return (
-    <div className={classes.shogi__board}>
-      {board.map((row, y) => (
-        <div key={y} className={classes.shogi__row}>
-          {row.map((piece, x) => (
-            <ShogiCell
-              key={x}
-              x={x}
-              y={y}
-              piece={piece}
-              selected={selected}
-              legal={legalMoves.some(p => p.x === x && p.y === y)} // 合法手かどうか
-              onClick={onCellClick}
-            />
+    <div className={classes.shogi__wrapper}>
+      {/* 上：筋（9〜1） */}
+      <div className={classes.shogi__files}>
+        {[...Array(9)].map((_, i) => (
+          <div key={i} className={classes.shogi__file}>
+            {9 - i}
+          </div>
+        ))}
+      </div>
+
+      <div className={classes.shogi__main}>
+        {/* 左：段（1〜9） */}
+        <div className={classes.shogi__ranks}>
+          {[...Array(9)].map((_, i) => (
+            <div key={i} className={classes.shogi__rank}>
+              {i + 1}
+            </div>
           ))}
         </div>
-      ))}
+
+        {/* 盤面（純粋な9×9） */}
+        <div className={classes.shogi__board}>
+          {board.map((row, y) =>
+            row.map((piece, x) => (
+              <ShogiCell
+                key={`${x}-${y}`}
+                x={x}
+                y={y}
+                piece={piece}
+                selected={selected}
+                legal={legalMoves.some(p => p.x === x && p.y === y)}
+                onClick={onCellClick}
+              />
+            ))
+          )}
+        </div>
+      </div>
     </div>
   );
 };

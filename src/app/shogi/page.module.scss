@@ -16,42 +16,91 @@
       font-size: 1.5rem;
     }
   }
+
   &__container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
   }
 
-  /* 将棋盤 */
-  &__board {
+  /* =========================
+     将棋盤 全体ラッパー
+  ========================= */
+  &__wrapper {
+    display: inline-block;
+  }
+
+  /* =========================
+     上部：筋（9〜1）
+  ========================= */
+  &__files {
+    display: grid;
+    grid-template-columns: repeat(9, 50px);
+    margin-left: 50px;
+    text-align: center;
+    font-size: 0.9rem;
+    user-select: none;
+  }
+
+  &__file {
+    height: 24px;
+    line-height: 24px;
+  }
+
+  /* =========================
+     左：段 ＋ 盤面
+  ========================= */
+  &__main {
+    display: flex;
+  }
+
+  /* =========================
+     左側：段（1〜9）
+  ========================= */
+  &__ranks {
     display: grid;
     grid-template-rows: repeat(9, 50px);
+    width: 50px;
+    text-align: center;
+    user-select: none;
+  }
+
+  &__rank {
+    line-height: 50px;
+    font-size: 0.9rem;
+  }
+
+  /* =========================
+     将棋盤（純粋な9×9）
+  ========================= */
+  &__board {
+    display: grid;
     grid-template-columns: repeat(9, 50px);
-    gap: 1px;
+    grid-template-rows: repeat(9, 50px);
     border: 2px solid #333;
+    background-color: #f5deb3;
   }
 
-  &__row {
-    display: contents; // 子要素をgridに合わせる
-  }
-
+  /* =========================
+     マス
+  ========================= */
   &__cell {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f5deb3;
     border: 1px solid #333;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     cursor: pointer;
     user-select: none;
-
-    &.legal {
-      background-color: #90ee90;
-    }
+    background-color: #f5deb3;
 
     &:hover {
       background-color: #ffd700;
+    }
+
+    &.legal {
+      background-color: #90ee90;
     }
   }
 
@@ -59,7 +108,17 @@
     background-color: #87cefa;
   }
 
-  /* 持ち駒 */
+  /* =========================
+     後手の駒（反転）
+  ========================= */
+  .gote {
+    display: inline-block;
+    transform: rotate(180deg);
+  }
+
+  /* =========================
+     持ち駒
+  ========================= */
   &__hands {
     display: flex;
     gap: 8px;
@@ -80,7 +139,9 @@
     }
   }
 
-  /* 成り選択ダイアログ */
+  /* =========================
+     成り選択ダイアログ
+  ========================= */
   &__promotionDialog {
     position: absolute;
     margin-top: 1rem;
