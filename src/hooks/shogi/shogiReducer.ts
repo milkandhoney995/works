@@ -1,7 +1,8 @@
+// src/hooks/shogi/shogiReducer.ts
 import { ShogiState, ShogiAction } from './shogiState';
 import { Position } from './types';
 import { promotable } from './pieces';
-import { getLegalMoves, inEnemyCamp } from './helpers';
+import { getLegalMoves, getLegalMovesWithDebug, inEnemyCamp } from './helpers';
 
 export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState => {
   switch (action.type) {
@@ -10,11 +11,14 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
       const piece = state.board[y][x];
       if (!piece) return state;
 
-      // 選択可能な駒のみ
+      // デバッグ版の関数を使う場合
+      const isUpper = piece === piece.toUpperCase();
+      const legalMoves = getLegalMovesWithDebug(piece, { x, y }, state.board, isUpper);
+
       return {
         ...state,
         selected: { x, y },
-        legalMoves: getLegalMoves(state.board, x, y),
+        legalMoves,
       };
     }
 
@@ -96,7 +100,6 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
       const { from, to, piece } = state.pendingPromotion;
       const newBoard = state.board.map(row => [...row]);
 
-      // ユーザー選択に応じて成り駒か元駒かをセット
       newBoard[to.y][to.x] = action.promote ? promotable[piece]! : piece;
       newBoard[from.y][from.x] = '';
 

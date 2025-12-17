@@ -13,21 +13,26 @@ export const useShogi = (): UseShogiReturn => {
   const [selectedHand, setSelectedHand] = useState<string | null>(null);
 
   /** 盤面セルクリック時の処理 */
-  const handleCellClick = (x: number, y: number) => {
+  const handleCellClick = (uiX: number, uiY: number) => {
+    // board[y][x] に合わせて座標を設定
+    const x = uiX;
+    const y = uiY; // 0が上段、8が下段ならこのままでOK
     if (state.pendingPromotion) return; // 成り選択中は盤面クリック無効
 
     if (selectedHand) {
       // 持ち駒を打つ
-      dispatch({ type: 'DROP_PIECE', piece: selectedHand, x, y });
+      dispatch({ type: 'DROP_PIECE', piece: selectedHand, x: uiX, y: uiY });
       setSelectedHand(null);
       return;
     }
 
     if (state.selected) {
+      console.log('Moving piece to:', x, y);
       // 駒を移動
       dispatch({ type: 'MOVE_PIECE', x, y });
     } else {
       // 駒を選択
+      console.log('Cell clicked:', x, y);
       dispatch({ type: 'SELECT_CELL', x, y });
     }
   };

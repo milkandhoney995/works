@@ -1,4 +1,5 @@
 import { Position } from './types';
+import { pieceMovePatterns, MovePattern } from "./movePatterns";
 import { pieceMoves } from './moveRules';
 
 /**
@@ -26,30 +27,51 @@ export const inEnemyCamp = (y: number, isUpper: boolean): boolean => {
 };
 
 /**
- * デバッグ用：盤面上の合法手を取得しやすくするラッパー
- * deltaX / deltaY / targetX / targetY で直感的に計算
+ * 駒の合法手を取得する
+ * @param piece 駒の種類 ('p', 'P', '+r' など)
+ * @param pos 現在位置
+ * @param board 現在盤面
+ * @param isUpper 上下プレイヤー
+ * @returns 移動可能な Position 配列
  */
-export const getLegalMovesWithDebug = (board: string[][], x: number, y: number): Position[] => {
-  const piece = board[y][x];
-  if (!piece) return [];
-
-  const isUpper = piece === piece.toUpperCase();
-  const moveFn = pieceMoves[piece];
-  if (!moveFn) return [];
-
+export const getLegalMovesWithDebug = (
+  piece: string,
+  pos: Position,
+  board: string[][],
+  isUpper: boolean
+): Position[] => {
   const moves: Position[] = [];
-  const possiblePositions = moveFn({ x, y }, board, isUpper);
 
-  for (const pos of possiblePositions) {
-    const targetX = pos.x;
-    const targetY = pos.y;
-    const targetCell = board[targetY][targetX];
-    const isEnemy = isUpper
-      ? targetCell === targetCell.toLowerCase() && targetCell !== ''
-      : targetCell === targetCell.toUpperCase() && targetCell !== '';
+  const normalizedPiece = piece.toLowerCase(); // 駒の種類を小文字に統一
+  const patterns = pieceMovePatterns[normalizedPiece]?.normal;
 
-    if (!targetCell || isEnemy) {
-      moves.push({ x: targetX, y: targetY });
+  if (!patterns) return moves;
+
+  for (const pattern of patterns) {
+    // deltaX はそのまま、deltaY は後手なら反転
+    const stepX = pattern.deltaX;
+    const stepY = isUpper ? pattern.deltaY : -pattern.deltaY;
+
+    let targetX = pos.x + stepX;
+    let targetY = pos.y + stepY;
+
+    while (targetX >= 0 && targetX < 9 && targetY >= 0 && targetY < 9) {
+      const targetCell = board[targetY][targetX];
+
+      // 敵駒判定
+      const isEnemy = isUpper
+        ? targetCell === targetCell.toLowerCase() && targetCell !== ""
+        : targetCell === targetCell.toUpperCase() && targetCell !== "";
+
+      if (!targetCell || isEnemy) {
+        moves.push({ x: targetX, y: targetY });
+      }
+
+      // 連続移動できるかチェック
+      if (!pattern.repeat || targetCell) break;
+
+      targetX += stepX;
+      targetY += stepY;
     }
   }
 
