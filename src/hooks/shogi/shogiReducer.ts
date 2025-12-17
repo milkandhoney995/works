@@ -2,7 +2,7 @@
 import { ShogiState, ShogiAction } from './shogiState';
 import { Position } from './types';
 import { promotable } from './pieces';
-import { getLegalMoves, getLegalMovesWithDebug, inEnemyCamp } from './helpers';
+import { getLegalMoves, inEnemyCamp } from './helpers';
 
 export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState => {
   switch (action.type) {
@@ -13,7 +13,7 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
 
       // デバッグ版の関数を使う場合
       const isUpper = piece === piece.toUpperCase();
-      const legalMoves = getLegalMovesWithDebug(piece, { x, y }, state.board, isUpper);
+      const legalMoves = getLegalMoves(piece, { x, y }, state.board, isUpper);
 
       return {
         ...state,

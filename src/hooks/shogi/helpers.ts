@@ -3,21 +3,6 @@ import { pieceMovePatterns, MovePattern } from "./movePatterns";
 import { pieceMoves } from './moveRules';
 
 /**
- * 指定マスの合法手を取得する
- * board[y][x] の駒を対象に、移動可能なマスを返す
- */
-export const getLegalMoves = (board: string[][], x: number, y: number): Position[] => {
-  const piece = board[y][x]; // 移動元の駒
-  if (!piece) return [];
-
-  const isUpper = piece === piece.toUpperCase();
-  const moveFn = pieceMoves[piece];
-
-  // moveRules.ts の関数を呼び出して合法手を取得
-  return moveFn ? moveFn({ x, y }, board, isUpper) : [];
-};
-
-/**
  * 敵陣内かどうかを判定するヘルパー関数
  * @param y 行番号
  * @param isUpper 先手か後手か
@@ -34,7 +19,7 @@ export const inEnemyCamp = (y: number, isUpper: boolean): boolean => {
  * @param isUpper 上下プレイヤー
  * @returns 移動可能な Position 配列
  */
-export const getLegalMovesWithDebug = (
+export const getLegalMoves = (
   piece: string,
   pos: Position,
   board: string[][],
