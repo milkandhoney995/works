@@ -5,7 +5,6 @@ import { shogiReducer } from './shogiReducer';
 import { UseShogiReturn } from './types';
 import { initialShogiState } from './shogiState';
 
-// --- Hook ---
 export function useShogi(): UseShogiReturn {
   const [state, dispatch] = useReducer(shogiReducer, initialShogiState);
 
