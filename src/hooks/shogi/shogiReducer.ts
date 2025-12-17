@@ -47,7 +47,6 @@ export const shogiReducer = (
     /* ---------- 駒の移動 ---------- */
     case 'MOVE_PIECE': {
       if (!state.selected) return state;
-
       const { x, y } = action;
       const { selected, board } = state;
 
@@ -63,26 +62,36 @@ export const shogiReducer = (
       const newBoard = board.map(row => [...row]);
       let movingPiece = newBoard[selected.y][selected.x];
       const capturedPiece = newBoard[y][x];
-
-      /* --- 持ち駒処理 --- */
       const newHands = { ...state.hands };
+
+      // 持ち駒処理
       if (capturedPiece) {
         const handPiece =
           capturedPiece === capturedPiece.toUpperCase()
             ? capturedPiece.toLowerCase()
             : capturedPiece.toUpperCase();
-
         newHands[handPiece] = (newHands[handPiece] || 0) + 1;
       }
 
-      /* --- 成り判定（暫定：自動成り） --- */
+      // 成り判定
       const isUpper = movingPiece === movingPiece.toUpperCase();
+      const canPromote =
+        promotable[movingPiece] &&
+        (inEnemyCamp(selected.y, isUpper) || inEnemyCamp(y, isUpper));
 
-      if (promotable[movingPiece] && (inEnemyCamp(y, isUpper) || inEnemyCamp(selected.y, isUpper))) {
-        movingPiece = promotable[movingPiece];
+      if (canPromote) {
+        // 成り選択待ち状態にする
+        return {
+          ...state,
+          board: newBoard,
+          hands: newHands,
+          pendingPromotion: { from: { ...selected }, to: { x, y }, piece: movingPiece },
+          selected: null,
+          legalMoves: [],
+        };
       }
 
-      /* --- 盤面更新 --- */
+      // 成らない場合はそのまま移動
       newBoard[y][x] = movingPiece;
       newBoard[selected.y][selected.x] = '';
 
@@ -92,6 +101,7 @@ export const shogiReducer = (
         hands: newHands,
         selected: null,
         legalMoves: [],
+        pendingPromotion: null,
       };
     }
 
@@ -130,9 +140,30 @@ export const shogiReducer = (
       };
 
     /* ---------- 成り選択（将来用） ---------- */
-    case 'PROMOTE':
-      // pendingPromotion を使った UI 実装時に対応
-      return state;
+    case 'PROMOTE': {
+      if (!state.pendingPromotion) return state;
+
+      // 成り選択情報の取得
+      const { from, to, piece } = state.pendingPromotion;
+      const newBoard = state.board.map(row => [...row]);
+
+      // 駒の成り処理
+      if (action.promote) {
+        newBoard[to.y][to.x] = promotable[piece]!;
+      } else {
+        newBoard[to.y][to.x] = piece;
+      }
+
+      // 元のマスは空にする
+      newBoard[from.y][from.x] = '';
+
+      return {
+        ...state,
+        board: newBoard,
+        pendingPromotion: null,
+      };
+    }
+
 
     default:
       return state;

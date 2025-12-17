@@ -127,6 +127,21 @@ export const bishopMoves: MoveFunc = ({x,y},board,isUpper)=>{
   return moves;
 };
 
+// 成り駒の移動（王＋角、王＋飛）
+export const bishopMovesWithKingLike: MoveFunc = (pos, board, isUpper) => {
+  const moves = bishopMoves(pos, board, isUpper);
+  moves.push(...kingMoves(pos, board, isUpper));
+  return moves;
+};
+
+// 成り駒の移動（王＋飛）
+export const rookMovesWithKingLike: MoveFunc = (pos, board, isUpper) => {
+  const moves = rookMoves(pos, board, isUpper);
+  moves.push(...kingMoves(pos, board, isUpper));
+  return moves;
+};
+
+
 // --- 駒マップ ---
 export const pieceMoves: Record<string, MoveFunc> = {
   k: kingMoves, K: kingMoves,
@@ -137,4 +152,5 @@ export const pieceMoves: Record<string, MoveFunc> = {
   p: pawnMoves, P: pawnMoves,
   r: rookMoves, R: rookMoves,
   b: bishopMoves, B: bishopMoves,
+  '+s': goldMoves, '+n': goldMoves, '+l': goldMoves, '+b': bishopMovesWithKingLike, '+r': rookMovesWithKingLike,
 };
