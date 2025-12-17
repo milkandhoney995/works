@@ -5,7 +5,9 @@ export type Position = { x: number; y: number };
 export type Hands = { [piece: string]: number };
 
 // 成り選択中の状態
-export type PendingPromotion = { x: number; y: number; piece: string } | null;
+export type PendingPromotion =
+  | { from: Position; to: Position; piece: string }
+  | null;
 
 // 移動関数の型
 export type MoveFunc = (pos: Position, board: string[][], isUpper: boolean) => Position[];
