@@ -15,6 +15,12 @@ A modern web application showcasing three interactive tools built with cutting-e
 - Circular progress indicator with smooth animations
 - Sound selection (Rain, Beach themes)
 
+### ♟️ Shogi
+- Browser-based Japanese chess game
+- Supports piece movement rules and promotion
+- Handles captured pieces (drops)
+- Implemented in `src/app/shogi` and `src/components/shogi`
+
 ### ✅ Todo List
 - Redux-powered state management
 - Add, complete, and delete todos
@@ -45,10 +51,12 @@ works/
 │   │   └── page.tsx            # Home page
 │   ├── components/
 │   │   ├── card/               # Reusable card component
+│   │   ├── shogi/               # Shogi components
 │   │   ├── todoList/           # Todo-related components
 │   │   └── Providers.tsx       # Redux provider wrapper
 │   ├── hooks/
-│   │   └── useMeditationTimer.ts # Custom hook for meditation logic
+│   │   ├── shogi/.             # Shogi-specific hooks
+│   │   └── useMeditationTimer.ts # Meditation hook
 │   └── store/                  # Redux store and slices
 ├── styles/
 │   └── variables/              # Sass variables and mixins
@@ -121,6 +129,12 @@ Showcases all three applications with navigation cards.
 - Background video playback
 - Audio controls with play/pause
 - Visual progress tracking
+
+### Shogi (`/shogi`)
+- Piece movement according to Shogi rules
+- Promotion and drop mechanics
+- Handles captured pieces
+- Real-time board updates
 
 ### Todo List (`/todoList`)
 - Add new todos
