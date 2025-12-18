@@ -12,9 +12,8 @@
  * promotedMoveFunc          : 成り駒用の移動関数（例: 銀 → 金）
  */
 
-import { Position } from "./types";
+import { MoveFunc, Position } from "./types";
 
-export type MoveFunc = (pos: Position, board: string[][], isUpper: boolean) => Position[];
 
 // --- 移動ルール（簡易版：合法手） ---
 // 王の移動
@@ -39,7 +38,8 @@ export const kingMoves: MoveFunc = ({ x: currentX, y: currentY }, board, isUpper
 // 金の移動
 export const goldMoves: MoveFunc = ({ x: currentX, y: currentY }, board, isUpper) => {
   const moves: Position[] = [];
-  const moveDirectionY = isUpper ? -1 : 1;
+  const isSente = board[currentY][currentX] === board[currentY][currentX].toLowerCase();
+  const moveDirectionY = isSente ? -1 : 1;
   const movePattern = [
     { deltaX: 0, deltaY: moveDirectionY },
     { deltaX: -1, deltaY: 0 },
@@ -64,7 +64,8 @@ export const goldMoves: MoveFunc = ({ x: currentX, y: currentY }, board, isUpper
 // 銀の移動
 export const silverMoves: MoveFunc = ({ x: currentX, y: currentY }, board, isUpper) => {
   const moves: Position[] = [];
-  const moveDirectionY = isUpper ? -1 : 1;
+  const isSente = board[currentY][currentX] === board[currentY][currentX].toLowerCase();
+  const moveDirectionY = isSente ? -1 : 1;
   const movePattern = [
     { deltaX: 0, deltaY: moveDirectionY },
     { deltaX: -1, deltaY: moveDirectionY },
@@ -88,7 +89,8 @@ export const silverMoves: MoveFunc = ({ x: currentX, y: currentY }, board, isUpp
 // 桂馬の移動（ジャンプ）
 export const knightMoves: MoveFunc = ({ x: currentX, y: currentY }, board, isUpper) => {
   const moves: Position[] = [];
-  const moveDirectionY = isUpper ? -1 : 1;
+  const isSente = board[currentY][currentX] === board[currentY][currentX].toLowerCase();
+  const moveDirectionY = isSente ? -1 : 1;
   const jumpPositions = [
     { deltaX: -1, deltaY: 2 * moveDirectionY },
     { deltaX: 1, deltaY: 2 * moveDirectionY },
@@ -109,7 +111,8 @@ export const knightMoves: MoveFunc = ({ x: currentX, y: currentY }, board, isUpp
 // 香車の移動（直進）
 export const lanceMoves: MoveFunc = ({ x: currentX, y: currentY }, board, isUpper) => {
   const moves: Position[] = [];
-  const moveDirectionY = isUpper ? -1 : 1;
+  const isSente = board[currentY][currentX] === board[currentY][currentX].toLowerCase();
+  const moveDirectionY = isSente ? -1 : 1;
   for (let targetY = currentY + moveDirectionY; targetY >= 0 && targetY < 9; targetY += moveDirectionY) {
     const target = board[targetY][currentX];
     if (target === '') moves.push({ x: currentX, y: targetY });
@@ -124,7 +127,8 @@ export const lanceMoves: MoveFunc = ({ x: currentX, y: currentY }, board, isUppe
 // 歩の移動
 export const pawnMoves: MoveFunc = ({ x: currentX, y: currentY }, board, isUpper) => {
   const moves: Position[] = [];
-  const moveDirectionY = isUpper ? -1 : 1;
+  const isSente = board[currentY][currentX] === board[currentY][currentX].toLowerCase();
+  const moveDirectionY = isSente ? -1 : 1;
   const targetY = currentY + moveDirectionY;
   if (targetY >= 0 && targetY < 9) {
     const target = board[targetY][currentX];

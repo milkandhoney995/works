@@ -4,10 +4,11 @@ import { pieceMovePatterns } from "./movePatterns";
 /**
  * 敵陣内かどうかを判定するヘルパー関数
  * @param y 行番号
- * @param isUpper 先手か後手か
+ * @param isSente 先手か後手か
  */
-export const inEnemyCamp = (y: number, isUpper: boolean): boolean => {
-  return isUpper ? y <= 2 : y >= 6;
+export const inEnemyCamp = (y: number, isSente: boolean): boolean => {
+  // 先手の敵陣は上、後手の敵陣は下
+  return isSente ? y <= 2 : y >= 6;
 };
 
 /**
@@ -32,9 +33,10 @@ export const getLegalMoves = (
   if (!patterns) return moves;
 
   for (const pattern of patterns) {
+    const isSente = piece === piece.toLowerCase();
     // deltaX はそのまま、deltaY は後手なら反転
     const stepX = pattern.deltaX;
-    const stepY = isUpper ? pattern.deltaY : -pattern.deltaY;
+    const stepY = isSente ? pattern.deltaY : -pattern.deltaY;
 
     let targetX = pos.x + stepX;
     let targetY = pos.y + stepY;
@@ -43,9 +45,10 @@ export const getLegalMoves = (
       const targetCell = board[targetY][targetX];
 
       // 敵駒判定
-      const isEnemy = isUpper
-        ? targetCell === targetCell.toLowerCase() && targetCell !== ""
-        : targetCell === targetCell.toUpperCase() && targetCell !== "";
+      const isEnemy = targetCell !== '' &&
+        (isSente
+          ? targetCell === targetCell.toUpperCase()
+          : targetCell === targetCell.toLowerCase());
 
       if (!targetCell || isEnemy) {
         moves.push({ x: targetX, y: targetY });
