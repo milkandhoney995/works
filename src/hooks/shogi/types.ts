@@ -10,7 +10,7 @@ export type PendingPromotion =
   | null;
 
 // 移動関数の型
-export type MoveFunc = (pos: Position, board: string[][], isUpper: boolean) => Position[];
+export type MoveFunc = (pos: Position, board: string[][]) => Position[];
 
 // useShogiが返す型
 export interface UseShogiReturn {
