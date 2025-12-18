@@ -2,6 +2,7 @@ import { useReducer, useState } from 'react';
 import { shogiReducer } from './shogiReducer';
 import { initialShogiState } from './shogiState';
 import { HandsByPlayer, UseShogiReturn } from './types';
+import { isSentePiece } from './helpers';
 
 /**
  * 将棋用カスタムフック
@@ -32,12 +33,10 @@ export const useShogi = (): UseShogiReturn => {
     }
 
     if (state.selected) {
-      console.log('Moving piece to:', x, y);
       // 駒を移動
       dispatch({ type: 'MOVE_PIECE', x, y });
     } else {
       // 駒を選択
-      console.log('Cell clicked:', x, y);
       dispatch({ type: 'SELECT_CELL', x, y });
     }
   };
@@ -48,6 +47,9 @@ export const useShogi = (): UseShogiReturn => {
   * @returns void
   */
   const onHandSelect = (piece: string) => {
+    if ((state.turn === 'sente' && !isSentePiece(piece)) || (state.turn === 'gote' && isSentePiece(piece))) {
+      return; // 相手の持ち駒は選択不可
+    }
     setSelectedHand(piece);
   };
 
@@ -69,13 +71,8 @@ export const useShogi = (): UseShogiReturn => {
   };
 
   Object.entries(state.hands).forEach(([piece, count]) => {
-    if (piece === piece.toLowerCase()) {
-      // 小文字は先手
-      hands.sente[piece] = count;
-    } else {
-      // 大文字は後手
-      hands.gote[piece] = count;
-    }
+    if (isSentePiece(piece)) hands.sente[piece] = count;
+    else hands.gote[piece] = count;
   });
 
   return {
@@ -84,6 +81,7 @@ export const useShogi = (): UseShogiReturn => {
     legalMoves: state.legalMoves,
     hands,
     pendingPromotion: state.pendingPromotion,
+    turn: state.turn,
     handleCellClick,
     promotePiece,
     dropPiece: (piece: string, x: number, y: number) => {

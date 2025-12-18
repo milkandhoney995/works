@@ -8,6 +8,7 @@ import { Position, Hands, PendingPromotion } from './types';
  * @property legalMoves 選択されている駒の合法手リスト
  * @property hands 各プレイヤーの持ち駒
  * @property pendingPromotion 昇格待ちの駒情報
+ * @property turn 現在の手番（先手か後手）
  */
 export interface ShogiState {
   board: string[][];
@@ -15,6 +16,7 @@ export interface ShogiState {
   legalMoves: Position[];
   hands: Hands;
   pendingPromotion: PendingPromotion;
+  turn: 'sente' | 'gote'; // 先手か後手
 }
 
 /**
@@ -43,4 +45,5 @@ export const initialShogiState: ShogiState = {
   legalMoves: [],
   hands: {},
   pendingPromotion: null,
+  turn: 'sente'
 };

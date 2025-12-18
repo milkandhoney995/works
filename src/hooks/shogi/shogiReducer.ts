@@ -15,6 +15,11 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
       const piece = state.board[action.y][action.x];
       if (!piece) return state;
 
+      const isSente = isSentePiece(piece);
+      if ((state.turn === 'sente' && !isSente) || (state.turn === 'gote' && isSente)) {
+        return state; // 相手の駒は選択不可
+      }
+
       const moveFunc = pieceMoves[piece.toLowerCase()];
       if (!moveFunc) return state;
 
@@ -27,8 +32,8 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
 
     case 'MOVE_PIECE': {
       if (!state.selected) return state;
-
       const { x, y } = action;
+
       if (!state.legalMoves.some(p => p.x === x && p.y === y)) {
         return { ...state, selected: null, legalMoves: [] };
       }
@@ -37,8 +42,8 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
       const from = state.selected;
       const piece = board[from.y][from.x];
       const captured = board[y][x];
-
       const hands = { ...state.hands };
+
       if (captured) {
         // 成駒の場合は元の駒に戻す
         const basePiece = unpromote[captured] || captured;
@@ -56,13 +61,15 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
           ...state,
           pendingPromotion: { from, to: { x, y }, piece },
           selected: null,
-          legalMoves: [],
-          hands, // 捕獲駒を先に反映
+          legalMoves: []
         };
       }
 
       board[y][x] = piece;
       board[from.y][from.x] = '';
+
+      // 手番切替
+      const nextTurn = state.turn === 'sente' ? 'gote' : 'sente';
 
       return {
         ...state,
@@ -70,6 +77,7 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
         hands,
         selected: null,
         legalMoves: [],
+        turn: nextTurn
       };
     }
 
@@ -81,12 +89,15 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
       board[to.y][to.x] = action.promote ? promotable[piece]! : piece;
       board[from.y][from.x] = '';
 
+      const nextTurn = state.turn === 'sente' ? 'gote' : 'sente';
+
       return {
         ...state,
         board,
         pendingPromotion: null,
         selected: null,
         legalMoves: [],
+        turn: nextTurn
       };
     }
 
@@ -97,6 +108,8 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
       const board = state.board.map(r => [...r]);
       board[action.y][action.x] = action.piece.toLowerCase();
 
+      const nextTurn = state.turn === 'sente' ? 'gote' : 'sente';
+
       return {
         ...state,
         board,
@@ -106,6 +119,7 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
         },
         selected: null,
         legalMoves: [],
+        turn: nextTurn
       };
     }
 

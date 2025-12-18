@@ -30,4 +30,5 @@ export interface UseShogiReturn {
   promotePiece: (promote: boolean) => void;
   dropPiece: (piece: string, x: number, y: number) => void;
   onHandSelect: (piece: string) => void;
+  turn: 'sente' | 'gote';
 }
