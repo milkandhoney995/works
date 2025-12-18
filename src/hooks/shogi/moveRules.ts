@@ -1,30 +1,40 @@
 import { MoveFunc, Position } from './types';
+import { isSentePiece, isEnemyPiece, isInsideBoard } from './helpers';
 
-const isSentePiece = (piece: string) =>
-  piece !== '' && piece === piece.toLowerCase();
+/* ================= 共通 ================= */
+/**
+ * 駒の合法手を取得するヘルパー関数
+ * @param moves 合法手の配列（引数で渡された配列に追加される）
+ * @param board 現在盤面
+ * @param x 列番号
+ * @param y 行番号
+ * @param isSente 先手か後手か
+ * @returns 合法手の配列
+ */
+
+const pushIfValid = (
+  moves: Position[],
+  board: string[][],
+  x: number,
+  y: number,
+  isSente: boolean
+) => {
+  if (!isInsideBoard(x, y)) return;
+  const target = board[y][x];
+  if (target === '' || isEnemyPiece(target, isSente)) {
+    moves.push({ x, y });
+  }
+};
 
 /* ================= 王 ================= */
 export const kingMoves: MoveFunc = ({ x, y }, board) => {
   const moves: Position[] = [];
-  const piece = board[y][x];
-  const isSente = isSentePiece(piece);
+  const isSente = isSentePiece(board[y][x]);
 
   for (let dx = -1; dx <= 1; dx++) {
     for (let dy = -1; dy <= 1; dy++) {
       if (dx === 0 && dy === 0) continue;
-      const nx = x + dx;
-      const ny = y + dy;
-      if (nx < 0 || nx >= 9 || ny < 0 || ny >= 9) continue;
-
-      const target = board[ny][nx];
-      if (
-        target === '' ||
-        (isSente
-          ? target === target.toUpperCase()
-          : target === target.toLowerCase())
-      ) {
-        moves.push({ x: nx, y: ny });
-      }
+      pushIfValid(moves, board, x + dx, y + dy, isSente);
     }
   }
   return moves;
@@ -33,118 +43,62 @@ export const kingMoves: MoveFunc = ({ x, y }, board) => {
 /* ================= 金 ================= */
 export const goldMoves: MoveFunc = ({ x, y }, board) => {
   const moves: Position[] = [];
-  const piece = board[y][x];
-  const isSente = isSentePiece(piece);
+  const isSente = isSentePiece(board[y][x]);
   const dir = isSente ? -1 : 1;
 
-  const pattern = [
-    { dx: 0, dy: dir },
-    { dx: -1, dy: 0 },
-    { dx: 1, dy: 0 },
-    { dx: 0, dy: -dir },
-    { dx: -1, dy: dir },
-    { dx: 1, dy: dir },
-  ];
+  [
+    [0, dir], [-1, 0], [1, 0],
+    [0, -dir], [-1, dir], [1, dir],
+  ].forEach(([dx, dy]) =>
+    pushIfValid(moves, board, x + dx, y + dy, isSente)
+  );
 
-  for (const { dx, dy } of pattern) {
-    const nx = x + dx;
-    const ny = y + dy;
-    if (nx < 0 || nx >= 9 || ny < 0 || ny >= 9) continue;
-
-    const target = board[ny][nx];
-    if (
-      target === '' ||
-      (isSente
-        ? target === target.toUpperCase()
-        : target === target.toLowerCase())
-    ) {
-      moves.push({ x: nx, y: ny });
-    }
-  }
   return moves;
 };
 
 /* ================= 銀 ================= */
 export const silverMoves: MoveFunc = ({ x, y }, board) => {
   const moves: Position[] = [];
-  const piece = board[y][x];
-  const isSente = isSentePiece(piece);
+  const isSente = isSentePiece(board[y][x]);
   const dir = isSente ? -1 : 1;
 
-  const pattern = [
-    { dx: 0, dy: dir },
-    { dx: -1, dy: dir },
-    { dx: 1, dy: dir },
-    { dx: -1, dy: -dir },
-    { dx: 1, dy: -dir },
-  ];
+  [
+    [0, dir], [-1, dir], [1, dir],
+    [-1, -dir], [1, -dir],
+  ].forEach(([dx, dy]) =>
+    pushIfValid(moves, board, x + dx, y + dy, isSente)
+  );
 
-  for (const { dx, dy } of pattern) {
-    const nx = x + dx;
-    const ny = y + dy;
-    if (nx < 0 || nx >= 9 || ny < 0 || ny >= 9) continue;
-
-    const target = board[ny][nx];
-    if (
-      target === '' ||
-      (isSente
-        ? target === target.toUpperCase()
-        : target === target.toLowerCase())
-    ) {
-      moves.push({ x: nx, y: ny });
-    }
-  }
   return moves;
 };
 
 /* ================= 桂 ================= */
 export const knightMoves: MoveFunc = ({ x, y }, board) => {
   const moves: Position[] = [];
-  const piece = board[y][x];
-  const isSente = isSentePiece(piece);
+  const isSente = isSentePiece(board[y][x]);
   const dir = isSente ? -1 : 1;
 
-  const jumps = [
-    { dx: -1, dy: 2 * dir },
-    { dx: 1, dy: 2 * dir },
-  ];
+  [
+    [-1, 2 * dir],
+    [1, 2 * dir],
+  ].forEach(([dx, dy]) =>
+    pushIfValid(moves, board, x + dx, y + dy, isSente)
+  );
 
-  for (const { dx, dy } of jumps) {
-    const nx = x + dx;
-    const ny = y + dy;
-    if (nx < 0 || nx >= 9 || ny < 0 || ny >= 9) continue;
-
-    const target = board[ny][nx];
-    if (
-      target === '' ||
-      (isSente
-        ? target === target.toUpperCase()
-        : target === target.toLowerCase())
-    ) {
-      moves.push({ x: nx, y: ny });
-    }
-  }
   return moves;
 };
 
 /* ================= 香 ================= */
 export const lanceMoves: MoveFunc = ({ x, y }, board) => {
   const moves: Position[] = [];
-  const piece = board[y][x];
-  const isSente = isSentePiece(piece);
+  const isSente = isSentePiece(board[y][x]);
   const dir = isSente ? -1 : 1;
 
-  for (let ny = y + dir; ny >= 0 && ny < 9; ny += dir) {
+  for (let ny = y + dir; isInsideBoard(x, ny); ny += dir) {
     const target = board[ny][x];
     if (target === '') moves.push({ x, y: ny });
     else {
-      if (
-        isSente
-          ? target === target.toUpperCase()
-          : target === target.toLowerCase()
-      ) {
-        moves.push({ x, y: ny });
-      }
+      if (isEnemyPiece(target, isSente)) moves.push({ x, y: ny });
       break;
     }
   }
@@ -154,89 +108,69 @@ export const lanceMoves: MoveFunc = ({ x, y }, board) => {
 /* ================= 歩 ================= */
 export const pawnMoves: MoveFunc = ({ x, y }, board) => {
   const moves: Position[] = [];
-  const piece = board[y][x];
-  const isSente = isSentePiece(piece);
+  const isSente = isSentePiece(board[y][x]);
   const ny = y + (isSente ? -1 : 1);
 
-  if (ny < 0 || ny >= 9) return moves;
-
-  const target = board[ny][x];
-  if (
-    target === '' ||
-    (isSente
-      ? target === target.toUpperCase()
-      : target === target.toLowerCase())
-  ) {
-    moves.push({ x, y: ny });
+  if (isInsideBoard(x, ny)) {
+    const target = board[ny][x];
+    if (target === '' || isEnemyPiece(target, isSente)) {
+      moves.push({ x, y: ny });
+    }
   }
   return moves;
 };
 
-/* ================= 飛・角・成り ================= */
-export const rookMoves: MoveFunc = (pos, board) => {
+/* ================= 飛 ================= */
+export const rookMoves: MoveFunc = ({ x, y }, board) => {
   const moves: Position[] = [];
-  const piece = board[pos.y][pos.x];
-  const isSente = isSentePiece(piece);
+  const isSente = isSentePiece(board[y][x]);
 
-  const dirs = [
+  [
     [1, 0], [-1, 0], [0, 1], [0, -1],
-  ];
-
-  for (const [dx, dy] of dirs) {
-    let x = pos.x + dx;
-    let y = pos.y + dy;
-    while (x >= 0 && x < 9 && y >= 0 && y < 9) {
-      const target = board[y][x];
-      if (target === '') moves.push({ x, y });
+  ].forEach(([dx, dy]) => {
+    let nx = x + dx;
+    let ny = y + dy;
+    while (isInsideBoard(nx, ny)) {
+      const target = board[ny][nx];
+      if (target === '') moves.push({ x: nx, y: ny });
       else {
-        if (
-          isSente
-            ? target === target.toUpperCase()
-            : target === target.toLowerCase()
-        ) {
-          moves.push({ x, y });
-        }
+        if (isEnemyPiece(target, isSente)) moves.push({ x: nx, y: ny });
         break;
       }
-      x += dx;
-      y += dy;
+      nx += dx;
+      ny += dy;
     }
-  }
+  });
+
   return moves;
 };
 
-export const bishopMoves: MoveFunc = (pos, board) => {
+/* ================= 角 ================= */
+export const bishopMoves: MoveFunc = ({ x, y }, board) => {
   const moves: Position[] = [];
-  const piece = board[pos.y][pos.x];
-  const isSente = isSentePiece(piece);
+  const isSente = isSentePiece(board[y][x]);
 
-  const dirs = [
+  [
     [1, 1], [-1, 1], [1, -1], [-1, -1],
-  ];
-
-  for (const [dx, dy] of dirs) {
-    let x = pos.x + dx;
-    let y = pos.y + dy;
-    while (x >= 0 && x < 9 && y >= 0 && y < 9) {
-      const target = board[y][x];
-      if (target === '') moves.push({ x, y });
+  ].forEach(([dx, dy]) => {
+    let nx = x + dx;
+    let ny = y + dy;
+    while (isInsideBoard(nx, ny)) {
+      const target = board[ny][nx];
+      if (target === '') moves.push({ x: nx, y: ny });
       else {
-        if (
-          isSente
-            ? target === target.toUpperCase()
-            : target === target.toLowerCase()
-        ) {
-          moves.push({ x, y });
-        }
+        if (isEnemyPiece(target, isSente)) moves.push({ x: nx, y: ny });
         break;
       }
-      x += dx;
-      y += dy;
+      nx += dx;
+      ny += dy;
     }
-  }
+  });
+
   return moves;
 };
 
+/* ================= 成り ================= */
 export const bishopMovesWithKingLike: MoveFunc = (p, b) => [
   ...bishopMoves(p, b),
   ...kingMoves(p, b),
