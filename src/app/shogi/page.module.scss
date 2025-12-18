@@ -24,20 +24,15 @@
     gap: 12px;
   }
 
-  /* =========================
-     将棋盤 全体ラッパー
-  ========================= */
+  /* 将棋盤 全体ラッパー*/
   &__wrapper {
     display: inline-block;
   }
 
-  /* =========================
-     上部：筋（9〜1）
-  ========================= */
+  /* 上：筋 */
   &__files {
     display: grid;
     grid-template-columns: repeat(9, 50px);
-    margin-left: 50px;
     text-align: center;
     font-size: 0.9rem;
     user-select: none;
@@ -48,16 +43,12 @@
     line-height: 24px;
   }
 
-  /* =========================
-     左：段 ＋ 盤面
-  ========================= */
+  /* 盤面 + 右段 */
   &__main {
     display: flex;
   }
 
-  /* =========================
-     左側：段（1〜9）
-  ========================= */
+  /* 右側：段（漢数字） */
   &__ranks {
     display: grid;
     grid-template-rows: repeat(9, 50px);
@@ -71,9 +62,7 @@
     font-size: 0.9rem;
   }
 
-  /* =========================
-     将棋盤（純粋な9×9）
-  ========================= */
+  /* 将棋盤 */
   &__board {
     display: grid;
     grid-template-columns: repeat(9, 50px);
@@ -82,9 +71,6 @@
     background-color: #f5deb3;
   }
 
-  /* =========================
-     マス
-  ========================= */
   &__cell {
     display: flex;
     justify-content: center;
@@ -108,9 +94,7 @@
     background-color: #87cefa;
   }
 
-  /* =========================
-     後手の駒（反転）
-  ========================= */
+  // 後手の駒（反転）
   .gote {
     display: inline-block;
     transform: rotate(180deg);

@@ -9,6 +9,8 @@ interface Props {
   onCellClick: (x: number, y: number) => void;
 }
 
+const KANJI_RANKS = ['一', '二', '三', '四', '五', '六', '七', '八', '九'];
+
 export const ShogiBoard = ({
   board,
   selected,
@@ -27,16 +29,7 @@ export const ShogiBoard = ({
       </div>
 
       <div className={classes.shogi__main}>
-        {/* 左：段（1〜9） */}
-        <div className={classes.shogi__ranks}>
-          {[...Array(9)].map((_, i) => (
-            <div key={i} className={classes.shogi__rank}>
-              {i + 1}
-            </div>
-          ))}
-        </div>
-
-        {/* 盤面（純粋な9×9） */}
+        {/* 盤面 */}
         <div className={classes.shogi__board}>
           {board.map((row, y) =>
             row.map((piece, x) => (
@@ -51,6 +44,15 @@ export const ShogiBoard = ({
               />
             ))
           )}
+        </div>
+
+        {/* 右：段（漢数字） */}
+        <div className={classes.shogi__ranks}>
+          {KANJI_RANKS.map((k, i) => (
+            <div key={i} className={classes.shogi__rank}>
+              {k}
+            </div>
+          ))}
         </div>
       </div>
     </div>
