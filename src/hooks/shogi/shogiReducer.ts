@@ -1,14 +1,13 @@
 import { ShogiState, ShogiAction } from './shogiState';
-import { promotable } from './pieces';
+import { promotable, unpromote } from './pieces';
 import { pieceMoves } from './moveRules';
-import { inEnemyCamp } from './helpers';
-
+import { inEnemyCamp, isSentePiece } from './helpers';
 
 /**
  * 将棋の状態を管理するリデューサー関数
- *  @param state 現在の将棋の状態
- *  @param action 実行するアクション
- *  @return 更新後の将棋の状態
+ * @param state 現在の将棋の状態
+ * @param action 実行するアクション
+ * @return 更新後の将棋の状態
  */
 export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState => {
   switch (action.type) {
@@ -41,10 +40,10 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
 
       const hands = { ...state.hands };
       if (captured) {
-        const handPiece =
-          captured === captured.toUpperCase()
-            ? captured.toLowerCase()
-            : captured.toUpperCase();
+        // 成駒の場合は元の駒に戻す
+        const basePiece = unpromote[captured] || captured;
+        // 持ち駒は自分の駒として加える
+        const handPiece = isSentePiece(piece) ? basePiece.toLowerCase() : basePiece.toUpperCase();
         hands[handPiece] = (hands[handPiece] || 0) + 1;
       }
 
@@ -58,6 +57,7 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
           pendingPromotion: { from, to: { x, y }, piece },
           selected: null,
           legalMoves: [],
+          hands, // 捕獲駒を先に反映
         };
       }
 
