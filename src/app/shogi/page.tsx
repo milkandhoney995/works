@@ -1,8 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
 import { useShogi } from '@/hooks/shogi/useShogi';
-import { ShogiBoard, ShogiHands } from '@/components/shogi';
 import classes from './page.module.scss';
 import { ShogiBoardWithPromotion } from '@/components/shogi/ShogiBoardWithPromotion';
 
