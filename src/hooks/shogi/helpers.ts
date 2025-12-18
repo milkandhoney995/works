@@ -1,3 +1,4 @@
+import { unpromote } from "./pieces";
 import { Position } from "./types";
 
 /* ================= 定数 ================= */
@@ -70,3 +71,44 @@ export const pushIfValid = (
     moves.push({ x, y });
   }
 };
+
+/* ================= 盤面操作 ================= */
+/**
+ * 盤面をコピーするヘルパー関数
+ * @param board コピー元の盤面
+ * @returns コピーされた盤面
+ */
+export const copyBoard = (board: string[][]) => board.map(r => [...r]);
+
+/**
+ * 駒を取って持ち駒に加えるヘルパー関数
+ * @param hands 現在の持ち駒
+ * @param captured 取った駒
+ * @returns 更新後の持ち駒
+ */
+export const capturePiece = (hands: Record<string, number>, captured: string): Record<string, number> => {
+  if (!captured) return hands;
+  const basePiece = unpromote[captured] || captured;
+  const handPiece =
+    basePiece === basePiece.toUpperCase() ? basePiece.toLowerCase() : basePiece.toUpperCase();
+  return { ...hands, [handPiece]: (hands[handPiece] || 0) + 1 };
+};
+
+/**
+ * 選択解除処理
+ * @param state 現在の状態
+ * @returns 選択解除後の状態
+ */
+export const resetSelection = <T extends { selected: any; legalMoves: any[] }>(state: T) => ({
+  ...state,
+  selected: null,
+  legalMoves: [],
+});
+
+/**
+ * 出番を切り替えるヘルパー関数
+ * @param turn 現在の手番
+ * @returns 次の手番
+ */
+export const nextTurn = (turn: 'sente' | 'gote'): 'sente' | 'gote' =>
+  turn === 'sente' ? 'gote' : 'sente';

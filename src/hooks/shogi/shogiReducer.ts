@@ -1,7 +1,7 @@
 import { ShogiState, ShogiAction } from './shogiState';
-import { promotable, unpromote } from './pieces';
+import { promotable } from './pieces';
 import { pieceMoves } from './moveRules';
-import { inEnemyCamp, isSentePiece } from './helpers';
+import { capturePiece, copyBoard, inEnemyCamp, isSentePiece, nextTurn, resetSelection } from './helpers';
 
 /**
  * 将棋の状態を管理するリデューサー関数
@@ -35,22 +35,16 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
       const { x, y } = action;
 
       if (!state.legalMoves.some(p => p.x === x && p.y === y)) {
-        return { ...state, selected: null, legalMoves: [] };
+        return resetSelection(state);
       }
 
-      const board = state.board.map(r => [...r]);
+      const board = copyBoard(state.board);
       const from = state.selected;
       const piece = board[from.y][from.x];
       const captured = board[y][x];
-      const hands = { ...state.hands };
+      let hands = { ...state.hands };
 
-      if (captured) {
-        // 成駒の場合は元の駒に戻す
-        const basePiece = unpromote[captured] || captured;
-        // 持ち駒は自分の駒として加える
-        const handPiece = isSentePiece(piece) ? basePiece.toLowerCase() : basePiece.toUpperCase();
-        hands[handPiece] = (hands[handPiece] || 0) + 1;
-      }
+      hands = capturePiece(hands, captured);
 
       const canPromote =
         promotable[piece] &&
@@ -68,8 +62,6 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
       board[y][x] = piece;
       board[from.y][from.x] = '';
 
-      // 手番切替
-      const nextTurn = state.turn === 'sente' ? 'gote' : 'sente';
 
       return {
         ...state,
@@ -77,7 +69,7 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
         hands,
         selected: null,
         legalMoves: [],
-        turn: nextTurn
+        turn: nextTurn(state.turn)
       };
     }
 
@@ -85,19 +77,22 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
       if (!state.pendingPromotion) return state;
       const { from, to, piece } = state.pendingPromotion;
 
-      const board = state.board.map(r => [...r]);
+      const board = copyBoard(state.board);
+      const captured = board[to.y][to.x]; // 取った駒（あれば）
+      let hands = { ...state.hands };
+      hands = capturePiece(hands, captured);
+
       board[to.y][to.x] = action.promote ? promotable[piece]! : piece;
       board[from.y][from.x] = '';
-
-      const nextTurn = state.turn === 'sente' ? 'gote' : 'sente';
 
       return {
         ...state,
         board,
+        hands,
         pendingPromotion: null,
         selected: null,
         legalMoves: [],
-        turn: nextTurn
+        turn: nextTurn(state.turn)
       };
     }
 
@@ -105,10 +100,8 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
       if (state.board[action.y][action.x] !== '') return state;
       if (!state.hands[action.piece]) return state;
 
-      const board = state.board.map(r => [...r]);
+      const board = copyBoard(state.board);
       board[action.y][action.x] = action.piece.toLowerCase();
-
-      const nextTurn = state.turn === 'sente' ? 'gote' : 'sente';
 
       return {
         ...state,
@@ -119,12 +112,12 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
         },
         selected: null,
         legalMoves: [],
-        turn: nextTurn
+        turn: nextTurn(state.turn)
       };
     }
 
     case 'CANCEL_SELECTION':
-      return { ...state, selected: null, legalMoves: [] };
+      return resetSelection(state);
 
     default:
       return state;
