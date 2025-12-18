@@ -3,6 +3,13 @@ import { promotable } from './pieces';
 import { pieceMoves } from './moveRules';
 import { inEnemyCamp } from './helpers';
 
+
+/**
+ * 将棋の状態を管理するリデューサー関数
+ *  @param state 現在の将棋の状態
+ *  @param action 実行するアクション
+ *  @return 更新後の将棋の状態
+ */
 export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState => {
   switch (action.type) {
     case 'SELECT_CELL': {
