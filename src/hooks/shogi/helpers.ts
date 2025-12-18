@@ -7,8 +7,11 @@ export const BOARD_SIZE = 9;
  * @param piece 駒の種類
  * @returns 先手なら true、後手なら false
  */
-export const isSentePiece = (piece: string): boolean =>
-  piece !== '' && piece === piece.toLowerCase();
+export const isSentePiece = (piece: string): boolean => {
+  if (piece === '') return false;
+  const base = piece.startsWith('+') ? piece[1] : piece[0];
+  return base === base.toLowerCase();
+}
 
 /**
  * 敵駒かどうかを判定するヘルパー関数

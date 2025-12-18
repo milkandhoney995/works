@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { pieceMap } from '@/hooks/shogi/pieces';
 import { Position } from '@/hooks/shogi/types';
 import classes from '@/app/shogi/page.module.scss';
+import { isSentePiece } from '@/hooks/shogi/helpers';
 
 interface Props {
   x: number;
@@ -24,7 +25,7 @@ export const ShogiCell = memo(function ShogiCell({
   const isSelected = selected?.x === x && selected?.y === y;
 
   // 後手（大文字）なら反転
-  const isGote = piece !== '' && piece[0] === piece[0].toUpperCase();
+  const isGote = piece !== '' && !isSentePiece(piece);
 
   return (
     <div
