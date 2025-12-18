@@ -1,5 +1,6 @@
-import { unpromote } from "./pieces";
-import { Position } from "./types";
+import { unpromote } from "@/hooks/shogi/pieces";
+import { Position } from "@/hooks/shogi/types";
+
 
 /* ================= 定数 ================= */
 export const BOARD_SIZE = 9;

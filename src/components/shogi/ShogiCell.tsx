@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { pieceMap } from '@/hooks/shogi/pieces';
 import { Position } from '@/hooks/shogi/types';
 import classes from '@/app/shogi/page.module.scss';
-import { isSentePiece } from '@/hooks/shogi/helpers';
+import { isSentePiece } from '@/utils/shogiHelpers';
 
 interface Props {
   x: number;
