@@ -12,7 +12,12 @@ export const useShogi = (): UseShogiReturn => {
   // 持ち駒選択用の一時 state
   const [selectedHand, setSelectedHand] = useState<string | null>(null);
 
-  /** 盤面セルクリック時の処理 */
+  /**
+  * 盤面セルクリック時の処理
+  * @param uiX クリックされたセルの列番号（UI座標系）
+  * @param uiY クリックされたセルの行番号（UI座標系）
+  * @returns void
+  */
   const handleCellClick = (uiX: number, uiY: number) => {
     // board[y][x] に合わせて座標を設定
     const x = uiX;
@@ -37,12 +42,20 @@ export const useShogi = (): UseShogiReturn => {
     }
   };
 
-  /** 持ち駒選択時 */
+  /**
+  * 持ち駒選択時の処理
+  * @param piece 選択された持ち駒の種類
+  * @returns void
+  */
   const onHandSelect = (piece: string) => {
     setSelectedHand(piece);
   };
 
-  /** 成り選択 */
+  /**
+  * 駒の成り選択時の処理
+  * @param promote 成るかどうかのフラグ
+  * @returns void
+  */
   const promotePiece = (promote: boolean) => {
     dispatch({ type: 'PROMOTE', promote });
   };
@@ -58,6 +71,6 @@ export const useShogi = (): UseShogiReturn => {
     dropPiece: (piece: string, x: number, y: number) => {
       dispatch({ type: 'DROP_PIECE', piece, x, y });
     },
-    onHandSelect, // ← ここで追加
+    onHandSelect
   };
 };
