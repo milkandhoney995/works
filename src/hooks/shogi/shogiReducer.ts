@@ -11,8 +11,7 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
       if (!piece) return state;
 
       // デバッグ版の関数を使う場合
-      const isUpper = piece === piece.toUpperCase();
-      const legalMoves = getLegalMoves(piece, { x, y }, state.board, isUpper);
+      const legalMoves = getLegalMoves(piece, { x, y }, state.board);
 
       return {
         ...state,
@@ -44,10 +43,10 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
         newHands[handPiece] = (newHands[handPiece] || 0) + 1;
       }
 
-      const isUpper = movingPiece === movingPiece.toUpperCase();
+
       const canPromote =
         promotable[movingPiece] &&
-        (inEnemyCamp(selected.y, isUpper) || inEnemyCamp(y, isUpper));
+        (inEnemyCamp(selected.y, movingPiece) || inEnemyCamp(y, movingPiece));
 
       if (canPromote) {
         // 成り選択中として保持する
