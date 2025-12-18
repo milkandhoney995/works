@@ -4,6 +4,13 @@ export type Position = { x: number; y: number };
 // 持ち駒
 export type Hands = { [piece: string]: number };
 
+// プレイヤーごとの持ち駒
+export interface HandsByPlayer {
+  sente: Hands;
+  gote: Hands;
+}
+
+
 // 成り選択中の状態
 export type PendingPromotion =
   | { from: Position; to: Position; piece: string }
@@ -17,7 +24,7 @@ export interface UseShogiReturn {
   board: string[][];
   selected: Position | null;
   legalMoves: Position[];
-  hands: Hands;
+  hands: HandsByPlayer;
   pendingPromotion: PendingPromotion;
   handleCellClick: (x: number, y: number) => void;
   promotePiece: (promote: boolean) => void;

@@ -1,7 +1,7 @@
 import { useReducer, useState } from 'react';
 import { shogiReducer } from './shogiReducer';
 import { initialShogiState } from './shogiState';
-import { UseShogiReturn } from './types';
+import { HandsByPlayer, UseShogiReturn } from './types';
 
 /**
  * 将棋用カスタムフック
@@ -26,7 +26,7 @@ export const useShogi = (): UseShogiReturn => {
 
     if (selectedHand) {
       // 持ち駒を打つ
-      dispatch({ type: 'DROP_PIECE', piece: selectedHand, x: uiX, y: uiY });
+      dispatch({ type: 'DROP_PIECE', piece: selectedHand, x, y });
       setSelectedHand(null);
       return;
     }
@@ -60,11 +60,29 @@ export const useShogi = (): UseShogiReturn => {
     dispatch({ type: 'PROMOTE', promote });
   };
 
+  /**
+  * 持ち駒の初期化
+  */
+  const hands: HandsByPlayer = {
+    sente: {},
+    gote: {}
+  };
+
+  Object.entries(state.hands).forEach(([piece, count]) => {
+    if (piece === piece.toLowerCase()) {
+      // 小文字は先手
+      hands.sente[piece] = count;
+    } else {
+      // 大文字は後手
+      hands.gote[piece] = count;
+    }
+  });
+
   return {
     board: state.board,
     selected: state.selected,
     legalMoves: state.legalMoves,
-    hands: state.hands,
+    hands,
     pendingPromotion: state.pendingPromotion,
     handleCellClick,
     promotePiece,

@@ -5,11 +5,12 @@ import classes from '@/app/shogi/page.module.scss';
 interface Props {
   hands: Hands;
   onSelect: (piece: string) => void;
+  className?: string;
 }
 
-export const ShogiHands = ({ hands, onSelect }: Props) => {
+export const ShogiHands = ({ hands, onSelect, className }: Props) => {
   return (
-    <div className={classes.shogi__hands}>
+    <div className={[classes.shogi__hands, className].filter(Boolean).join(' ')}>
       {Object.entries(hands).map(([piece, count]) =>
         count > 0 ? (
           <button key={piece} onClick={() => onSelect(piece)}>

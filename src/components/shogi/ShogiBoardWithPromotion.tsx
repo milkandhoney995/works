@@ -1,13 +1,13 @@
 import { ShogiBoard } from './ShogiBoard';
 import { ShogiHands } from './ShogiHands';
-import { PendingPromotion, Position, Hands } from '@/hooks/shogi/types';
+import { PendingPromotion, Position, HandsByPlayer } from '@/hooks/shogi/types';
 import classes from '@/app/shogi/page.module.scss';
 
 interface Props {
   board: string[][];
   selected: Position | null;
   legalMoves: Position[];
-  hands: Hands;
+  hands: HandsByPlayer;
   pendingPromotion: PendingPromotion;
   onCellClick: (x: number, y: number) => void;
   onHandSelect: (piece: string) => void;
@@ -26,6 +26,13 @@ export const ShogiBoardWithPromotion = ({
 }: Props) => {
   return (
     <div className={classes.shogi__container}>
+      {/* 持ち駒 */}
+      <ShogiHands
+        hands={hands.gote}
+        onSelect={onHandSelect}
+        className={classes.shogi__handsGote}
+      />
+
       {/* 将棋盤 */}
       <ShogiBoard
         board={board}
@@ -34,8 +41,12 @@ export const ShogiBoardWithPromotion = ({
         onCellClick={onCellClick}
       />
 
-      {/* 持ち駒 */}
-      <ShogiHands hands={hands} onSelect={onHandSelect} />
+      {/* 先手の持ち駒（右下） */}
+      <ShogiHands
+        hands={hands.sente}
+        onSelect={onHandSelect}
+        className={classes.shogi__handsSente}
+      />
 
       {/* 成り選択ダイアログ */}
       {pendingPromotion && (

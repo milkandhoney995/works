@@ -28,6 +28,15 @@
   &__wrapper {
     display: inline-block;
   }
+  /* 右下の先手持ち駒 */
+  &__handsSente {
+    align-self: flex-end;
+  }
+
+  /* 左上の後手持ち駒 */
+  &__handsGote {
+    align-self: flex-start;
+  }
 
   /* 上：筋 */
   &__files {
@@ -105,9 +114,8 @@
   ========================= */
   &__hands {
     display: flex;
-    gap: 8px;
     flex-wrap: wrap;
-    margin-top: 16px;
+    gap: 8px;
 
     button {
       padding: 6px 12px;
