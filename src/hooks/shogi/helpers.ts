@@ -1,3 +1,5 @@
+import { Position } from "./types";
+
 /* ================= 定数 ================= */
 export const BOARD_SIZE = 9;
 
@@ -44,3 +46,27 @@ export const inEnemyCamp = (y: number, piece: string): boolean => {
  */
 export const isInsideBoard = (x: number, y: number): boolean =>
   x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE;
+
+/**
+ * 駒の合法手を取得するヘルパー関数
+ * @param moves 合法手の配列（引数で渡された配列に追加される）
+ * @param board 現在盤面
+ * @param x 列番号
+ * @param y 行番号
+ * @param isSente 先手か後手か
+ * @returns 合法手の配列
+ */
+
+export const pushIfValid = (
+  moves: Position[],
+  board: string[][],
+  x: number,
+  y: number,
+  isSente: boolean
+) => {
+  if (!isInsideBoard(x, y)) return;
+  const target = board[y][x];
+  if (target === '' || isEnemyPiece(target, isSente)) {
+    moves.push({ x, y });
+  }
+};
