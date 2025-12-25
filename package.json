@@ -11,20 +11,20 @@
   "dependencies": {
     "@types/node": "^25.0.3",
     "axios": "^1.4.0",
-    "next": "^16.1.0",
+    "next": "^16.1.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-redux": "^9.2.0",
-    "sass": "^1.63.3",
+    "sass": "^1.97.1",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
     "@reduxjs/toolkit": "^2.11.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
-    "@typescript-eslint/eslint-plugin": "^8.50.0",
-    "@typescript-eslint/parser": "^8.50.0",
+    "@typescript-eslint/eslint-plugin": "^8.50.1",
+    "@typescript-eslint/parser": "^8.50.1",
     "eslint": "^9.39.2",
-    "eslint-config-next": "^16.1.0"
+    "eslint-config-next": "^16.1.1"
   }
 }
