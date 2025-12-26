@@ -33,21 +33,34 @@ const MeditationApp = () => {
   return (
     <div className={classes.meditation}>
       <div className={classes.meditation__background}>
-        <video ref={video} className={classes.meditation__backgroundVideo} loop />
+        <video
+          ref={video}
+          className={classes.meditation__backgroundVideo}
+          loop
+        />
       </div>
 
-      <TimeSelector changeDuration={changeDuration} openSettings={() => setIsOpen(true)} />
-      <Player
-        song={song}
-        outline={outline}
-        isPlaying={isPlaying}
-        minutes={minutes}
-        seconds={seconds}
-        playPause={playPause}
-        addTime={addTime}
-      />
-      <SoundPicker selectSound={selectSound} />
+      <div className={classes.meditation__column}>
+        <TimeSelector changeDuration={changeDuration} openSettings={() => setIsOpen(true)} />
+      </div>
 
+      <div className={classes.meditation__column}>
+        <Player
+          song={song}
+          outline={outline}
+          isPlaying={isPlaying}
+          minutes={minutes}
+          seconds={seconds}
+          playPause={playPause}
+          addTime={addTime}
+        />
+      </div>
+
+      <div className={classes.meditation__column}>
+        <SoundPicker selectSound={selectSound} />
+      </div>
+
+      {/* 設定モーダル */}
       {isOpen && (
         <SettingsModal
           customMinutes={customMinutes}

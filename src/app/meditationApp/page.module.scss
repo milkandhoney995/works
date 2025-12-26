@@ -1,3 +1,5 @@
+@use '../../../styles/variables/mixin' as mixin;
+
 .meditation {
   height: 100vh;
   display: flex;
@@ -5,6 +7,11 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
+
+  @include mixin.mq(sp) {
+    flex-direction: column;
+    padding: 20px 0;
+  }
 
   &__background {
     position: fixed;
@@ -15,6 +22,10 @@
       width: 100vw;
       height: 100vh;
       object-fit: cover;
+
+      @include mixin.mq(sp) {
+        height: 60vh;
+      }
     }
   }
 
@@ -23,17 +34,21 @@
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    height: 80%;
+    height: 100vh;
     flex: 1;
+
+    @include mixin.mq(sp) {
+      height: auto;
+      gap: 20px;
+    }
   }
 
   &__timeSelector {
     & button {
       color: white;
-      width: 30%;
-      height: 10%;
+      padding: 0.5rem 1rem;
       background: none;
-      font-size: 20px;
+      font-size: 1.25rem;
       border-radius: 5px;
       cursor: pointer;
       border: 2px solid white;
@@ -42,6 +57,10 @@
       &:hover {
         color: black;
         background: white;
+      }
+
+      @include mixin.mq(tab) {
+        font-size: 1rem;
       }
     }
   }
@@ -60,6 +79,15 @@
       height: 50%;
       transform: rotate(-90deg);
       pointer-events: none;
+
+      @include mixin.mq(sp) {
+        width: 70%;
+        height: 70%;
+      }
+    }
+
+    @include mixin.mq(sp) {
+      height: 60%;
     }
   }
 
@@ -67,6 +95,10 @@
     position: absolute;
     z-index: 5;
     cursor: pointer;
+
+    @include mixin.mq(sp) {
+      transform: scale(0.6);
+    }
   }
 
   &__addTimeButton {
@@ -85,6 +117,12 @@
       background: white;
       color: black;
     }
+
+    @include mixin.mq(sp) {
+      bottom: 20%;
+      font-size: 10px;
+      padding: 0 0.5rem;
+    }
   }
 
   &__timeDisplay {
@@ -93,6 +131,15 @@
     color: white;
     font-size: 50px;
     letter-spacing: 2px;
+
+    @include mixin.mq(tab) {
+      font-size: 40px;
+    }
+
+    @include mixin.mq(sp) {
+      font-size: 32px;
+      bottom: 10%;
+    }
   }
 
   &__soundButton {
@@ -113,6 +160,12 @@
 
     img {
       height: 100%;
+    }
+
+    @include mixin.mq(sp) {
+      height: 80px;
+      width: 80px;
+      padding: 20px;
     }
   }
 
@@ -137,6 +190,10 @@
     h2 {
       margin-bottom: 20px;
       font-size: 22px;
+
+      @include mixin.mq(sp) {
+        font-size: 18px;
+      }
     }
 
     input {
@@ -147,6 +204,11 @@
       border: none;
       margin-bottom: 20px;
       text-align: center;
+
+      @include mixin.mq(sp) {
+        font-size: 16px;
+        padding: 8px;
+      }
     }
   }
 
@@ -162,6 +224,11 @@
       border-radius: 6px;
       border: none;
       transition: all 0.3s ease;
+
+      @include mixin.mq(sp) {
+        font-size: 14px;
+        padding: 8px;
+      }
     }
 
     button:first-child {
