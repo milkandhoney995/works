@@ -1,36 +1,23 @@
 import styles from './page.module.scss'
 import Card from '@/components/card'
+import { cards } from '@/data/cards'
 
 const Home = () => {
   return (
     <main className={styles.main}>
       <div className={styles.description}>
-        <h1>
-          Look My Works
-        </h1>
+        <h1>Look My Works</h1>
       </div>
 
       <div className={styles.grid}>
-        <Card
-          title={'Calculator'}
-          description={'Calculator with React + TypeScript.'}
-          href={'/calculator'}
-        />
-        <Card
-          title={'Meditation App'}
-          description={'Meditation App with React + TypeScript.'}
-          href={'/meditationApp'}
-        />
-        <Card
-          title={'todoList'}
-          description={'todoList App with React + TypeScript.'}
-          href={'/todoList'}
-        />
-        <Card
-          title={'Shogi App'}
-          description={'Japanese Shogi App with React + TypeScript.'}
-          href={'/shogi'}
-        />
+        {cards.map((card) => (
+          <Card
+            key={card.href}
+            title={card.title}
+            description={card.description}
+            href={card.href}
+          />
+        ))}
       </div>
     </main>
   )

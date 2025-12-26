@@ -1,11 +1,13 @@
 import Link from "next/link"
 import classes from "./card.module.scss"
+
 type propsType = {
   title: string
   description: string
   href: string
 }
-export default function Card(props: propsType) {
+
+const Card = (props: propsType) => {
   return (
     <Link
       className={classes.card}
@@ -20,3 +22,5 @@ export default function Card(props: propsType) {
     </Link>
   )
 }
+
+export default Card;
