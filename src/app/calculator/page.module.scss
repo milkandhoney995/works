@@ -22,7 +22,7 @@
     border: 1px solid #ddd;
     outline: none;
     border-radius: 8px;
-    transition: all 0.2s;
+    transition: all 0.1s ease-in-out; // タッチ反応用アニメーション
 
     @include m.mq(sp) {
       font-size: 1.2rem;
@@ -50,8 +50,9 @@
   &:hover { background-color: rgba(200, 200, 200, 1); }
 }
 
-/* キーボード押下時 */
-.active {
+/* キーボード/タッチ押下時 */
+.active,
+button:active {
   transform: scale(0.95);
   box-shadow: 0 0 5px #666 inset;
 }
