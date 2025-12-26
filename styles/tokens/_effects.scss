@@ -1,0 +1,23 @@
+$primaryGlow: conic-gradient(
+  from 180deg at 50% 50%,
+  rgba(22, 171, 255, 0.2) 0deg,
+  rgba(8, 133, 255, 0.2) 55deg,
+  rgba(84, 214, 255, 0.2) 120deg,
+  rgba(0, 113, 255, 0.2) 160deg,
+  transparent 360deg
+);
+
+$secondaryGlow: radial-gradient(
+  rgba(255, 255, 255, 1),
+  rgba(255, 255, 255, 0)
+);
+
+$tileBorder: conic-gradient(
+  rgba(0, 0, 0, 0.5),
+  rgba(0, 0, 0, 0.25),
+  rgba(0, 0, 0, 0.18),
+  rgba(0, 0, 0, 0.12),
+  rgba(0, 0, 0, 0.06),
+  rgba(0, 0, 0, 0.06),
+  rgba(0, 0, 0, 0.5)
+);

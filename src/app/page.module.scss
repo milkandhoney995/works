@@ -1,3 +1,9 @@
+@use '../../styles/tokens/typography' as typo;
+@use '../../styles/tokens/layout' as l;
+@use '../../styles/tokens/radius' as r;
+@use '../../styles/tokens/effects' as e;
+@use '../../styles/tokens/colors' as c;
+
 .main {
   display: flex;
   flex-direction: column;
@@ -11,10 +17,10 @@
   justify-content: inherit;
   align-items: inherit;
   font-size: 0.85rem;
-  max-width: var(--max-width);
+  max-width: l.$maxWidth;
   width: 100%;
   z-index: 2;
-  font-family: var(--font-mono);
+  font-family: typo.$fontMono;
   & a {
     display: flex;
     justify-content: center;
@@ -25,21 +31,21 @@
     position: relative;
     margin: 0;
     padding: 1rem;
-    background-color: rgba(var(--callout-rgb), 0.5);
-    border: 1px solid rgba(var(--callout-border-rgb), 0.3);
-    border-radius: var(--border-radius);
+    background-color: rgba(c.$calloutBgBase, 0.5);
+    border: 1px solid rgba(c.$calloutBorderBase, 0.3);
+    border-radius: r.$radiusMd;
   }
 }
 
 .code {
   font-weight: 700;
-  font-family: var(--font-mono);
+  font-family: typo.$fontMono;
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(25%, auto));
-  width: var(--max-width);
+  width: l.$maxWidth;
   max-width: 100%;
 }
 
@@ -51,14 +57,14 @@
   position: relative;
   padding: 4rem 0;
   &::before {
-    background: var(--secondary-glow);
+    background: e.$secondaryGlow;
     border-radius: 50%;
     width: 480px;
     height: 360px;
     margin-left: -400px;
   }
   &::after {
-    background: var(--primary-glow);
+    background: e.$primaryGlow;
     width: 240px;
     height: 180px;
     z-index: -1;
@@ -112,11 +118,11 @@
       padding: 2rem 1rem 1.4rem;
       border-radius: 0;
       border: none;
-      border-bottom: 1px solid rgba(var(--callout-border-rgb), 0.25);
+      border-bottom: 1px solid rgba(c.$calloutBorderBase, 0.25);
       background: linear-gradient(
         to bottom,
-        rgba(var(--background-start-rgb), 1),
-        rgba(var(--callout-rgb), 0.5)
+        rgba(c.$backgroundStartBase, 1),
+        rgba(c.$calloutBgBase, 0.5)
       );
       background-clip: padding-box;
       backdrop-filter: blur(24px);
@@ -130,7 +136,7 @@
       background: linear-gradient(
         to bottom,
         transparent 0%,
-        rgb(var(--background-end-rgb)) 40%
+        rgb(c.$backgroundEndBase, 40%)
       );
       z-index: 1;
     }

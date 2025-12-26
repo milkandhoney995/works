@@ -25,5 +25,20 @@ $commonGreen: rgb(59, 77, 59);
 // Card
 $card: #3f3931;
 $cardBg: rgba(255, 255, 254, 0.6);
+$cardBgHover: rgba(255, 255, 254, 0.1);
 $border: #cccccc;
 $footerBg: rgb(62, 73, 62);
+$cardBorderBase: rgb(131, 134, 135);
+
+// Foreground / Background
+$foregroundBase: rgb(0, 0, 0);
+$backgroundStartBase: rgb(214, 219, 220);
+$backgroundEndBase: rgb(255, 255, 255);
+
+// Tile
+$tileStartBase: rgb(239, 245, 249);
+$tileEndBase: rgb(228, 232, 233);
+
+// Callout
+$calloutBgBase: rgb(238, 240, 241);
+$calloutBorderBase: rgb(172, 175, 176);
