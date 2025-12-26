@@ -12,7 +12,7 @@ const TodoList = () => {
 
   return (
     <div className={classes.todoList}>
-      <h1 className={classes.todoList__title}>Redux Todo List</h1>
+      <h1 className={classes.todoList__title}>Todo List</h1>
 
       <AddTodo />
 

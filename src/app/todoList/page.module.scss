@@ -2,19 +2,64 @@
 @use '../../../styles/variables/mixin' as m;
 
 .todoList {
-  padding: 20px;
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 640px;
+  height: calc(100vh - 5rem);
+  margin: 2.5rem auto;
+  padding: 32px 28px;
+
   background: v.$secondaryBackground;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 
   &__title {
     @include m.sectionTitle();
     color: v.$title;
     text-align: center;
-    margin-bottom: 20px;
+
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+
+    position: relative;
+    padding-bottom: 12px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        v.$primary,
+        v.$accent
+      );
+      border-radius: 2px;
+    }
   }
 
   &__todos {
-    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+  }
+}
+
+/* スマホ対応 */
+@media (max-width: 480px) {
+  .todoList {
+    margin: 20px 12px;
+    padding: 24px 16px;
+
+    &__title {
+      font-size: 1.4rem;
+    }
   }
 }

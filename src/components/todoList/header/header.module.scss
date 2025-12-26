@@ -1,10 +1,28 @@
+@use '../../../../styles/variables/variables' as v;
+
 .header {
-  background: #333;
-  color: #fff;
+  background: linear-gradient(
+    135deg,
+    v.$primary,
+    v.$accent
+  );
+  color: v.$commonWhite;
   text-align: center;
-  padding: 0.75rem;
+  padding: 1rem 1.25rem;
+
+  border-radius: 12px 12px 0 0;
+  box-shadow: v.$shadowSmall;
+
   &__link {
-    color: #fff;
+    color: v.$commonWhite;
     text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+
+    transition: opacity v.$transitionFast;
+
+    &:hover {
+      opacity: 0.85;
+    }
   }
 }
