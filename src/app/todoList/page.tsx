@@ -7,7 +7,7 @@ import TodoItem from "@/components/todoList/todoItem";
 import classes from './page.module.scss';
 
 // todo: todoリストを追加後も編集できるようにする
-export default function TodoList() {
+const TodoList = () => {
   const todos = useSelector((state: RootState) => state.todo.todos);
 
   return (
@@ -24,3 +24,5 @@ export default function TodoList() {
     </div>
   );
 }
+
+export default TodoList;

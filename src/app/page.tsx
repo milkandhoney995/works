@@ -1,9 +1,7 @@
-import Image from 'next/image'
 import styles from './page.module.scss'
-import Link from 'next/link'
 import Card from '@/components/card'
 
-export default function Home() {
+const Home = () => {
   return (
     <main className={styles.main}>
       <div className={styles.description}>
@@ -28,7 +26,14 @@ export default function Home() {
           description={'todoList App with React + TypeScript.'}
           href={'/todoList'}
         />
+        <Card
+          title={'Shogi App'}
+          description={'Japanese Shogi App with React + TypeScript.'}
+          href={'/shogi'}
+        />
       </div>
     </main>
   )
 }
+
+export default Home;

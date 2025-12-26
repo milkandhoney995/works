@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { CalculatorClass } from "./main"
 import classes from "./page.module.scss"
 
-export default function Calculator() {
+const Calculator = () => {
   const previousOperandRef = useRef<HTMLDivElement>(null);
   const currentOperandRef = useRef<HTMLDivElement>(null);
   const [calculator, setCalculator] = useState<CalculatorClass | null>(null);
@@ -76,3 +76,5 @@ export default function Calculator() {
     </div>
   )
 }
+
+export default Calculator;
