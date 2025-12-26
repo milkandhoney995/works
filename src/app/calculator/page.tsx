@@ -1,80 +1,111 @@
 'use client';
 
-import { useEffect, useRef, useState } from "react";
-import { CalculatorClass } from "./main"
-import classes from "./page.module.scss"
+import { useState } from "react";
+import classes from "./page.module.scss";
+
+type Operation = "+" | "-" | "*" | "÷" | undefined;
 
 const Calculator = () => {
-  const previousOperandRef = useRef<HTMLDivElement>(null);
-  const currentOperandRef = useRef<HTMLDivElement>(null);
-  const [calculator, setCalculator] = useState<CalculatorClass | null>(null);
+  const [currentOperand, setCurrentOperand] = useState<string>('');
+  const [previousOperand, setPreviousOperand] = useState<string>('');
+  const [operation, setOperation] = useState<Operation>();
 
-   // 初回マウント時に CalculatorClass を生成
-  useEffect(() => {
-    if (previousOperandRef.current && currentOperandRef.current) {
-      const calc = new CalculatorClass(previousOperandRef.current, currentOperandRef.current);
-      calc.clear();
-      calc.updateDisplay();
-      setCalculator(calc);
+  const appendNumber = (num: string) => {
+    if (num === '.' && currentOperand.includes('.')) return;
+    setCurrentOperand(prev => prev + num);
+  };
+
+  const chooseOperation = (op: Operation) => {
+    if (!currentOperand) return;
+    if (previousOperand) compute();
+    setOperation(op);
+    setPreviousOperand(currentOperand);
+    setCurrentOperand('');
+  };
+
+  const compute = () => {
+    if (!previousOperand || !currentOperand || !operation) return;
+    const prev = parseFloat(previousOperand);
+    const current = parseFloat(currentOperand);
+    let result: number;
+
+    switch (operation) {
+      case '+': result = prev + current; break;
+      case '-': result = prev - current; break;
+      case '*': result = prev * current; break;
+      case '÷': result = prev / current; break;
+      default: return;
     }
-  }, [])
 
-  const handleNumber = (value: string) => {
-    if (!calculator) return;
-    calculator.appendNumber(value);
-    calculator.updateDisplay();
+    setCurrentOperand(result.toString());
+    setPreviousOperand('');
+    setOperation(undefined);
   };
 
-  const handleOperation = (value: string) => {
-    if (!calculator) return;
-    calculator.chooseOperation(value);
-    calculator.updateDisplay();
+  const deleteLast = () => setCurrentOperand(prev => prev.slice(0, -1));
+  const allClear = () => {
+    setCurrentOperand('');
+    setPreviousOperand('');
+    setOperation(undefined);
   };
 
-  const handleEqual = () => {
-    if (!calculator) return;
-    calculator.compute();
-    calculator.updateDisplay();
+  const getDisplayNumber = (num: string) => {
+    if (!num) return '0';
+    const number = parseFloat(num);
+    if (isNaN(number)) return '';
+    const [integer, decimal] = num.split('.');
+    const integerDisplay = parseInt(integer).toLocaleString();
+    return decimal != null ? `${integerDisplay}.${decimal}` : integerDisplay;
   };
 
-  const handleAllClear = () => {
-    if (!calculator) return;
-    calculator.clear();
-    calculator.updateDisplay();
-  };
+  // ボタンの配置を明示的に定義
+  const buttons: { label: string, onClick: () => void, spanTwo?: boolean }[] = [
+    { label: 'AC', onClick: allClear, spanTwo: true },
+    { label: 'DEL', onClick: deleteLast },
+    { label: '÷', onClick: () => chooseOperation('÷') },
 
-  const handleDelete = () => {
-    if (!calculator) return;
-    calculator.delete();
-    calculator.updateDisplay();
-  };
+    { label: '1', onClick: () => appendNumber('1') },
+    { label: '2', onClick: () => appendNumber('2') },
+    { label: '3', onClick: () => appendNumber('3') },
+    { label: '*', onClick: () => chooseOperation('*') },
+
+    { label: '4', onClick: () => appendNumber('4') },
+    { label: '5', onClick: () => appendNumber('5') },
+    { label: '6', onClick: () => appendNumber('6') },
+    { label: '+', onClick: () => chooseOperation('+') },
+
+    { label: '7', onClick: () => appendNumber('7') },
+    { label: '8', onClick: () => appendNumber('8') },
+    { label: '9', onClick: () => appendNumber('9') },
+    { label: '-', onClick: () => chooseOperation('-') },
+
+    { label: '.', onClick: () => appendNumber('.') },
+    { label: '0', onClick: () => appendNumber('0') },
+    { label: '=', onClick: compute, spanTwo: true },
+  ];
 
   return (
     <div className={classes.calculator}>
       <div className={classes.output}>
-        <div className={classes.previousOperand} ref={previousOperandRef}></div>
-        <div className={classes.currentOperand} ref={currentOperandRef}></div>
+        <div className={classes.previousOperand}>
+          {previousOperand && operation ? `${getDisplayNumber(previousOperand)} ${operation}` : ''}
+        </div>
+        <div className={classes.currentOperand}>
+          {getDisplayNumber(currentOperand)}
+        </div>
       </div>
-      <button className={classes.spanTwo} onClick={() => handleAllClear()}>AC</button>
-      <button onClick={() => handleDelete()}>DEL</button>
-      <button onClick={() => handleOperation('÷')}>÷</button>
-      <button onClick={() => handleNumber('1')}>1</button>
-      <button onClick={() => handleNumber('2')}>2</button>
-      <button onClick={() => handleNumber('3')}>3</button>
-      <button onClick={() => handleOperation('*')}>*</button>
-      <button onClick={() => handleNumber('4')}>4</button>
-      <button onClick={() => handleNumber('5')}>5</button>
-      <button onClick={() => handleNumber('6')}>6</button>
-      <button onClick={() => handleOperation('+')}>+</button>
-      <button onClick={() => handleNumber('7')}>7</button>
-      <button onClick={() => handleNumber('8')}>8</button>
-      <button onClick={() => handleNumber('9')}>9</button>
-      <button onClick={() => handleOperation('-')}>-</button>
-      <button onClick={() => handleNumber('.')}>.</button>
-      <button onClick={() => handleNumber('0')}>0</button>
-      <button className={classes.spanTwo} onClick={handleEqual}>=</button>
+
+      {buttons.map((btn, idx) => (
+        <button
+          key={idx}
+          className={btn.spanTwo ? classes.spanTwo : undefined}
+          onClick={btn.onClick}
+        >
+          {btn.label}
+        </button>
+      ))}
     </div>
-  )
-}
+  );
+};
 
 export default Calculator;
