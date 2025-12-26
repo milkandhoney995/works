@@ -8,9 +8,14 @@ interface Props {
   openSettings: () => void;
 }
 
+interface Props {
+  changeDuration: (seconds: number) => void;
+  openSettings: () => void;
+}
+
 const TimeSelector = ({ changeDuration, openSettings }: Props) => {
   return (
-    <div className={`${classes.meditation__column} ${classes.meditation__timeSelector}`}>
+    <div className={classes.meditation__timeSelector}>
       {timeOptions.map((option) => (
         <button key={option.id} onClick={() => changeDuration(option.duration)}>
           {option.label}

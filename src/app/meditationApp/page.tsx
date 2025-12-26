@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import classes from './page.module.scss';
 import { useMeditationTimer } from '@/hooks/useMeditationTimer';
-import TimeSelector from '@/app/meditationApp/components/TimeSelector';
-import Player from '@/app/meditationApp/components/Player';
-import SoundPicker from '@/app/meditationApp/components/SoundPicker';
-import SettingsModal from '@/app/meditationApp/components/SettingsModal';
+import TimeSelector from './components/TimeSelector';
+import Player from './components/Player';
+import SoundPicker from './components/SoundPicker';
+import SettingsModal from './components/SettingsModal';
 
 const MeditationApp = () => {
   const {
@@ -32,33 +32,33 @@ const MeditationApp = () => {
 
   return (
     <div className={classes.meditation}>
+      {/* 背景動画 */}
       <div className={classes.meditation__background}>
         <video
           ref={video}
           className={classes.meditation__backgroundVideo}
           loop
+          autoPlay
+          muted
         />
       </div>
 
-      <div className={classes.meditation__column}>
-        <TimeSelector changeDuration={changeDuration} openSettings={() => setIsOpen(true)} />
-      </div>
+      {/* タイムセレクター */}
+      <TimeSelector changeDuration={changeDuration} openSettings={() => setIsOpen(true)} />
 
-      <div className={classes.meditation__column}>
-        <Player
-          song={song}
-          outline={outline}
-          isPlaying={isPlaying}
-          minutes={minutes}
-          seconds={seconds}
-          playPause={playPause}
-          addTime={addTime}
-        />
-      </div>
+      {/* プレイヤー */}
+      <Player
+        song={song}
+        outline={outline}
+        isPlaying={isPlaying}
+        minutes={minutes}
+        seconds={seconds}
+        playPause={playPause}
+        addTime={addTime}
+      />
 
-      <div className={classes.meditation__column}>
-        <SoundPicker selectSound={selectSound} />
-      </div>
+      {/* サウンド選択 */}
+      <SoundPicker selectSound={selectSound} />
 
       {/* 設定モーダル */}
       {isOpen && (
