@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 // ==========================
 // Base background colors
 // ==========================
@@ -47,8 +49,8 @@ $accent: rgb(105, 132, 105); // captionWeb を活用したグリーン
 $link: rgb(3, 73, 3);
 
 // ホバー・アクティブ時
-$primaryHover: lighten($primary, 8%);
-$accentHover: lighten($accent, 10%);
+$primaryHover: color.adjust($primary, $lightness: 8%);
+$accentHover: color.adjust($accent, $lightness: 10%);
 
 // ==========================
 // Radius / Shadow
