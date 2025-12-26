@@ -21,22 +21,39 @@
     font-size: 1.5rem;
     border: 1px solid #ddd;
     outline: none;
-    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 8px;
-    transition: background-color 0.2s;
+    transition: all 0.2s;
 
     @include m.mq(sp) {
       font-size: 1.2rem;
-    }
-
-    &:hover {
-      background-color: rgba(255, 255, 255, 1);
     }
   }
 }
 
 .spanTwo {
   grid-column: span 2;
+}
+
+/* ボタンの種類ごとの色 */
+.number {
+  background-color: rgba(255, 255, 255, 0.9);
+  &:hover { background-color: rgba(255, 255, 255, 1); }
+}
+
+.operator {
+  background-color: rgba(255, 200, 0, 0.9);
+  &:hover { background-color: rgba(255, 200, 0, 1); }
+}
+
+.special {
+  background-color: rgba(200, 200, 200, 0.9);
+  &:hover { background-color: rgba(200, 200, 200, 1); }
+}
+
+/* キーボード押下時 */
+.active {
+  transform: scale(0.95);
+  box-shadow: 0 0 5px #666 inset;
 }
 
 .output {
@@ -55,17 +72,13 @@
     color: rgba(255, 255, 255, 0.75);
     font-size: 1.2rem;
 
-    @include m.mq(sp) {
-      font-size: 1rem;
-    }
+    @include m.mq(sp) { font-size: 1rem; }
   }
 
   & .currentOperand {
     color: white;
     font-size: 2rem;
 
-    @include m.mq(sp) {
-      font-size: 1.5rem;
-    }
+    @include m.mq(sp) { font-size: 1.5rem; }
   }
 }

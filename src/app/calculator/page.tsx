@@ -10,6 +10,7 @@ const Calculator = () => {
   const [currentOperand, setCurrentOperand] = useState<string>('');
   const [previousOperand, setPreviousOperand] = useState<string>('');
   const [operation, setOperation] = useState<Operation>();
+  const [activeKey, setActiveKey] = useState<string | null>(null); // キーボード押下中のキー
 
   const appendNumber = useCallback((num: string) => {
     if (num === '.' && currentOperand.includes('.')) return;
@@ -59,9 +60,10 @@ const Calculator = () => {
     return decimal != null ? `${integerDisplay}.${decimal}` : integerDisplay;
   };
 
-  // キーボード入力対応
+  // キーボード操作対応 + 押下ハイライト
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      setActiveKey(e.key);
       if (e.key >= '0' && e.key <= '9') appendNumber(e.key);
       else if (e.key === '.') appendNumber('.');
       else if (e.key === '+' || e.key === '-' || e.key === '*') chooseOperation(e.key as Operation);
@@ -71,34 +73,41 @@ const Calculator = () => {
       else if (e.key === 'Escape') allClear();
     };
 
+    const handleKeyUp = () => setActiveKey(null);
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
   }, [appendNumber, chooseOperation, compute, deleteLast, allClear]);
 
   // ボタン配置
-  const buttons: { label: string; onClick: () => void; spanTwo?: boolean }[] = [
-    { label: 'AC', onClick: allClear, spanTwo: true },
-    { label: 'DEL', onClick: deleteLast },
-    { label: '÷', onClick: () => chooseOperation('÷') },
+  const buttons: { label: string; onClick: () => void; spanTwo?: boolean; type?: 'number' | 'operator' | 'special' }[] = [
+    { label: 'AC', onClick: allClear, spanTwo: true, type: 'special' },
+    { label: 'DEL', onClick: deleteLast, type: 'special' },
+    { label: '÷', onClick: () => chooseOperation('÷'), type: 'operator' },
 
-    { label: '1', onClick: () => appendNumber('1') },
-    { label: '2', onClick: () => appendNumber('2') },
-    { label: '3', onClick: () => appendNumber('3') },
-    { label: '*', onClick: () => chooseOperation('*') },
+    { label: '1', onClick: () => appendNumber('1'), type: 'number' },
+    { label: '2', onClick: () => appendNumber('2'), type: 'number' },
+    { label: '3', onClick: () => appendNumber('3'), type: 'number' },
+    { label: '*', onClick: () => chooseOperation('*'), type: 'operator' },
 
-    { label: '4', onClick: () => appendNumber('4') },
-    { label: '5', onClick: () => appendNumber('5') },
-    { label: '6', onClick: () => appendNumber('6') },
-    { label: '+', onClick: () => chooseOperation('+') },
+    { label: '4', onClick: () => appendNumber('4'), type: 'number' },
+    { label: '5', onClick: () => appendNumber('5'), type: 'number' },
+    { label: '6', onClick: () => appendNumber('6'), type: 'number' },
+    { label: '+', onClick: () => chooseOperation('+'), type: 'operator' },
 
-    { label: '7', onClick: () => appendNumber('7') },
-    { label: '8', onClick: () => appendNumber('8') },
-    { label: '9', onClick: () => appendNumber('9') },
-    { label: '-', onClick: () => chooseOperation('-') },
+    { label: '7', onClick: () => appendNumber('7'), type: 'number' },
+    { label: '8', onClick: () => appendNumber('8'), type: 'number' },
+    { label: '9', onClick: () => appendNumber('9'), type: 'number' },
+    { label: '-', onClick: () => chooseOperation('-'), type: 'operator' },
 
-    { label: '.', onClick: () => appendNumber('.') },
-    { label: '0', onClick: () => appendNumber('0') },
-    { label: '=', onClick: compute, spanTwo: true },
+    { label: '.', onClick: () => appendNumber('.'), type: 'number' },
+    { label: '0', onClick: () => appendNumber('0'), type: 'number' },
+    { label: '=', onClick: compute, spanTwo: true, type: 'special' },
   ];
 
   return (
@@ -112,14 +121,26 @@ const Calculator = () => {
         </div>
       </div>
 
-      {buttons.map((btn, idx) => (
-        <CalculatorButton
-          key={idx}
-          label={btn.label}
-          onClick={btn.onClick}
-          spanTwo={btn.spanTwo}
-        />
-      ))}
+      {buttons.map((btn, idx) => {
+        // キーボード押下とボタンラベルを照合
+        let isActive = false;
+        if (activeKey) {
+          if (btn.label === activeKey || (btn.label === '÷' && activeKey === '/') || (btn.label === '=' && (activeKey === 'Enter' || activeKey === '='))) {
+            isActive = true;
+          }
+        }
+
+        return (
+          <CalculatorButton
+            key={idx}
+            label={btn.label}
+            onClick={btn.onClick}
+            spanTwo={btn.spanTwo}
+            type={btn.type}
+            active={isActive}
+          />
+        );
+      })}
     </div>
   );
 };
