@@ -29,13 +29,13 @@ const MeditationApp = () => {
   };
 
   return (
-    <div className={classes.app}>
-      <div className={classes.vidContainer}>
-        <video ref={video} className={classes.video} loop />
+    <div className={classes.meditation}>
+      <div className={classes.meditation__background}>
+        <video ref={video} className={classes.meditation__backgroundVideo} loop />
       </div>
 
       {/* 左：時間選択 */}
-      <div className={classes.timeSelect}>
+      <div className={`${classes.meditation__column} ${classes.meditation__timeSelector}`}>
         <button onClick={() => changeDuration(120)}>2 Minutes</button>
         <button onClick={() => changeDuration(300)}>5 Minutes</button>
         <button onClick={() => changeDuration(600)}>10 Minutes</button>
@@ -44,18 +44,18 @@ const MeditationApp = () => {
       </div>
 
       {/* 中央：プレイヤー */}
-      <div className={classes.playerContainer}>
+      <div className={classes.meditation__player}>
         <audio ref={song} />
         <Image
           src={isPlaying ? '/assets/svg/pause.svg' : '/assets/svg/play.svg'}
           alt="play"
           width={90}
           height={90}
-          className={classes.playButton}
+          className={classes.meditation__playButton}
           onClick={playPause}
         />
         <svg
-          className="track-outline"
+          className={classes.meditation__track}
           width="453"
           height="453"
           viewBox="0 0 453 453"
@@ -65,7 +65,7 @@ const MeditationApp = () => {
           <circle cx="226.5" cy="226.5" r="216.5" stroke="white" strokeWidth="20" />
         </svg>
         <svg
-          className="moving-outline"
+          className={classes.meditation__progress}
           width="453"
           height="453"
           viewBox="0 0 453 453"
@@ -82,18 +82,22 @@ const MeditationApp = () => {
           />
         </svg>
 
-        <button className={classes.addTimeButton} onClick={() => addTime(60)}>
+        <button
+          className={classes.meditation__addTimeButton}
+          onClick={() => addTime(60)}
+        >
           ＋1分
         </button>
 
-        <h3 className={classes.timeDisplay}>
+        <h3 className={classes.meditation__timeDisplay}>
           {minutes}:{seconds.toString().padStart(2, '0')}
         </h3>
       </div>
 
       {/* 右：サウンド */}
-      <div className={classes.soundPicker}>
+      <div className={classes.meditation__column}>
         <button
+          className={`${classes.meditation__soundButton} ${classes.meditation__soundButtonRain}`}
           onClick={() =>
             selectSound('/assets/sounds/rain.mp3', '/assets/video/rain.mp4', 600)
           }
@@ -102,6 +106,7 @@ const MeditationApp = () => {
         </button>
 
         <button
+          className={`${classes.meditation__soundButton} ${classes.meditation__soundButtonBeach}`}
           onClick={() =>
             selectSound('/assets/sounds/beach.mp3', '/assets/video/beach.mp4', 600)
           }
@@ -112,8 +117,8 @@ const MeditationApp = () => {
 
       {/* モーダル */}
       {isOpen && (
-        <div className={classes.modalOverlay}>
-          <div className={classes.modal}>
+        <div className={classes.meditation__modalOverlay}>
+          <div className={classes.meditation__modal}>
             <h2>時間設定（分）</h2>
             <input
               type="number"
@@ -121,7 +126,7 @@ const MeditationApp = () => {
               value={customMinutes}
               onChange={(e) => setCustomMinutes(Number(e.target.value))}
             />
-            <div className={classes.modalActions}>
+            <div className={classes.meditation__modalActions}>
               <button onClick={applyCustomTime}>設定</button>
               <button onClick={() => setIsOpen(false)}>キャンセル</button>
             </div>

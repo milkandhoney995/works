@@ -1,217 +1,201 @@
-.app {
+.meditation {
   height: 100vh;
   display: flex;
-  flex-direction: row;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-}
 
-/* ===============================
-   Background Video
-================================ */
+  /* ===============================
+     Background
+  ================================ */
 
-.vidContainer {
-  position: fixed;
-  inset: 0;
-  z-index: -10;
-}
+  &__background {
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+  }
 
-.video {
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-}
+  &__backgroundVideo {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+  }
 
-/* ===============================
-   Left / Right Columns
-================================ */
+  /* ===============================
+     Layout Columns
+  ================================ */
 
-.timeSelect,
-.soundPicker {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  height: 80%;
-  flex: 1;
-}
+  &__column {
+    flex: 1;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+  }
 
-/* ===============================
-   Player (Center)
-================================ */
+  /* ===============================
+     Time Selector
+  ================================ */
 
-.playerContainer {
-  position: relative;
-  flex: 1;
-  height: 80%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  &__timeSelector {
+    button {
+      width: 30%;
+      height: 10%;
+      font-size: 20px;
+      background: none;
+      color: white;
+      border: 2px solid white;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
 
-  svg {
+      &:hover {
+        background: white;
+        color: black;
+      }
+    }
+  }
+
+  /* ===============================
+     Player
+  ================================ */
+
+  &__player {
+    position: relative;
+    flex: 1;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__track,
+  &__progress {
     position: absolute;
     width: 50%;
     height: 50%;
     transform: rotate(-90deg);
     pointer-events: none;
   }
-}
 
-/* Play / Pause button */
-.playButton {
-  position: absolute;
-  z-index: 5;
-  cursor: pointer;
-}
-
-/* +1 minute button */
-.addTimeButton {
-  position: absolute;
-  bottom: 30%;
-  background: rgba(0, 0, 0, 0.45);
-  border: 2px solid white;
-  color: white;
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: white;
-    color: black;
-  }
-}
-
-/* Time text */
-.timeDisplay {
-  position: absolute;
-  bottom: 15%;
-  color: white;
-  font-size: 50px;
-  letter-spacing: 2px;
-}
-
-/* ===============================
-   Buttons (Left / Right)
-================================ */
-
-.timeSelect button,
-.soundPicker button {
-  color: white;
-  width: 30%;
-  height: 10%;
-  background: none;
-  font-size: 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  border: 2px solid white;
-  transition: all 0.4s ease;
-}
-
-.timeSelect {
-  button:hover {
-    color: black;
-    background: white;
-  }
-}
-
-/* ===============================
-   Sound Picker
-================================ */
-
-.soundPicker {
-  button {
-    border: none;
-    height: 120px;
-    width: 120px;
-    padding: 30px;
-    border-radius: 50%;
-  }
-
-  button:nth-child(1) {
-    background: #4972a1;
-  }
-
-  button:nth-child(2) {
-    background: #a14f49;
-  }
-
-  button img {
-    height: 100%;
-  }
-}
-
-/* ===============================
-   Modal
-================================ */
-
-.modalOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-}
-
-.modal {
-  background: rgba(20, 20, 20, 0.9);
-  padding: 30px;
-  border-radius: 12px;
-  color: white;
-  min-width: 300px;
-  text-align: center;
-
-  h2 {
-    margin-bottom: 20px;
-    font-size: 22px;
-  }
-
-  input {
-    width: 100%;
-    padding: 10px;
-    font-size: 18px;
-    border-radius: 6px;
-    border: none;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-}
-
-.modalActions {
-  display: flex;
-  gap: 10px;
-
-  button {
-    flex: 1;
-    padding: 10px;
-    font-size: 16px;
+  &__playButton {
+    position: absolute;
+    z-index: 5;
     cursor: pointer;
-    border-radius: 6px;
-    border: none;
-    transition: all 0.3s ease;
   }
 
-  button:first-child {
-    background: white;
-    color: black;
-
-    &:hover {
-      background: #ddd;
-    }
-  }
-
-  button:last-child {
-    background: transparent;
+  &__addTimeButton {
+    position: absolute;
+    bottom: 30%;
+    padding: 6px 16px;
+    font-size: 14px;
     color: white;
-    border: 1px solid white;
+    background: rgba(0, 0, 0, 0.45);
+    border: 2px solid white;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 
     &:hover {
       background: white;
       color: black;
+    }
+  }
+
+  &__timeDisplay {
+    position: absolute;
+    bottom: 15%;
+    font-size: 50px;
+    color: white;
+    letter-spacing: 2px;
+  }
+
+  /* ===============================
+     Sound Selector
+  ================================ */
+
+  &__soundButton {
+    height: 120px;
+    width: 120px;
+    padding: 30px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    img {
+      height: 100%;
+    }
+  }
+
+  &__soundButtonRain {
+    background: #4972a1;
+  }
+
+  &__soundButtonBeach {
+    background: #a14f49;
+  }
+
+  /* ===============================
+     Modal
+  ================================ */
+
+  &__modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+  }
+
+  &__modal {
+    background: rgba(20, 20, 20, 0.9);
+    padding: 30px;
+    border-radius: 12px;
+    min-width: 300px;
+    color: white;
+    text-align: center;
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    input {
+      width: 100%;
+      margin-bottom: 20px;
+      padding: 10px;
+      font-size: 18px;
+      border-radius: 6px;
+      border: none;
+      text-align: center;
+    }
+  }
+
+  &__modalActions {
+    display: flex;
+    gap: 10px;
+
+    button {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+
+      &:first-child {
+        background: white;
+        color: black;
+      }
+
+      &:last-child {
+        background: transparent;
+        color: white;
+        border: 1px solid white;
+      }
     }
   }
 }
