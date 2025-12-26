@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import classes from '../page.module.scss';
+import classes from '@/app/meditationApp/page.module.scss';
 import { soundOptions } from '@/data/soundOptions';
 
 interface SoundPickerProps {
