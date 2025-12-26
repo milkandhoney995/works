@@ -1,4 +1,6 @@
-@use '../../../../styles/variables/variables' as v;
+@use '../../../../styles/tokens/colors' as c;
+@use '../../../../styles/tokens/shadow' as s;
+@use '../../../../styles/tokens/transition' as t;
 
 .todoItem {
   display: flex;
@@ -6,16 +8,16 @@
   gap: 12px;
 
   padding: 12px 14px;
-  background: v.$commonWhite;
+  background: c.$commonWhite;
   border-radius: 10px;
-  box-shadow: v.$shadowSmall;
+  box-shadow: s.$shadowSm;
 
-  transition: transform v.$transitionFast,
-              box-shadow v.$transitionFast;
+  transition: transform t.$transitionFast,
+              box-shadow t.$transitionFast;
 
   &:hover {
     transform: translateY(-1px);
-    box-shadow: v.$shadowMedium;
+    box-shadow: s.$shadowMd;
   }
 
   &__checkbox {
@@ -27,15 +29,15 @@
   &__text {
     flex: 1;
     font-size: 1rem;
-    color: v.$sentence;
+    color: c.$sentence;
     line-height: 1.4;
 
-    transition: color v.$transitionFast,
-                opacity v.$transitionFast;
+    transition: color t.$transitionFast,
+                opacity t.$transitionFast;
 
     &--completed {
       text-decoration: line-through;
-      color: v.$caption;
+      color: c.$caption;
       opacity: 0.7;
     }
   }
@@ -51,8 +53,8 @@
     font-size: 0.85rem;
     cursor: pointer;
 
-    transition: background v.$transitionFast,
-                color v.$transitionFast;
+    transition: background t.$transitionFast,
+                color t.$transitionFast;
 
     &:hover {
       background: rgba(255, 71, 87, 0.1);

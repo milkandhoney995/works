@@ -1,4 +1,4 @@
-@use './variables' as v;
+@use '../tokens/colors' as c;
 @use "sass:map";
 
 $breakpoint: (
@@ -15,12 +15,12 @@ $breakpoint: (
 
 @mixin sentence() {
   font-size: 1.5rem;
-  color: v.$sentence;
+  color: c.$sentence;
   word-break: break-word;
 }
 @mixin caption() {
   font-size: 0.625rem;
-  color: v.$caption;
+  color: c.$caption;
 }
 
 @mixin sectionTitle() {
@@ -36,11 +36,10 @@ $breakpoint: (
 
 @mixin card() {
   border-radius: 1.25rem;
-  background-color: v.$cardBg;
+  background-color: c.$cardBg;
   box-shadow: 0 4px 8px -2px #000a3c1a;
   transition: transform 200ms cubic-bezier(0.561, -0.163, 0.246, 1.27),
       -webkit-transform 200ms cubic-bezier(0.561, -0.163, 0.246, 1.27);
-  // transition: box-shadow 0.25s ease-out;
 }
 
 @mixin btnShadow() {
@@ -50,7 +49,7 @@ $breakpoint: (
       2px 5px 11px 1px rgba(204, 204, 204, 0.86);
 }
 @mixin btn() {
-  background: v.$green;
+  background: c.$commonGreen;
   border-radius: 2rem;
   @include btnShadow();
 }

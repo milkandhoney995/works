@@ -1,0 +1,29 @@
+@use 'sass:color';
+
+// Base
+$pageBg: rgb(250, 241, 241);
+$secondaryBackground: #fffffe;
+
+// Text
+$title: #0d4983;
+$sentence: #3f3931;
+$caption: #b2b2a2;
+
+// Brand
+$primary: #0d4983;
+$accent: rgb(105, 132, 105);
+$link: rgb(3, 73, 3);
+
+// Hover
+$primaryHover: color.adjust($primary, $lightness: 8%);
+$accentHover: color.adjust($accent, $lightness: 10%);
+
+// Common
+$commonWhite: #ffffff;
+$commonGreen: rgb(59, 77, 59);
+
+// Card
+$card: #3f3931;
+$cardBg: rgba(255, 255, 254, 0.6);
+$border: #cccccc;
+$footerBg: rgb(62, 73, 62);

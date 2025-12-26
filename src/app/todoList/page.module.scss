@@ -1,5 +1,5 @@
-@use '../../../styles/variables/variables' as v;
-@use '../../../styles/variables/mixin' as m;
+@use '../../../styles/mixins/mixin' as m;
+@use '../../../styles/tokens/colors' as c;
 
 .todoList {
   max-width: 640px;
@@ -7,7 +7,7 @@
   margin: 2.5rem auto;
   padding: 32px 28px;
 
-  background: v.$secondaryBackground;
+  background: c.$secondaryBackground;
   border-radius: 16px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
 
@@ -17,7 +17,7 @@
 
   &__title {
     @include m.sectionTitle();
-    color: v.$title;
+    color: c.$title;
     text-align: center;
 
     font-size: 1.6rem;
@@ -37,8 +37,8 @@
       height: 3px;
       background: linear-gradient(
         90deg,
-        v.$primary,
-        v.$accent
+        c.$primary,
+        c.$accent
       );
       border-radius: 2px;
     }
