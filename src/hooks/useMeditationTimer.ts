@@ -1,108 +1,132 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-export function useMeditationTimer(fakeDuration: number) {
+export function useMeditationTimer(initialDuration: number) {
   const song = useRef<HTMLAudioElement>(null);
   const outline = useRef<SVGCircleElement>(null);
   const video = useRef<HTMLVideoElement>(null);
-  const timeDisplay = useRef<HTMLHeadingElement>(null);
 
+  const [duration, setDuration] = useState(initialDuration);
+  const [remainingTime, setRemainingTime] = useState(initialDuration);
   const [isPlaying, setIsPlaying] = useState(false);
+  const minutes = Math.floor(remainingTime / 60);
+  const seconds = Math.floor(remainingTime % 60);
 
+  /* ---------------- 初期化 ---------------- */
   useEffect(() => {
     if (!outline.current) return;
 
-    const outlineLength = outline.current.getTotalLength();
-    outline.current.style.strokeDasharray = outlineLength.toString();
-    outline.current.style.strokeDashoffset = outlineLength.toString();
+    const length = outline.current.getTotalLength();
+    outline.current.style.strokeDasharray = `${length}`;
+    outline.current.style.strokeDashoffset = `${length}`;
   }, []);
 
+  /* ---------------- タイマー処理 ---------------- */
   useEffect(() => {
-    const currentSong = song.current;
-    if (!currentSong) return;
+    const audio = song.current;
+    if (!audio) return;
 
-    const onTimeUpdate = () => {
-      const currentTime = currentSong.currentTime;
-      const elapsed = fakeDuration - currentTime;
-      const minutes = Math.floor(elapsed / 60);
-      const seconds = Math.floor(elapsed % 60);
+    const handleTimeUpdate = () => {
+      const current = audio.currentTime
+      const remain = Math.max(duration - current, 0)
+      setRemainingTime(remain)
 
-      if (timeDisplay.current) {
-        timeDisplay.current.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-      }
-
-      const progress = outline.current?.getTotalLength() || 0;
-      const offset = progress - (currentTime / fakeDuration) * progress;
       if (outline.current) {
-        outline.current.style.strokeDashoffset = offset.toString();
+        const length = outline.current.getTotalLength()
+        const offset = length - (current / duration) * length
+        outline.current.style.strokeDashoffset = `${offset}`
       }
 
-      if (currentTime >= fakeDuration) {
-        currentSong.pause();
-        currentSong.currentTime = 0;
-        setIsPlaying(false);
-        if (video.current) {
-          video.current.pause();
-        }
-      }
-    };
-
-    const onLoadedMetadata = () => {
-      if (timeDisplay.current) {
-        const minutes = Math.floor(fakeDuration / 60);
-        const seconds = Math.floor(fakeDuration % 60);
-        timeDisplay.current.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+      if (current >= duration) {
+        audio.pause()
+        audio.currentTime = 0;
+        video.current?.pause()
+        setIsPlaying(false)
       }
     };
 
-    currentSong.addEventListener('timeupdate', onTimeUpdate);
-    currentSong.addEventListener('loadedmetadata', onLoadedMetadata);
+    audio.addEventListener('timeupdate', handleTimeUpdate)
+    return () => audio.removeEventListener('timeupdate', handleTimeUpdate)
 
-    return () => {
-      currentSong.removeEventListener('timeupdate', onTimeUpdate);
-      currentSong.removeEventListener('loadedmetadata', onLoadedMetadata);
-    };
-  }, [fakeDuration]);
+  }, [duration]);
 
-  const playPause = () => {
-    const currentSong = song.current;
-    const currentVideo = video.current;
-    if (!currentSong || !currentVideo) return;
+  /* ---------------- 操作系 ---------------- */
+  const playPause = useCallback(() => {
+    const audio = song.current;
+    const vid = video.current;
+    if (!audio || !vid) return;
 
     if (isPlaying) {
-      currentSong.pause();
-      currentVideo.pause();
+      audio.pause();
+      vid.pause();
     } else {
-      currentSong.play();
-      currentVideo.play();
+      audio.play();
+      vid.play();
     }
-    setIsPlaying(!isPlaying);
-  };
+    setIsPlaying(prev => !prev);
+  }, [isPlaying]);
 
-  const restartSong = () => {
-    const currentSong = song.current;
-    const currentVideo = video.current;
-    if (!currentSong || !currentVideo) return;
+  const restart = useCallback(() => {
+    const audio = song.current;
+    const vid = video.current;
+    if (!audio || !vid) return;
 
-    currentSong.currentTime = 0;
-    currentVideo.currentTime = 0;
-    if (timeDisplay.current) {
-      const minutes = Math.floor(fakeDuration / 60);
-      const seconds = Math.floor(fakeDuration % 60);
-      timeDisplay.current.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    }
+    audio.currentTime = 0;
+    vid.currentTime = 0;
+    setRemainingTime(duration);
+
     if (outline.current) {
-      const progress = outline.current.getTotalLength();
-      outline.current.style.strokeDashoffset = progress.toString();
+      const length = outline.current.getTotalLength();
+      outline.current.style.strokeDashoffset = `${length}`;
     }
-  };
+  }, [duration]);
+
+  /** todo① 一定時間経過後に時間を追加 */
+  const addTime = useCallback((seconds: number) => {
+    setDuration(prev => prev + seconds);
+    setRemainingTime(prev => prev + seconds);
+  }, []);
+
+  /** todo② 設定用（2分 / 5分 / カスタム） */
+  const changeDuration = useCallback((seconds: number) => {
+    setDuration(seconds);
+    setRemainingTime(seconds);
+    restart();
+  }, [restart]);
+
+  const selectSound = useCallback(
+    (soundSrc: string, videoSrc: string, seconds: number) => {
+      if (!song.current || !video.current) return;
+
+      song.current.src = soundSrc;
+      video.current.src = videoSrc;
+      changeDuration(seconds);
+
+      if (isPlaying) {
+        song.current.play();
+        video.current.play();
+      }
+    },
+    [changeDuration, isPlaying]
+  );
 
   return {
+    // refs
     song,
-    outline,
     video,
-    timeDisplay,
+    outline,
+
+    // state
     isPlaying,
+    remainingTime,
+
+    minutes,
+    seconds,
+
+    // actions
     playPause,
-    restartSong,
+    restart,
+    addTime,
+    changeDuration,
+    selectSound,
   };
 }

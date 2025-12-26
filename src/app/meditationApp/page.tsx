@@ -1,49 +1,37 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import classes from './page.module.scss';
 import { useMeditationTimer } from '@/hooks/useMeditationTimer';
 
-// todo: 一定時間経過して、時間を追加する機能をつける
-// todo: 設定ボタンをつけて、開くと時間を2分、5分、10分、15分だけでなく、カスタムで設定できるようにする
 const MeditationApp = () => {
-  const [fakeDuration, setFakeDuration] = useState<number>(600);
-  const { song, outline, video, timeDisplay, isPlaying, playPause, restartSong } = useMeditationTimer(fakeDuration);
-
-  const selectSound = (soundSrc: string, videoSrc: string, duration: number) => {
-    if (!song.current || !video.current) return;
-
-    song.current.src = soundSrc;
-    video.current.src = videoSrc;
-    setFakeDuration(duration);
-    song.current.currentTime = 0;
-    video.current.currentTime = 0;
-
-    if (timeDisplay.current) {
-      const minutes = Math.floor(duration / 60);
-      const seconds = Math.floor(duration % 60);
-      timeDisplay.current.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    }
-
-    if (isPlaying) {
-      song.current.play();
-      video.current.play();
-    }
-  };
+  const {
+    song,
+    video,
+    outline,
+    isPlaying,
+    minutes,
+    seconds,
+    playPause,
+    selectSound,
+    changeDuration,
+  } = useMeditationTimer(600);
 
   return (
     <div className={classes.app}>
       <div className={classes.vidContainer}>
-        <video className={classes.video} ref={video} loop />
+        <video ref={video} className={classes.video} loop />
       </div>
 
+      {/* 時間選択 */}
       <div className={classes.timeSelect}>
-        <button onClick={() => selectSound(song.current?.src || '', video.current?.src || '', 120)}>2 Minutes</button>
-        <button onClick={() => selectSound(song.current?.src || '', video.current?.src || '', 300)}>5 Minutes</button>
-        <button onClick={() => selectSound(song.current?.src || '', video.current?.src || '', 600)}>10 Minutes</button>
+        <button onClick={() => changeDuration(120)}>2 Minutes</button>
+        <button onClick={() => changeDuration(300)}>5 Minutes</button>
+        <button onClick={() => changeDuration(600)}>10 Minutes</button>
+        <button onClick={() => changeDuration(900)}>15 Minutes</button>
       </div>
 
+      {/* プレイヤー */}
       <div className={classes.playerContainer}>
         <audio ref={song} />
         <Image
@@ -72,16 +60,35 @@ const MeditationApp = () => {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <circle ref={outline} cx="226.5" cy="226.5" r="216.5" stroke="#018EBA" strokeWidth="20" />
+          <circle
+            ref={outline}
+            cx="226.5"
+            cy="226.5"
+            r="216.5"
+            stroke="#018EBA"
+            strokeWidth="20"
+          />
         </svg>
-        <h3 className={classes.timeDisplay} ref={timeDisplay}>0:00</h3>
+        <h3 className={classes.timeDisplay}>
+          {minutes}:{seconds.toString().padStart(2, '0')}
+        </h3>
       </div>
 
+      {/* サウンド */}
       <div className={classes.soundPicker}>
-        <button onClick={() => selectSound('/assets/sounds/rain.mp3', '/assets/video/rain.mp4', 600)}>
+        <button
+          onClick={() =>
+            selectSound('/assets/sounds/rain.mp3', '/assets/video/rain.mp4', 600)
+          }
+        >
           <Image src="/assets/svg/rain.svg" width={60} height={60} alt="rain" />
         </button>
-        <button onClick={() => selectSound('/assets/sounds/beach.mp3', '/assets/video/beach.mp4', 600)}>
+
+        <button
+          onClick={() =>
+            selectSound('/assets/sounds/beach.mp3', '/assets/video/beach.mp4', 600)
+          }
+        >
           <Image src="/assets/svg/beach.svg" width={60} height={60} alt="beach" />
         </button>
       </div>
