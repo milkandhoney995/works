@@ -1,11 +1,34 @@
 .app {
   height: 100vh;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
-.timeSelect, .soundPicker, .playerContainer {
+/* ===============================
+   Background Video
+================================ */
+
+.vidContainer {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+}
+
+.video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+}
+
+/* ===============================
+   Left / Right Columns
+================================ */
+
+.timeSelect,
+.soundPicker {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -14,31 +37,65 @@
   flex: 1;
 }
 
+/* ===============================
+   Player (Center)
+================================ */
+
 .playerContainer {
   position: relative;
-  & svg {
+  flex: 1;
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
     position: absolute;
+    width: 50%;
     height: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%) rotate(-90deg);
+    transform: rotate(-90deg);
     pointer-events: none;
   }
 }
 
+/* Play / Pause button */
+.playButton {
+  position: absolute;
+  z-index: 5;
+  cursor: pointer;
+}
+
+/* +1 minute button */
+.addTimeButton {
+  position: absolute;
+  bottom: 30%;
+  background: rgba(0, 0, 0, 0.45);
+  border: 2px solid white;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: white;
+    color: black;
+  }
+}
+
+/* Time text */
 .timeDisplay {
   position: absolute;
-  bottom: 10%;
+  bottom: 15%;
   color: white;
   font-size: 50px;
+  letter-spacing: 2px;
 }
-.video {
-  position: fixed;
-  top: 0%;
-  left: 0%;
-  height: 100vh;
-  z-index: -10;
-}
+
+/* ===============================
+   Buttons (Left / Right)
+================================ */
 
 .timeSelect button,
 .soundPicker button {
@@ -50,30 +107,111 @@
   border-radius: 5px;
   cursor: pointer;
   border: 2px solid white;
-  transition: all 0.5s ease;
+  transition: all 0.4s ease;
 }
 
 .timeSelect {
-  & button:hover {
+  button:hover {
     color: black;
     background: white;
   }
 }
+
+/* ===============================
+   Sound Picker
+================================ */
+
 .soundPicker {
-  & button {
+  button {
     border: none;
     height: 120px;
     width: 120px;
     padding: 30px;
     border-radius: 50%;
   }
-  & button:nth-child(1) {
+
+  button:nth-child(1) {
     background: #4972a1;
   }
-  & button:nth-child(2) {
+
+  button:nth-child(2) {
     background: #a14f49;
   }
-  & button img {
+
+  button img {
     height: 100%;
+  }
+}
+
+/* ===============================
+   Modal
+================================ */
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal {
+  background: rgba(20, 20, 20, 0.9);
+  padding: 30px;
+  border-radius: 12px;
+  color: white;
+  min-width: 300px;
+  text-align: center;
+
+  h2 {
+    margin-bottom: 20px;
+    font-size: 22px;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 6px;
+    border: none;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+}
+
+.modalActions {
+  display: flex;
+  gap: 10px;
+
+  button {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    border: none;
+    transition: all 0.3s ease;
+  }
+
+  button:first-child {
+    background: white;
+    color: black;
+
+    &:hover {
+      background: #ddd;
+    }
+  }
+
+  button:last-child {
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+
+    &:hover {
+      background: white;
+      color: black;
+    }
   }
 }

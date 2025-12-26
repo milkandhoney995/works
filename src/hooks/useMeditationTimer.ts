@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 export function useMeditationTimer(initialDuration: number) {
   const song = useRef<HTMLAudioElement>(null);
-  const outline = useRef<SVGCircleElement>(null);
   const video = useRef<HTMLVideoElement>(null);
+  const outline = useRef<SVGCircleElement>(null);
 
   const [duration, setDuration] = useState(initialDuration);
   const [remainingTime, setRemainingTime] = useState(initialDuration);
@@ -20,36 +20,35 @@ export function useMeditationTimer(initialDuration: number) {
     outline.current.style.strokeDashoffset = `${length}`;
   }, []);
 
-  /* ---------------- タイマー処理 ---------------- */
+  /* ---------------- タイマー進行 ---------------- */
   useEffect(() => {
     const audio = song.current;
     if (!audio) return;
 
     const handleTimeUpdate = () => {
-      const current = audio.currentTime
-      const remain = Math.max(duration - current, 0)
-      setRemainingTime(remain)
+      const current = audio.currentTime;
+      const remain = Math.max(duration - current, 0);
+      setRemainingTime(remain);
 
       if (outline.current) {
-        const length = outline.current.getTotalLength()
-        const offset = length - (current / duration) * length
-        outline.current.style.strokeDashoffset = `${offset}`
+        const length = outline.current.getTotalLength();
+        const offset = length - (current / duration) * length;
+        outline.current.style.strokeDashoffset = `${offset}`;
       }
 
       if (current >= duration) {
-        audio.pause()
+        audio.pause();
         audio.currentTime = 0;
-        video.current?.pause()
-        setIsPlaying(false)
+        video.current?.pause();
+        setIsPlaying(false);
       }
     };
 
-    audio.addEventListener('timeupdate', handleTimeUpdate)
-    return () => audio.removeEventListener('timeupdate', handleTimeUpdate)
-
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+    return () => audio.removeEventListener('timeupdate', handleTimeUpdate);
   }, [duration]);
 
-  /* ---------------- 操作系 ---------------- */
+  /* ---------------- 再生 ---------------- */
   const playPause = useCallback(() => {
     const audio = song.current;
     const vid = video.current;
@@ -65,34 +64,36 @@ export function useMeditationTimer(initialDuration: number) {
     setIsPlaying(prev => !prev);
   }, [isPlaying]);
 
-  const restart = useCallback(() => {
-    const audio = song.current;
-    const vid = video.current;
-    if (!audio || !vid) return;
+  /* ---------------- リセット ---------------- */
+  const resetTimer = useCallback((newDuration: number) => {
+    if (song.current) song.current.currentTime = 0;
+    if (video.current) video.current.currentTime = 0;
 
-    audio.currentTime = 0;
-    vid.currentTime = 0;
-    setRemainingTime(duration);
+    setRemainingTime(newDuration);
 
     if (outline.current) {
       const length = outline.current.getTotalLength();
       outline.current.style.strokeDashoffset = `${length}`;
     }
-  }, [duration]);
+  }, []);
 
-  /** todo① 一定時間経過後に時間を追加 */
+  /* ---------------- ＋1分（todo①） ---------------- */
   const addTime = useCallback((seconds: number) => {
     setDuration(prev => prev + seconds);
     setRemainingTime(prev => prev + seconds);
   }, []);
 
-  /** todo② 設定用（2分 / 5分 / カスタム） */
-  const changeDuration = useCallback((seconds: number) => {
-    setDuration(seconds);
-    setRemainingTime(seconds);
-    restart();
-  }, [restart]);
+  /* ---------------- 時間変更（todo②） ---------------- */
+  const changeDuration = useCallback(
+    (seconds: number) => {
+      setDuration(seconds);
+      resetTimer(seconds);
+      setIsPlaying(false);
+    },
+    [resetTimer]
+  );
 
+  /* ---------------- サウンド ---------------- */
   const selectSound = useCallback(
     (soundSrc: string, videoSrc: string, seconds: number) => {
       if (!song.current || !video.current) return;
@@ -100,31 +101,20 @@ export function useMeditationTimer(initialDuration: number) {
       song.current.src = soundSrc;
       video.current.src = videoSrc;
       changeDuration(seconds);
-
-      if (isPlaying) {
-        song.current.play();
-        video.current.play();
-      }
     },
-    [changeDuration, isPlaying]
+    [changeDuration]
   );
 
   return {
-    // refs
     song,
     video,
     outline,
 
-    // state
     isPlaying,
-    remainingTime,
-
     minutes,
     seconds,
 
-    // actions
     playPause,
-    restart,
     addTime,
     changeDuration,
     selectSound,
