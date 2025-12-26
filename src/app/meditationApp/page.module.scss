@@ -1,65 +1,50 @@
 .meditation {
   height: 100vh;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-
-  /* ===============================
-     Background
-  ================================ */
 
   &__background {
     position: fixed;
     inset: 0;
     z-index: -10;
-  }
 
-  &__backgroundVideo {
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
+    &Video {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+    }
   }
-
-  /* ===============================
-     Layout Columns
-  ================================ */
 
   &__column {
-    flex: 1;
-    height: 80%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    height: 80%;
+    flex: 1;
   }
 
-  /* ===============================
-     Time Selector
-  ================================ */
-
   &__timeSelector {
-    button {
+    & button {
+      color: white;
       width: 30%;
       height: 10%;
-      font-size: 20px;
       background: none;
-      color: white;
-      border: 2px solid white;
+      font-size: 20px;
       border-radius: 5px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      border: 2px solid white;
+      transition: all 0.4s ease;
 
       &:hover {
-        background: white;
         color: black;
+        background: white;
       }
     }
   }
-
-  /* ===============================
-     Player
-  ================================ */
 
   &__player {
     position: relative;
@@ -68,15 +53,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
 
-  &__track,
-  &__progress {
-    position: absolute;
-    width: 50%;
-    height: 50%;
-    transform: rotate(-90deg);
-    pointer-events: none;
+    svg {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      transform: rotate(-90deg);
+      pointer-events: none;
+    }
   }
 
   &__playButton {
@@ -88,12 +72,12 @@
   &__addTimeButton {
     position: absolute;
     bottom: 30%;
-    padding: 6px 16px;
-    font-size: 14px;
-    color: white;
     background: rgba(0, 0, 0, 0.45);
     border: 2px solid white;
+    color: white;
+    padding: 6px 16px;
     border-radius: 20px;
+    font-size: 14px;
     cursor: pointer;
     transition: all 0.3s ease;
 
@@ -106,38 +90,31 @@
   &__timeDisplay {
     position: absolute;
     bottom: 15%;
-    font-size: 50px;
     color: white;
+    font-size: 50px;
     letter-spacing: 2px;
   }
 
-  /* ===============================
-     Sound Selector
-  ================================ */
-
   &__soundButton {
+    border: none;
     height: 120px;
     width: 120px;
     padding: 30px;
     border-radius: 50%;
-    border: none;
     cursor: pointer;
+
+    &Rain {
+      background: #4972a1;
+    }
+
+    &Beach {
+      background: #a14f49;
+    }
+
     img {
       height: 100%;
     }
   }
-
-  &__soundButtonRain {
-    background: #4972a1;
-  }
-
-  &__soundButtonBeach {
-    background: #a14f49;
-  }
-
-  /* ===============================
-     Modal
-  ================================ */
 
   &__modalOverlay {
     position: fixed;
@@ -153,8 +130,8 @@
     background: rgba(20, 20, 20, 0.9);
     padding: 30px;
     border-radius: 12px;
-    min-width: 300px;
     color: white;
+    min-width: 300px;
     text-align: center;
 
     h2 {
@@ -164,11 +141,11 @@
 
     input {
       width: 100%;
-      margin-bottom: 20px;
       padding: 10px;
       font-size: 18px;
       border-radius: 6px;
       border: none;
+      margin-bottom: 20px;
       text-align: center;
     }
   }
@@ -181,20 +158,29 @@
       flex: 1;
       padding: 10px;
       font-size: 16px;
-      border-radius: 6px;
       cursor: pointer;
+      border-radius: 6px;
       border: none;
       transition: all 0.3s ease;
+    }
 
-      &:first-child {
+    button:first-child {
+      background: white;
+      color: black;
+
+      &:hover {
+        background: #ddd;
+      }
+    }
+
+    button:last-child {
+      background: transparent;
+      color: white;
+      border: 1px solid white;
+
+      &:hover {
         background: white;
         color: black;
-      }
-
-      &:last-child {
-        background: transparent;
-        color: white;
-        border: 1px solid white;
       }
     }
   }
