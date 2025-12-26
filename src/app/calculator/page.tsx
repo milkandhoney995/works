@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from "react";
-import classes from "./page.module.scss";
+import { useState, useEffect, useCallback } from "react";
+import classes from "@/app/calculator/page.module.scss";
+import CalculatorButton from "@/app/calculator/components/CalculatorButton";
 
 type Operation = "+" | "-" | "*" | "÷" | undefined;
 
@@ -10,20 +11,20 @@ const Calculator = () => {
   const [previousOperand, setPreviousOperand] = useState<string>('');
   const [operation, setOperation] = useState<Operation>();
 
-  const appendNumber = (num: string) => {
+  const appendNumber = useCallback((num: string) => {
     if (num === '.' && currentOperand.includes('.')) return;
     setCurrentOperand(prev => prev + num);
-  };
+  }, [currentOperand]);
 
-  const chooseOperation = (op: Operation) => {
+  const chooseOperation = useCallback((op: Operation) => {
     if (!currentOperand) return;
     if (previousOperand) compute();
     setOperation(op);
     setPreviousOperand(currentOperand);
     setCurrentOperand('');
-  };
+  }, [currentOperand, previousOperand]);
 
-  const compute = () => {
+  const compute = useCallback(() => {
     if (!previousOperand || !currentOperand || !operation) return;
     const prev = parseFloat(previousOperand);
     const current = parseFloat(currentOperand);
@@ -40,14 +41,14 @@ const Calculator = () => {
     setCurrentOperand(result.toString());
     setPreviousOperand('');
     setOperation(undefined);
-  };
+  }, [currentOperand, previousOperand, operation]);
 
-  const deleteLast = () => setCurrentOperand(prev => prev.slice(0, -1));
-  const allClear = () => {
+  const deleteLast = useCallback(() => setCurrentOperand(prev => prev.slice(0, -1)), []);
+  const allClear = useCallback(() => {
     setCurrentOperand('');
     setPreviousOperand('');
     setOperation(undefined);
-  };
+  }, []);
 
   const getDisplayNumber = (num: string) => {
     if (!num) return '0';
@@ -58,8 +59,24 @@ const Calculator = () => {
     return decimal != null ? `${integerDisplay}.${decimal}` : integerDisplay;
   };
 
-  // ボタンの配置を明示的に定義
-  const buttons: { label: string, onClick: () => void, spanTwo?: boolean }[] = [
+  // キーボード入力対応
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key >= '0' && e.key <= '9') appendNumber(e.key);
+      else if (e.key === '.') appendNumber('.');
+      else if (e.key === '+' || e.key === '-' || e.key === '*') chooseOperation(e.key as Operation);
+      else if (e.key === '/') chooseOperation('÷');
+      else if (e.key === 'Enter' || e.key === '=') compute();
+      else if (e.key === 'Backspace') deleteLast();
+      else if (e.key === 'Escape') allClear();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [appendNumber, chooseOperation, compute, deleteLast, allClear]);
+
+  // ボタン配置
+  const buttons: { label: string; onClick: () => void; spanTwo?: boolean }[] = [
     { label: 'AC', onClick: allClear, spanTwo: true },
     { label: 'DEL', onClick: deleteLast },
     { label: '÷', onClick: () => chooseOperation('÷') },
@@ -96,13 +113,12 @@ const Calculator = () => {
       </div>
 
       {buttons.map((btn, idx) => (
-        <button
+        <CalculatorButton
           key={idx}
-          className={btn.spanTwo ? classes.spanTwo : undefined}
+          label={btn.label}
           onClick={btn.onClick}
-        >
-          {btn.label}
-        </button>
+          spanTwo={btn.spanTwo}
+        />
       ))}
     </div>
   );
