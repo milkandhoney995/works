@@ -8,11 +8,6 @@ interface Props {
   openSettings: () => void;
 }
 
-interface Props {
-  changeDuration: (seconds: number) => void;
-  openSettings: () => void;
-}
-
 const TimeSelector = ({ changeDuration, openSettings }: Props) => {
   return (
     <div className={classes.meditation__timeSelector}>

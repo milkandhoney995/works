@@ -1,9 +1,5 @@
 @use './index';
 
-:root {
-  --card-border-rgb: 131, 134, 135;
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
@@ -50,7 +46,7 @@ body {
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  color: index.$foregroundBase;
 }
 
 a {
