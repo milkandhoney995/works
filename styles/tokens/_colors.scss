@@ -1,44 +1,62 @@
 @use 'sass:color';
 
+// ==============================
 // Base
-$pageBg: rgb(250, 241, 241);
-$secondaryBackground: #fffffe;
+// ==============================
+$pageBg: #f3f4f2;                // 少し温かみのあるオフホワイト
+$secondaryBackground: #ffffff;
 
+// ==============================
 // Text
-$title: #0d4983;
-$sentence: #3f3931;
-$caption: #b2b2a2;
+// ==============================
+$title: #2f4a5c;                 // ダスティーブルー
+$sentence: #3e3e3c;              // チャコールグレー
+$caption: #8c8f8a;               // 低コントラスト補助テキスト
 
+// ==============================
 // Brand
-$primary: #0d4983;
-$accent: rgb(105, 132, 105);
-$link: rgb(3, 73, 3);
+// ==============================
+$primary: #2f4a5c;               // 北欧らしい落ち着いたブルー
+$accent: #7a927f;                // セージグリーン
+$link: #4a6f62;                  // 深めのグリーン
 
+// ==============================
 // Hover
+// ==============================
 $primaryHover: color.adjust($primary, $lightness: 8%);
-$accentHover: color.adjust($accent, $lightness: 10%);
+$accentHover: color.adjust($accent, $lightness: 8%);
 
+// ==============================
 // Common
+// ==============================
 $commonWhite: #ffffff;
-$commonGreen: rgb(59, 77, 59);
+$commonGreen: #5f7466;           // ナチュラルグリーン
 
+// ==============================
 // Card
-$card: #3f3931;
-$cardBg: rgba(255, 255, 254, 0.6);
-$cardBgHover: rgba(255, 255, 254, 0.1);
-$border: #cccccc;
-$footerBg: rgb(62, 73, 62);
-$cardBorderBase: rgb(131, 134, 135);
+// ==============================
+$card: #3e3e3c;                  // テキストと統一
+$cardBg: rgba(255, 255, 255, 0.75);
+$cardBgHover: rgba(255, 255, 255, 0.9);
+$border: #d8dbd7;                // 石っぽいグレー
+$footerBg: #e6e8e5;
+$cardBorderBase: #c9cdc8;
 
+// ==============================
 // Foreground / Background
-$foregroundBase: rgb(0, 0, 0);
-$backgroundStartBase: rgb(214, 219, 220);
-$backgroundEndBase: rgb(255, 255, 255);
+// ==============================
+$foregroundBase: #1e1f1e;
+$backgroundStartBase: #eef1f0;
+$backgroundEndBase: #ffffff;
 
+// ==============================
 // Tile
-$tileStartBase: rgb(239, 245, 249);
-$tileEndBase: rgb(228, 232, 233);
+// ==============================
+$tileStartBase: #f6f8f7;
+$tileEndBase: #e8ecea;
 
+// ==============================
 // Callout
-$calloutBgBase: rgb(238, 240, 241);
-$calloutBorderBase: rgb(172, 175, 176);
+// ==============================
+$calloutBgBase: #f0f2f1;
+$calloutBorderBase: #cfd4d0;
