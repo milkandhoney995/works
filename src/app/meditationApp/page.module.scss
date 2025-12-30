@@ -4,27 +4,33 @@
 @use '../../../styles/tokens/transition' as t;
 
 .meditation {
+  position: relative;
+  width: 100vw;
   height: 100vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
   overflow: hidden;
 
-  @include mixin.mq(sp) {
-    flex-direction: column;
-    padding: 1.25rem 0;
-  }
-
   &__background {
-    position: fixed;
+    position: absolute;
     inset: 0;
-    z-index: -10;
+    pointer-events: none;
 
     &Video {
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
+    }
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    @include mixin.mq(sp) {
+      flex-direction: column;
+      padding: 1.25rem 0;
     }
   }
 
@@ -98,7 +104,6 @@
 
   &__playButton {
     position: absolute;
-    z-index: 5;
     cursor: pointer;
 
     @include mixin.mq(tab) {
@@ -172,13 +177,12 @@
   }
 
   &__modalOverlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 100;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
   }
 
   &__modal {

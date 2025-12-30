@@ -38,27 +38,33 @@ const MeditationApp = () => {
           ref={video}
           className={classes.meditation__backgroundVideo}
           loop
-          autoPlay
           muted
+          playsInline
+          preload="auto"
+          webkit-playsinline="true"
         />
       </div>
 
-      {/* タイムセレクター */}
-      <TimeSelector changeDuration={changeDuration} openSettings={() => setIsOpen(true)} />
+      <div className={classes.meditation__content}>
+        {/* タイムセレクター */}
+        <TimeSelector changeDuration={changeDuration} openSettings={() => setIsOpen(true)} />
 
-      {/* プレイヤー */}
-      <Player
-        song={song}
-        outline={outline}
-        isPlaying={isPlaying}
-        minutes={minutes}
-        seconds={seconds}
-        playPause={playPause}
-        addTime={addTime}
-      />
+        {/* プレイヤー */}
+        <Player
+          song={song}
+          outline={outline}
+          isPlaying={isPlaying}
+          minutes={minutes}
+          seconds={seconds}
+          playPause={playPause}
+          addTime={addTime}
+        />
 
-      {/* サウンド選択 */}
-      <SoundPicker selectSound={selectSound} />
+        {/* サウンド選択 */}
+        <SoundPicker selectSound={selectSound} />
+      </div>
+
+      
 
       {/* 設定モーダル */}
       {isOpen && (
