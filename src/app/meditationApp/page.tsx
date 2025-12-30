@@ -64,8 +64,6 @@ const MeditationApp = () => {
         <SoundPicker selectSound={selectSound} />
       </div>
 
-      
-
       {/* 設定モーダル */}
       {isOpen && (
         <SettingsModal

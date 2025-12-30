@@ -16,30 +16,16 @@
   display: inherit;
   justify-content: inherit;
   align-items: inherit;
-  font-size: 0.85rem;
   max-width: l.$maxWidth;
   width: 100%;
-  z-index: 2;
   font-family: typo.$fontMono;
-  & a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-  }
+  font-size: 0.85rem;
   & h1 {
     position: relative;
+    text-align: center;
     margin: 0;
     padding: 1rem;
-    background-color: rgba(c.$calloutBgBase, 0.5);
-    border: 1px solid rgba(c.$calloutBorderBase, 0.3);
-    border-radius: r.$radiusMd;
   }
-}
-
-.code {
-  font-weight: 700;
-  font-family: typo.$fontMono;
 }
 
 .grid {
@@ -50,112 +36,12 @@
   gap: 1.25rem;
 }
 
-
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  padding: 4rem 0;
-  &::before {
-    background: e.$secondaryGlow;
-    border-radius: 50%;
-    width: 480px;
-    height: 360px;
-    margin-left: -400px;
-  }
-  &::after {
-    background: e.$primaryGlow;
-    width: 240px;
-    height: 180px;
-    z-index: -1;
-  }
-  &::before, &::after {
-    content: '';
-    left: 50%;
-    position: absolute;
-    filter: blur(45px);
-    transform: translateZ(0);
-  }
-}
-
-
-
 /* Mobile */
 @media (max-width: 700px) {
-  .content {
-    padding: 4rem;
-  }
 
   .grid {
     grid-template-columns: 1fr;
-    margin-bottom: 120px;
     max-width: 320px;
     text-align: center;
-  }
-
-  .center {
-    padding: 8rem 0 6rem;
-    &::before {
-      transform: none;
-      height: 300px;
-    }
-  }
-
-  .description {
-    font-size: 0.8rem;
-    & a {
-      padding: 1rem;
-    }
-    & p, & div {
-      display: flex;
-      justify-content: center;
-      position: fixed;
-      width: 100%;
-    }
-    & p {
-      align-items: center;
-      inset: 0 0 auto;
-      padding: 2rem 1rem 1.4rem;
-      border-radius: 0;
-      border: none;
-      border-bottom: 1px solid rgba(c.$calloutBorderBase, 0.25);
-      background: linear-gradient(
-        to bottom,
-        rgba(c.$backgroundStartBase, 1),
-        rgba(c.$calloutBgBase, 0.5)
-      );
-      background-clip: padding-box;
-      backdrop-filter: blur(24px);
-    }
-    & div {
-      align-items: flex-end;
-      pointer-events: none;
-      inset: auto 0 0;
-      padding: 2rem;
-      height: 200px;
-      background: linear-gradient(
-        to bottom,
-        transparent 0%,
-        rgb(c.$backgroundEndBase, 40%)
-      );
-      z-index: 1;
-    }
-  }
-}
-
-/* Tablet and Smaller Desktop */
-@media (min-width: 701px) and (max-width: 1120px) {
-  .grid {
-    grid-template-columns: repeat(2, 50%);
-  }
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(360deg);
-  }
-  to {
-    transform: rotate(0deg);
   }
 }
