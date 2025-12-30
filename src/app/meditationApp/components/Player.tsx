@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import classes from '@/app/meditationApp/page.module.scss';
+import CircleProgress from './CircleProgress';
 
 interface Props {
   song: React.RefObject<HTMLAudioElement | null>;
@@ -34,26 +35,9 @@ const Player = ({
         className={classes.meditation__playButton}
         onClick={playPause}
       />
-      <svg
-        className={classes.meditation__track}
-        width="453"
-        height="453"
-        viewBox="0 0 453 453"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle cx="226.5" cy="226.5" r="216.5" stroke="white" strokeWidth="20" />
-      </svg>
-      <svg
-        className={classes.meditation__progress}
-        width="453"
-        height="453"
-        viewBox="0 0 453 453"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle ref={outline} cx="226.5" cy="226.5" r="216.5" stroke="#018EBA" strokeWidth="20" />
-      </svg>
+
+      <CircleProgress type="track" />
+      <CircleProgress type="progress" ref={outline} />
 
       <button
         className={classes.meditation__addTimeButton}
