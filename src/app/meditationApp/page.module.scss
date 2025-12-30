@@ -1,4 +1,7 @@
 @use '../../../styles/mixins/mixin' as mixin;
+@use '../../../styles/tokens/colors' as c;
+@use '../../../styles/tokens/radius' as r;
+@use '../../../styles/tokens/transition' as t;
 
 .meditation {
   height: 100vh;
@@ -47,18 +50,18 @@
     }
 
     button {
-      color: white;
+      color: c.$primary;
       padding: 1rem 1.25rem;
       background: none;
       font-size: 1.25rem;
       border-radius: 5px;
       cursor: pointer;
-      border: 2px solid white;
-      transition: all 0.4s ease;
+      border: 2px solid c.$primary;
+      transition: all t.$transitionBase;
 
       &:hover {
-        color: black;
-        background: white;
+        color: c.$commonWhite;
+        background: c.$primary;
       }
 
       @include mixin.mq(tab) {
@@ -106,18 +109,18 @@
   &__addTimeButton {
     position: absolute;
     bottom: 30%;
-    background: rgba(0, 0, 0, 0.45);
-    border: 2px solid white;
-    color: white;
     padding: 6px 16px;
-    border-radius: 20px;
+    border-radius: r.$radiusLg;
     font-size: 14px;
+    border: 2px solid c.$primary;
+    color: c.$primary;
+    background: none;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all t.$transitionBase;
 
     &:hover {
-      background: white;
-      color: black;
+      color: c.$commonWhite;
+      background: c.$primary;
     }
 
     @include mixin.mq(sp) {
@@ -129,7 +132,7 @@
   &__timeDisplay {
     position: absolute;
     bottom: 15%;
-    color: white;
+    color: c.$commonWhite;
     font-size: 50px;
     letter-spacing: 2px;
 
@@ -182,7 +185,7 @@
     background: rgba(20, 20, 20, 0.9);
     padding: 30px;
     border-radius: 12px;
-    color: white;
+    color: c.$commonWhite;
     min-width: 300px;
     text-align: center;
 
@@ -222,7 +225,7 @@
       cursor: pointer;
       border-radius: 6px;
       border: none;
-      transition: all 0.3s ease;
+      transition: all t.$transitionBase;
 
       @include mixin.mq(sp) {
         font-size: 14px;
@@ -231,7 +234,7 @@
     }
 
     button:first-child {
-      background: white;
+      background: c.$commonWhite;
       color: black;
 
       &:hover {
@@ -241,11 +244,11 @@
 
     button:last-child {
       background: transparent;
-      color: white;
-      border: 1px solid white;
+      color: c.$commonWhite;
+      border: 1px solid c.$commonWhite;
 
       &:hover {
-        background: white;
+        background: c.$commonWhite;
         color: black;
       }
     }
