@@ -3,6 +3,7 @@
 @use '../../styles/tokens/radius' as r;
 @use '../../styles/tokens/effects' as e;
 @use '../../styles/tokens/colors' as c;
+@use '../../styles/mixins/mixin' as m;
 
 .main {
   display: flex;
@@ -34,12 +35,8 @@
   width: l.$maxWidth;
   max-width: 100%;
   gap: 1.25rem;
-}
 
-/* Mobile */
-@media (max-width: 700px) {
-
-  .grid {
+  @include m.mq(tab) {
     grid-template-columns: 1fr;
     max-width: 320px;
     text-align: center;

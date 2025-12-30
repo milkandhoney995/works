@@ -1,4 +1,4 @@
-@use '../../../styles/mixins/mixin' as mixin;
+@use '../../../styles/mixins/mixin' as m;
 @use '../../../styles/tokens/colors' as c;
 @use '../../../styles/tokens/radius' as r;
 @use '../../../styles/tokens/transition' as t;
@@ -28,7 +28,7 @@
     width: 100%;
     height: 100%;
 
-    @include mixin.mq(sp) {
+    @include m.mq(sp) {
       flex-direction: column;
       padding: 1.25rem 0;
     }
@@ -39,7 +39,7 @@
     gap: 1.25rem;
     padding: 1rem;
 
-    @include mixin.mq(sp) {
+    @include m.mq(sp) {
       grid-template-columns: 1fr 1fr;
     }
   }
@@ -50,7 +50,7 @@
     justify-content: center;
     gap: 0.75rem;
 
-    @include mixin.mq(sp) {
+    @include m.mq(sp) {
       display: grid;
       grid-template-columns: 1fr 1fr;
     }
@@ -70,7 +70,7 @@
         background: c.$primary;
       }
 
-      @include mixin.mq(tab) {
+      @include m.mq(tab) {
         font-size: 1rem;
       }
     }
@@ -91,13 +91,13 @@
       transform: rotate(-90deg);
       pointer-events: none;
 
-      @include mixin.mq(sp) {
+      @include m.mq(sp) {
         width: 70%;
         height: 70%;
       }
     }
 
-    @include mixin.mq(sp) {
+    @include m.mq(sp) {
       padding: 20px 0;
     }
   }
@@ -106,7 +106,7 @@
     position: absolute;
     cursor: pointer;
 
-    @include mixin.mq(tab) {
+    @include m.mq(tab) {
       transform: scale(0.6);
     }
   }
@@ -128,7 +128,7 @@
       background: c.$primary;
     }
 
-    @include mixin.mq(sp) {
+    @include m.mq(sp) {
       bottom: 12%;
       font-size: 0.75rem;
     }
@@ -141,11 +141,11 @@
     font-size: 50px;
     letter-spacing: 2px;
 
-    @include mixin.mq(tab) {
+    @include m.mq(tab) {
       font-size: 40px;
     }
 
-    @include mixin.mq(sp) {
+    @include m.mq(sp) {
       font-size: 32px;
       bottom: 0;
     }
@@ -171,7 +171,7 @@
       height: 100%;
     }
 
-    @include mixin.mq(sp) {
+    @include m.mq(sp) {
       padding: 20px;
     }
   }
@@ -197,7 +197,7 @@
       margin-bottom: 20px;
       font-size: 22px;
 
-      @include mixin.mq(sp) {
+      @include m.mq(sp) {
         font-size: 18px;
       }
     }
@@ -211,7 +211,7 @@
       margin-bottom: 20px;
       text-align: center;
 
-      @include mixin.mq(sp) {
+      @include m.mq(sp) {
         font-size: 16px;
         padding: 8px;
       }
@@ -231,7 +231,7 @@
       border: none;
       transition: all t.$transitionBase;
 
-      @include mixin.mq(sp) {
+      @include m.mq(sp) {
         font-size: 14px;
         padding: 8px;
       }
