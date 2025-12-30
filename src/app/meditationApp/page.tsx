@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import classes from './page.module.scss';
 import { useMeditationTimer } from '@/hooks/useMeditationTimer';
-import TimeSelector from './components/TimeSelector';
-import Player from './components/Player';
-import SoundPicker from './components/SoundPicker';
-import SettingsModal from './components/SettingsModal';
+import TimeSelector from '@/app/meditationApp/components/TimeSelector';
+import Player from '@/app/meditationApp/components/Player';
+import SoundPicker from '@/app/meditationApp/components/SoundPicker';
+import SettingsModal from '@/app/meditationApp/components/SettingsModal';
 
 const MeditationApp = () => {
   const {
