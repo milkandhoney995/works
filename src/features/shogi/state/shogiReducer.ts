@@ -1,7 +1,7 @@
 import { ShogiState, ShogiAction } from '@/features/shogi/state/shogiState';
-import { promotable } from '@/hooks/shogi/pieces';
-import { pieceMoves } from '@/hooks/shogi/moveRules';
-import { capturePiece, copyBoard, inEnemyCamp, isSentePiece, nextTurn, resetSelection } from '@/utils/shogiHelpers';
+import { promotable } from '@/features/shogi/data/pieces';
+import { pieceMoves } from '@/features/shogi/rules/moveRules';
+import { capturePiece, copyBoard, inEnemyCamp, isSentePiece, nextTurn, resetSelection } from '@/features/shogi/logic/shogiHelpers';
 /**
  * 将棋の状態を管理するリデューサー関数
  * @param state 現在の将棋の状態

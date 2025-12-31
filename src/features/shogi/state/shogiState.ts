@@ -1,4 +1,4 @@
-import { initialBoard } from '@/hooks/shogi/board';
+import { initialBoard } from '@/features/shogi/data/board';
 import { Position, Hands, PendingPromotion } from '@/features/shogi/state/types';
 
 /**

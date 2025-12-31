@@ -1,4 +1,4 @@
-import { pieceMap } from '@/hooks/shogi/pieces';
+import { pieceMap } from '@/features/shogi/data/pieces';
 import { Hands } from '@/features/shogi/state/types';
 import classes from '@/app/shogi/page.module.scss';
 

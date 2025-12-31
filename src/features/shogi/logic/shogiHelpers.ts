@@ -1,4 +1,4 @@
-import { unpromote } from "@/hooks/shogi/pieces";
+import { unpromote } from "@/features/shogi/data/pieces";
 import { Position } from "@/features/shogi/state/types";
 
 

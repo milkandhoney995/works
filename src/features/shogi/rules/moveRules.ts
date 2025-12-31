@@ -1,5 +1,5 @@
 import { MoveFunc, Position } from '@/features/shogi/state/types';
-import { isSentePiece, isEnemyPiece, isInsideBoard, pushIfValid } from '@/utils/shogiHelpers';
+import { isSentePiece, isEnemyPiece, isInsideBoard, pushIfValid } from '@/features/shogi/logic/shogiHelpers';
 
 /* ================= 王 ================= */
 export const kingMoves: MoveFunc = ({ x, y }, board) => {
