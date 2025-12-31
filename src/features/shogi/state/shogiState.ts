@@ -1,5 +1,5 @@
 import { initialBoard } from '@/hooks/shogi/board';
-import { Position, Hands, PendingPromotion } from '@/hooks/shogi/types';
+import { Position, Hands, PendingPromotion } from '@/features/shogi/state/types';
 
 /**
  * 将棋の状態を表すインターフェース

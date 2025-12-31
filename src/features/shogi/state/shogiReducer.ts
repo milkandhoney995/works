@@ -1,4 +1,4 @@
-import { ShogiState, ShogiAction } from '@/hooks/shogi/shogiState';
+import { ShogiState, ShogiAction } from '@/features/shogi/state/shogiState';
 import { promotable } from '@/hooks/shogi/pieces';
 import { pieceMoves } from '@/hooks/shogi/moveRules';
 import { capturePiece, copyBoard, inEnemyCamp, isSentePiece, nextTurn, resetSelection } from '@/utils/shogiHelpers';

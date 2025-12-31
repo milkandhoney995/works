@@ -1,7 +1,7 @@
 import { useReducer, useState } from 'react';
-import { shogiReducer } from '@/hooks/shogi/shogiReducer';
-import { initialShogiState } from '@/hooks/shogi/shogiState';
-import { HandsByPlayer, UseShogiReturn } from '@/hooks/shogi/types';
+import { shogiReducer } from '@/features/shogi/state/shogiReducer';
+import { initialShogiState } from '@/features/shogi/state/shogiState';
+import { HandsByPlayer, UseShogiReturn } from '@/features/shogi/state/types';
 import { isSentePiece } from '@/utils/shogiHelpers';
 
 /**

@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { pieceMap } from '@/hooks/shogi/pieces';
-import { Position } from '@/hooks/shogi/types';
+import { Position } from '@/features/shogi/state/types';
 import classes from '@/app/shogi/page.module.scss';
 import { isSentePiece } from '@/utils/shogiHelpers';
 

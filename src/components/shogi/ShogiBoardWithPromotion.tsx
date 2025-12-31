@@ -1,6 +1,6 @@
 import { ShogiBoard } from './ShogiBoard';
 import { ShogiHands } from './ShogiHands';
-import { PendingPromotion, Position, HandsByPlayer } from '@/hooks/shogi/types';
+import { PendingPromotion, Position, HandsByPlayer } from '@/features/shogi/state/types';
 import classes from '@/app/shogi/page.module.scss';
 
 interface Props {

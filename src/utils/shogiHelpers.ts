@@ -1,5 +1,5 @@
 import { unpromote } from "@/hooks/shogi/pieces";
-import { Position } from "@/hooks/shogi/types";
+import { Position } from "@/features/shogi/state/types";
 
 
 /* ================= 定数 ================= */

@@ -1,4 +1,4 @@
-import { Position } from '@/hooks/shogi/types';
+import { Position } from '@/features/shogi/state/types';
 import { ShogiCell } from './ShogiCell';
 import classes from '@/app/shogi/page.module.scss';
 

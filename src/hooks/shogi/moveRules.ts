@@ -1,4 +1,4 @@
-import { MoveFunc, Position } from '@/hooks/shogi/types';
+import { MoveFunc, Position } from '@/features/shogi/state/types';
 import { isSentePiece, isEnemyPiece, isInsideBoard, pushIfValid } from '@/utils/shogiHelpers';
 
 /* ================= 王 ================= */

@@ -1,5 +1,5 @@
 import { pieceMap } from '@/hooks/shogi/pieces';
-import { Hands } from '@/hooks/shogi/types';
+import { Hands } from '@/features/shogi/state/types';
 import classes from '@/app/shogi/page.module.scss';
 
 interface Props {
