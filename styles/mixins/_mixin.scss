@@ -13,43 +13,9 @@ $breakpoint: (
   }
 }
 
-@mixin sentence() {
-  font-size: 1.5rem;
-  color: c.$sentence;
-  word-break: break-word;
-}
-@mixin caption() {
-  font-size: 0.625rem;
-  color: c.$caption;
-}
-
 @mixin sectionTitle() {
   font-size: 2.5rem;
     @include mq(tab) {
       font-size: 2rem;
     }
-}
-
-@mixin cardImg() {
-  border-radius: 20px 20px 0 0;
-}
-
-@mixin card() {
-  border-radius: 1.25rem;
-  background-color: c.$cardBg;
-  box-shadow: 0 4px 8px -2px #000a3c1a;
-  transition: transform 200ms cubic-bezier(0.561, -0.163, 0.246, 1.27),
-      -webkit-transform 200ms cubic-bezier(0.561, -0.163, 0.246, 1.27);
-}
-
-@mixin btnShadow() {
-  -webkit-box-shadow: 2px 5px 11px 1px rgba(204, 204, 204, 0.86),
-      2px 5px 11px 1px rgba(204, 204, 204, 0.86);
-  box-shadow: 2px 5px 11px 1px rgba(204, 204, 204, 0.86),
-      2px 5px 11px 1px rgba(204, 204, 204, 0.86);
-}
-@mixin btn() {
-  background: c.$commonGreen;
-  border-radius: 2rem;
-  @include btnShadow();
 }
