@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import classes from './page.module.scss';
-import { useMeditationTimer } from '@/hooks/useMeditationTimer';
+import { useMeditationTimer } from '@/features/meditationApp/hooks/useMeditationTimer';
 import TimeSelector from '@/app/meditationApp/components/TimeSelector';
 import Player from '@/app/meditationApp/components/Player';
 import SoundPicker from '@/app/meditationApp/components/SoundPicker';

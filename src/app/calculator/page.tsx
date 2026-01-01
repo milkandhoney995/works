@@ -2,7 +2,7 @@
 
 import classes from "@/app/calculator/page.module.scss";
 import CalculatorButton from "@/app/calculator/components/CalculatorButton";
-import { useCalculator } from "@/hooks/useCalculator";
+import { useCalculator } from "@/features/calculator/hooks/useCalculator";
 import { calculatorButtons, CalculatorButtonData } from "@/data/calculatorButton";
 
 const Calculator = () => {
