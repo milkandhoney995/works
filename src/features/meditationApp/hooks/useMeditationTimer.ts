@@ -140,8 +140,15 @@ export function useMeditationTimer(initialDuration: number) {
     (soundSrc: string, videoSrc: string, seconds: number) => {
       if (!song.current || !video.current) return;
 
+      const handleLoadError = (element: HTMLMediaElement, type: string) => {
+        console.warn(`Failed to load ${type}: ${element.src}`);
+      };
+
       song.current.src = soundSrc;
       video.current.src = videoSrc;
+
+      song.current.onerror = () => handleLoadError(song.current!, 'audio');
+      video.current.onerror = () => handleLoadError(video.current!, 'video');
 
       song.current.load();
       video.current.load();
