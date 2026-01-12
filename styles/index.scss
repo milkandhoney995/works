@@ -1,10 +1,13 @@
 @forward './tokens/layout';
 @forward './tokens/colors';
+@forward './tokens/spacing';
 @forward './tokens/radius';
 @forward './tokens/shadow';
 @forward './tokens/transition';
 @forward './tokens/effects';
 @forward './tokens/typography';
+
+@forward './utilities/utilities';
 
 @forward './mixins/mixin';
 @forward './theme/dark';

@@ -1,0 +1,89 @@
+@use '../tokens/colors' as c;
+@use '../tokens/spacing' as s;
+@use '../tokens/typography' as ty;
+@use '../tokens/radius' as r;
+@use '../tokens/shadow' as sh;
+@use '../tokens/transition' as t;
+
+// Utility classes for common patterns
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 s.$space-4;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.gap-1 { gap: s.$space-1; }
+.gap-2 { gap: s.$space-2; }
+.gap-3 { gap: s.$space-3; }
+.gap-4 { gap: s.$space-4; }
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: s.$space-3 s.$space-4;
+  border-radius: r.$radiusMd;
+  border: 1px solid transparent;
+  font-size: ty.$font-size-base;
+  font-weight: ty.$font-weight-medium;
+  cursor: pointer;
+  transition: all t.$transitionFast;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.btn-primary {
+  background: c.$primary;
+  color: c.$commonWhite;
+
+  &:hover:not(:disabled) {
+    background: c.$primaryHover;
+  }
+}
+
+.btn-secondary {
+  background: transparent;
+  color: c.$primary;
+  border-color: c.$primary;
+
+  &:hover:not(:disabled) {
+    background: c.$primary;
+    color: c.$commonWhite;
+  }
+}
