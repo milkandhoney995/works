@@ -1,31 +1,47 @@
-@use '../../../styles/mixins/mixin' as m;
-@use '../../../styles/tokens/colors' as c;
+@use '../../../styles/index' as *;
 
 .todoList {
   max-width: 640px;
-  height: calc(100vh - 5rem);
-  margin: 2.5rem auto;
-  padding: 32px 28px;
+  height: calc(100vh - $space-12);
+  margin: $space-12 auto;
+  padding: $space-8 $space-7;
 
-  background: c.$secondaryBackground;
-  border-radius: 16px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  background: $secondaryBackground;
+  border-radius: $radiusLg;
+  box-shadow: $shadowMd;
 
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: $space-6;
+
+  @include mq(sp) {
+    max-width: 100%;
+    margin: $space-8 $space-4;
+    padding: $space-6 $space-4;
+    height: calc(100vh - $space-16);
+    gap: $space-4;
+  }
+
+  @include mq(tab) {
+    max-width: 480px;
+    margin: $space-10 auto;
+    padding: $space-7 $space-5;
+    height: calc(100vh - $space-12);
+  }
 
   &__title {
-    @include m.sectionTitle();
-    color: c.$title;
+    color: $title;
     text-align: center;
-
-    font-size: 1.6rem;
-    font-weight: 700;
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
     letter-spacing: 0.05em;
-
     position: relative;
-    padding-bottom: 12px;
+    padding-bottom: $space-3;
+
+    @include mq(sp) {
+      font-size: $font-size-xl;
+      padding-bottom: $space-2;
+    }
 
     &::after {
       content: '';
@@ -37,8 +53,8 @@
       height: 3px;
       background: linear-gradient(
         90deg,
-        c.$primary,
-        c.$accent
+        $primary,
+        $accent
       );
       border-radius: 2px;
     }
@@ -47,13 +63,20 @@
   &__todos {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: $space-3;
+
+    @include mq(sp) {
+      gap: $space-2;
+    }
+  }
+
+  &__todos {
     margin-top: 8px;
   }
 }
 
 /* スマホ対応 */
-@include m.mq(sp) {
+@include mq(sp) {
   .todoList {
     margin: 20px 12px;
     padding: 24px 16px;

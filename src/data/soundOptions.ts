@@ -16,7 +16,7 @@ export const soundOptions: SoundOption[] = [
     duration: 600,
     icon: '/assets/svg/rain.svg',
     alt: 'rain',
-    styleClass: 'Rain',
+    styleClass: '--rain',
   },
   {
     id: 'beach',
@@ -25,7 +25,7 @@ export const soundOptions: SoundOption[] = [
     duration: 600,
     icon: '/assets/svg/beach.svg',
     alt: 'beach',
-    styleClass: 'Beach',
+    styleClass: '--beach',
   },
   // 新しいサウンドはここに追加可能
 ];

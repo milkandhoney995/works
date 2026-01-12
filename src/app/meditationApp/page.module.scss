@@ -1,7 +1,4 @@
-@use '../../../styles/mixins/mixin' as m;
-@use '../../../styles/tokens/colors' as c;
-@use '../../../styles/tokens/radius' as r;
-@use '../../../styles/tokens/transition' as t;
+@use '../../../styles/index' as *;
 
 .meditation {
   position: relative;
@@ -28,19 +25,30 @@
     width: 100%;
     height: 100%;
 
-    @include m.mq(sp) {
+    @include mq(sp) {
       flex-direction: column;
-      padding: 1.25rem 0;
+      padding: $space-5 0;
+    }
+
+    @include mq(tab) {
+      padding: $space-6 $space-4;
     }
   }
 
   &__column {
     display: grid;
-    gap: 1.25rem;
-    padding: 1rem;
+    gap: $space-5;
+    padding: $space-4;
 
-    @include m.mq(sp) {
+    @include mq(sp) {
       grid-template-columns: 1fr 1fr;
+      gap: $space-3;
+      padding: $space-2;
+    }
+
+    @include mq(tab) {
+      gap: $space-4;
+      padding: $space-3;
     }
   }
 
@@ -48,30 +56,41 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 0.75rem;
+    gap: $space-3;
 
-    @include m.mq(sp) {
+    @include mq(sp) {
       display: grid;
       grid-template-columns: 1fr 1fr;
+      gap: $space-2;
+    }
+
+    @include mq(tab) {
+      gap: $space-4;
     }
 
     button {
-      color: c.$primary;
-      padding: 1rem 1.25rem;
+      color: $primary;
+      padding: $space-4 $space-5;
       background: none;
-      font-size: 1.25rem;
-      border-radius: 5px;
+      font-size: $font-size-lg;
+      border-radius: $radiusMd;
       cursor: pointer;
-      border: 2px solid c.$primary;
-      transition: all t.$transitionBase;
+      border: 2px solid $primary;
+      transition: all $transitionBase;
 
       &:hover {
-        color: c.$commonWhite;
-        background: c.$primary;
+        color: $commonWhite;
+        background: $primary;
       }
 
-      @include m.mq(tab) {
-        font-size: 1rem;
+      @include mq(tab) {
+        font-size: $font-size-base;
+        padding: $space-3 $space-4;
+      }
+
+      @include mq(sp) {
+        font-size: $font-size-sm;
+        padding: $space-2 $space-3;
       }
     }
   }
@@ -91,14 +110,19 @@
       transform: rotate(-90deg);
       pointer-events: none;
 
-      @include m.mq(sp) {
+      @include mq(sp) {
         width: 70%;
         height: 70%;
       }
+
+      @include mq(tab) {
+        width: 60%;
+        height: 60%;
+      }
     }
 
-    @include m.mq(sp) {
-      padding: 20px 0;
+    @include mq(sp) {
+      padding: $space-4 0;
     }
   }
 
@@ -108,48 +132,59 @@
     background: none;
     border: none;
 
-    @include m.mq(tab) {
+    @include mq(tab) {
       transform: scale(0.6);
+    }
+
+    @include mq(sp) {
+      transform: scale(0.5);
     }
   }
 
   &__addTimeButton {
     position: absolute;
     bottom: 30%;
-    padding: 6px 16px;
-    border-radius: r.$radiusLg;
-    font-size: 14px;
-    border: 2px solid c.$primary;
-    color: c.$primary;
+    padding: $space-2 $space-4;
+    border-radius: $radiusLg;
+    font-size: $font-size-sm;
+    border: 2px solid $primary;
+    color: $primary;
     background: none;
     cursor: pointer;
-    transition: all t.$transitionBase;
+    transition: all $transitionBase;
 
     &:hover {
-      color: c.$commonWhite;
-      background: c.$primary;
+      color: $commonWhite;
+      background: $primary;
     }
 
-    @include m.mq(sp) {
+    @include mq(sp) {
       bottom: 12%;
-      font-size: 0.75rem;
+      font-size: $font-size-xs;
+      padding: $space-1 $space-3;
+    }
+
+    @include mq(tab) {
+      bottom: 25%;
+      font-size: $font-size-sm;
     }
   }
 
   &__timeDisplay {
     position: absolute;
     bottom: 15%;
-    color: c.$commonWhite;
-    font-size: 50px;
+    color: $commonWhite;
+    font-size: $font-size-5xl;
     letter-spacing: 2px;
 
-    @include m.mq(tab) {
-      font-size: 40px;
+    @include mq(tab) {
+      font-size: $font-size-4xl;
     }
 
-    @include m.mq(sp) {
-      font-size: 32px;
+    @include mq(sp) {
+      font-size: $font-size-3xl;
       bottom: 0;
+      letter-spacing: 1px;
     }
   }
 
@@ -157,24 +192,34 @@
     border: none;
     height: 120px;
     width: 120px;
-    padding: 30px;
+    padding: $space-8;
     border-radius: 50%;
     cursor: pointer;
-
-    &Rain {
-      background: #4972a1;
-    }
-
-    &Beach {
-      background: #a14f49;
-    }
+    transition: all $transitionBase;
 
     img {
       height: 100%;
     }
 
-    @include m.mq(sp) {
-      padding: 20px;
+    @include mq(sp) {
+      height: 80px;
+      width: 80px;
+      padding: $space-5;
+    }
+
+    @include mq(tab) {
+      height: 100px;
+      width: 100px;
+      padding: $space-6;
+    }
+
+    // Sound-specific styles
+    &--rain {
+      background: #4972a1;
+    }
+
+    &--beach {
+      background: #a14f49;
     }
   }
 
@@ -185,76 +230,107 @@
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
   }
 
   &__modal {
     background: rgba(20, 20, 20, 0.9);
-    padding: 30px;
-    border-radius: 12px;
-    color: c.$commonWhite;
+    padding: $space-8;
+    border-radius: $radiusLg;
+    color: $commonWhite;
     min-width: 300px;
     text-align: center;
+    box-shadow: $shadowMd;
+
+    @include mq(sp) {
+      padding: $space-4;
+      min-width: 280px;
+      margin: $space-4;
+    }
+
+    @include mq(tab) {
+      padding: $space-6;
+    }
 
     h2 {
-      margin-bottom: 20px;
-      font-size: 22px;
+      margin-bottom: $space-4;
+      font-size: $font-size-xl;
 
-      @include m.mq(sp) {
-        font-size: 18px;
+      @include mq(sp) {
+        font-size: $font-size-lg;
+        margin-bottom: $space-3;
       }
     }
 
     input {
       width: 100%;
-      padding: 10px;
-      font-size: 18px;
-      border-radius: 6px;
+      padding: $space-3;
+      font-size: $font-size-lg;
+      border-radius: $radiusMd;
       border: none;
-      margin-bottom: 20px;
+      margin-bottom: $space-4;
       text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      color: $commonWhite;
 
-      @include m.mq(sp) {
-        font-size: 16px;
-        padding: 8px;
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      &:focus {
+        outline: 2px solid $primary;
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      @include mq(sp) {
+        font-size: $font-size-base;
+        padding: $space-2;
+        margin-bottom: $space-3;
       }
     }
   }
 
   &__modalActions {
     display: flex;
-    gap: 10px;
+    gap: $space-3;
+    margin-top: $space-4;
+
+    @include mq(sp) {
+      gap: $space-2;
+      margin-top: $space-3;
+    }
 
     button {
       flex: 1;
-      padding: 10px;
-      font-size: 16px;
+      padding: $space-3;
+      font-size: $font-size-base;
       cursor: pointer;
-      border-radius: 6px;
+      border-radius: $radiusMd;
       border: none;
-      transition: all t.$transitionBase;
+      transition: all $transitionBase;
 
-      @include m.mq(sp) {
-        font-size: 14px;
-        padding: 8px;
+      @include mq(sp) {
+        font-size: $font-size-sm;
+        padding: $space-2;
       }
     }
 
     button:first-child {
-      background: c.$commonWhite;
+      background: $commonWhite;
       color: black;
 
       &:hover {
-        background: #ddd;
+        background: rgba(255, 255, 255, 0.9);
       }
     }
 
     button:last-child {
       background: transparent;
-      color: c.$commonWhite;
-      border: 1px solid c.$commonWhite;
+      color: $commonWhite;
+      border: 1px solid $commonWhite;
 
       &:hover {
-        background: c.$commonWhite;
+        background: $commonWhite;
         color: black;
       }
     }

@@ -1,4 +1,4 @@
-@use '../../../styles/mixins/mixin' as m;
+@use '../../../styles/index' as *;
 
 .shogi {
   display: flex;
@@ -6,14 +6,25 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 20px;
+  padding: $space-5;
+
+  @include mq(sp) {
+    padding: $space-3;
+  }
 
   &__title {
-    font-size: 2rem;
-    margin-bottom: 20px;
+    font-size: $font-size-3xl;
+    margin-bottom: $space-5;
+    color: $title;
+    text-align: center;
 
-    @include m.mq(sp) {
-      font-size: 1.5rem;
+    @include mq(sp) {
+      font-size: $font-size-2xl;
+      margin-bottom: $space-4;
+    }
+
+    @include mq(tab) {
+      font-size: $font-size-2xl;
     }
   }
 
@@ -21,13 +32,26 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: $space-3;
+
+    @include mq(sp) {
+      gap: $space-2;
+    }
   }
 
   /* 将棋盤 全体ラッパー*/
   &__wrapper {
     display: inline-block;
+    background: $secondaryBackground;
+    border-radius: $radiusMd;
+    padding: $space-4;
+    box-shadow: $shadowMd;
+
+    @include mq(sp) {
+      padding: $space-2;
+    }
   }
+
   /* 右下の先手持ち駒 */
   &__handsSente {
     align-self: flex-end;
@@ -43,8 +67,18 @@
     display: grid;
     grid-template-columns: repeat(9, 50px);
     text-align: center;
-    font-size: 0.9rem;
+    font-size: $font-size-sm;
     user-select: none;
+    color: $caption;
+
+    @include mq(sp) {
+      grid-template-columns: repeat(9, 40px);
+      font-size: $font-size-xs;
+    }
+
+    @include mq(tab) {
+      grid-template-columns: repeat(9, 45px);
+    }
   }
 
   &__file {

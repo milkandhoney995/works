@@ -1,4 +1,4 @@
-@use '../../../styles/mixins/mixin' as m;
+@use '../../../styles/index' as *;
 
 .calculator {
   display: grid;
@@ -7,25 +7,38 @@
   min-height: 100vh;
   grid-template-columns: repeat(4, minmax(80px, 100px));
   grid-template-rows: minmax(120px, auto) repeat(5, minmax(80px, 100px));
-  gap: 10px;
-  padding: 20px;
+  gap: $space-3;
+  padding: $space-5;
 
-  @include m.mq(sp) {
+  @include mq(sp) {
     grid-template-columns: repeat(4, minmax(60px, 80px));
     grid-template-rows: minmax(100px, auto) repeat(5, minmax(60px, 80px));
-    padding: 10px;
+    gap: $space-2;
+    padding: $space-3;
+  }
+
+  @include mq(tab) {
+    grid-template-columns: repeat(4, minmax(70px, 90px));
+    grid-template-rows: minmax(110px, auto) repeat(5, minmax(70px, 90px));
+    gap: $space-2;
+    padding: $space-4;
   }
 
   & > button {
     cursor: pointer;
-    font-size: 1.5rem;
-    border: 1px solid #ddd;
+    font-size: $font-size-xl;
+    border: 1px solid rgba($border, 0.3);
     outline: none;
-    border-radius: 8px;
-    transition: all 0.1s ease-in-out; // タッチ反応用アニメーション
+    border-radius: $radiusMd;
+    transition: all $transitionFast;
+    font-weight: $font-weight-medium;
 
-    @include m.mq(sp) {
-      font-size: 1.2rem;
+    @include mq(sp) {
+      font-size: $font-size-lg;
+    }
+
+    @include mq(tab) {
+      font-size: $font-size-lg;
     }
   }
 }
@@ -36,18 +49,36 @@
 
 /* ボタンの種類ごとの色 */
 .number {
-  background-color: rgba(255, 255, 255, 0.9);
-  &:hover { background-color: rgba(255, 255, 255, 1); }
+  background-color: rgba($commonWhite, 0.9);
+  color: $sentence;
+
+  &:hover {
+    background-color: $commonWhite;
+    transform: translateY(-1px);
+    box-shadow: $shadowSm;
+  }
 }
 
 .operator {
-  background-color: rgba(255, 200, 0, 0.9);
-  &:hover { background-color: rgba(255, 200, 0, 1); }
+  background-color: rgba($accent, 0.9);
+  color: $commonWhite;
+
+  &:hover {
+    background-color: $accent;
+    transform: translateY(-1px);
+    box-shadow: $shadowSm;
+  }
 }
 
 .special {
-  background-color: rgba(200, 200, 200, 0.9);
-  &:hover { background-color: rgba(200, 200, 200, 1); }
+  background-color: rgba($cardBg, 0.9);
+  color: $sentence;
+
+  &:hover {
+    background-color: $cardBg;
+    transform: translateY(-1px);
+    box-shadow: $shadowSm;
+  }
 }
 
 /* キーボード/タッチ押下時 */
@@ -73,13 +104,13 @@ button:active {
     color: rgba(255, 255, 255, 0.75);
     font-size: 1.2rem;
 
-    @include m.mq(sp) { font-size: 1rem; }
+    @include mq(sp) { font-size: $font-size-base; }
   }
 
   & .currentOperand {
     color: white;
     font-size: 2rem;
 
-    @include m.mq(sp) { font-size: 1.5rem; }
+    @include mq(sp) { font-size: $font-size-xl; }
   }
 }

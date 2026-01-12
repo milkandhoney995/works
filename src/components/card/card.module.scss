@@ -1,26 +1,30 @@
-@use '../../../styles/mixins/mixin' as m;
-@use '../../../styles/tokens/colors' as c;
-@use '../../../styles/tokens/radius' as r;
+@use '../../../styles/index' as *;
 
 .card {
-  padding: 1rem 1.2rem;
-  border-radius: r.$radiusMd;
-  background: c.$cardBg;
-  border: 1px solid rgba(c.$cardBorderBase, 0);
-  transition: background 200ms, border 200ms;
+  padding: $space-4 $space-5;
+  border-radius: $radiusMd;
+  background: $cardBg;
+  border: 1px solid rgba($cardBorderBase, 0);
+  transition: background $transitionFast, border $transitionFast;
+  box-shadow: $shadowSm;
+
   & span {
     display: inline-block;
-    transition: transform 200ms;
+    transition: transform $transitionFast;
   }
+
   & h2 {
-    font-weight: 600;
-    margin-bottom: 0.7rem;
+    font-weight: $font-weight-semibold;
+    margin-bottom: $space-3;
+    font-size: $font-size-lg;
+    line-height: $line-height-snug;
   }
+
   & h1 {
     margin: 0;
     opacity: 0.6;
-    font-size: 0.9rem;
-    line-height: 1.5;
+    font-size: $font-size-sm;
+    line-height: $line-height-normal;
     max-width: 30ch;
   }
 }
@@ -28,8 +32,9 @@
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
-    background: c.$cardBgHover;
-    border: 1px solid rgba(c.$cardBorderBase, 0.15);
+    background: $cardBgHover;
+    border: 1px solid rgba($cardBorderBase, 0.15);
+    box-shadow: $shadowMd;
   }
 
   .card:hover span {
@@ -43,11 +48,12 @@
   }
 }
 
-@include m.mq(tab) {
+@include mq(tab) {
   .card {
-    padding: 1rem 2.5rem;
+    padding: $space-4 $space-12;
     & h2 {
-      margin-bottom: 0.5rem;
+      margin-bottom: $space-2;
+      font-size: $font-size-base;
     }
   }
 }

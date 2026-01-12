@@ -44,10 +44,74 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   background: index.$pageBg;
+  font-family: index.$fontMono;
+  font-size: index.$font-size-base;
+  line-height: index.$line-height-normal;
 }
 
 body {
   color: index.$sentence;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2 {
+  color: index.$title;
+  font-weight: index.$font-weight-bold;
+  line-height: index.$line-height-tight;
+}
+
+h1 {
+  font-size: index.$font-size-4xl;
+
+  @media (max-width: 768px) {
+    font-size: index.$font-size-3xl;
+  }
+}
+
+h2 {
+  font-size: index.$font-size-3xl;
+
+  @media (max-width: 768px) {
+    font-size: index.$font-size-2xl;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color index.$transitionFast;
+
+  &:hover {
+    color: index.$link;
+  }
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+// Focus styles for accessibility
+*:focus-visible {
+  outline: 2px solid index.$primary;
+  outline-offset: 2px;
+}
+
+// Reduce motion for users who prefer it
+@media (prefers-reduced-motion) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
 }
 
 h1, h2 {

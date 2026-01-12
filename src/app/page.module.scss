@@ -1,44 +1,63 @@
-@use '../../styles/tokens/typography' as typo;
-@use '../../styles/tokens/layout' as l;
-@use '../../styles/tokens/radius' as r;
-@use '../../styles/tokens/effects' as e;
-@use '../../styles/tokens/colors' as c;
-@use '../../styles/mixins/mixin' as m;
+@use '../../styles/index' as *;
 
 .main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 6rem;
+  padding: $space-16 $space-6;
   min-height: 100vh;
+
+  @include mq(sp) {
+    padding: $space-8 $space-4;
+  }
+
+  @include mq(tab) {
+    padding: $space-12 $space-6;
+  }
 }
 
 .description {
   display: inherit;
   justify-content: inherit;
   align-items: inherit;
-  max-width: l.$maxWidth;
+  max-width: $maxWidth;
   width: 100%;
-  font-family: typo.$fontMono;
-  font-size: 0.85rem;
+  font-family: $fontMono;
+  font-size: $font-size-sm;
+
   & h1 {
     position: relative;
     text-align: center;
     margin: 0;
-    padding: 1rem;
+    padding: $space-4;
+    font-size: $font-size-4xl;
+    font-weight: $font-weight-bold;
+
+    @include mq(sp) {
+      font-size: $font-size-3xl;
+      padding: $space-3;
+    }
+
+    @include mq(tab) {
+      font-size: $font-size-3xl;
+    }
   }
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(25%, auto));
-  width: l.$maxWidth;
+  width: $maxWidth;
   max-width: 100%;
-  gap: 1.25rem;
+  gap: $space-5;
 
-  @include m.mq(tab) {
+  @include mq(tab) {
     grid-template-columns: 1fr;
     max-width: 320px;
     text-align: center;
+  }
+
+  @include mq(sp) {
+    gap: $space-4;
   }
 }
