@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import classes from './page.module.scss';
 import { useMeditationTimer } from '@/features/meditationApp/hooks/useMeditationTimer';
 import TimeSelector from '@/app/meditationApp/components/TimeSelector';
@@ -25,10 +25,14 @@ const MeditationApp = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [customMinutes, setCustomMinutes] = useState(10);
 
-  const applyCustomTime = () => {
+  // カスタム時間を適用（callbackでメモ化し、不必要な再レンダリングを防止）
+  const applyCustomTime = useCallback(() => {
     changeDuration(customMinutes * 60);
     setIsOpen(false);
-  };
+  }, [changeDuration, customMinutes]);
+
+  const openSettings = useCallback(() => setIsOpen(true), []);
+  const closeModal = useCallback(() => setIsOpen(false), []);
 
   return (
     <div className={classes.meditation}>
@@ -42,12 +46,13 @@ const MeditationApp = () => {
           playsInline
           preload="auto"
           webkit-playsinline="true"
+          aria-hidden="true"
         />
       </div>
 
       <div className={classes.meditation__content}>
         {/* タイムセレクター */}
-        <TimeSelector changeDuration={changeDuration} openSettings={() => setIsOpen(true)} />
+        <TimeSelector changeDuration={changeDuration} openSettings={openSettings} />
 
         {/* プレイヤー */}
         <Player
@@ -70,7 +75,7 @@ const MeditationApp = () => {
           customMinutes={customMinutes}
           setCustomMinutes={setCustomMinutes}
           applyCustomTime={applyCustomTime}
-          closeModal={() => setIsOpen(false)}
+          closeModal={closeModal}
         />
       )}
     </div>
