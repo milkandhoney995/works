@@ -24,17 +24,23 @@ const Player = ({
   playPause,
   addTime,
 }: Props) => {
+  const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
   return (
     <div className={classes.meditation__player}>
-      <audio ref={song} />
-      <Image
-        src={isPlaying ? '/assets/svg/pause.svg' : '/assets/svg/play.svg'}
-        alt="play"
-        width={90}
-        height={90}
-        className={classes.meditation__playButton}
+      <audio ref={song} aria-hidden="true" />
+      <button
         onClick={playPause}
-      />
+        aria-label={isPlaying ? '一時停止' : '再生'}
+        className={classes.meditation__playButton}
+      >
+        <Image
+          src={isPlaying ? '/assets/svg/pause.svg' : '/assets/svg/play.svg'}
+          alt=""
+          width={90}
+          height={90}
+        />
+      </button>
 
       <CircleProgress type="track" />
       <CircleProgress type="progress" ref={outline} />
@@ -42,13 +48,19 @@ const Player = ({
       <button
         className={classes.meditation__addTimeButton}
         onClick={() => addTime(60)}
+        aria-label="1分追加"
       >
         ＋1分
       </button>
 
-      <h3 className={classes.meditation__timeDisplay}>
-        {minutes}:{seconds.toString().padStart(2, '0')}
-      </h3>
+      <div
+        className={classes.meditation__timeDisplay}
+        role="timer"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {timeString}
+      </div>
     </div>
   );
 };

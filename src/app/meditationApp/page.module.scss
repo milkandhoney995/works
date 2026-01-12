@@ -105,6 +105,8 @@
   &__playButton {
     position: absolute;
     cursor: pointer;
+    background: none;
+    border: none;
 
     @include m.mq(tab) {
       transform: scale(0.6);
