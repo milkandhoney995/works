@@ -1,14 +1,15 @@
 
 'use client';
 
-import { forwardRef } from 'react';
+import { forwardRef, memo } from 'react';
 import classes from '@/app/meditationApp/page.module.scss';
 
 interface Props {
   type: 'track' | 'progress';
 }
 
-const CircleProgress = forwardRef<SVGCircleElement, Props>(({ type }, ref) => {
+// 不必要な再レンダリングを防ぐために memo を使用
+const CircleProgress = memo(forwardRef<SVGCircleElement, Props>(({ type }, ref) => {
   const isProgress = type === 'progress';
 
   return (
@@ -23,6 +24,7 @@ const CircleProgress = forwardRef<SVGCircleElement, Props>(({ type }, ref) => {
       viewBox="0 0 453 453"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
     >
       <circle
         ref={isProgress ? ref : undefined}
@@ -33,7 +35,9 @@ const CircleProgress = forwardRef<SVGCircleElement, Props>(({ type }, ref) => {
         strokeWidth="20"
       />
     </svg>
-  )
-})
+  );
+}));
+
+CircleProgress.displayName = 'CircleProgress';
 
 export default CircleProgress;

@@ -13,7 +13,7 @@ interface Props {
   onClick: (x: number, y: number) => void;
 }
 
-// memoで再レンダリングを最適化
+// 不必要な再レンダリングを防ぐために memo を使用
 export const ShogiCell = memo(function ShogiCell({
   x,
   y,
