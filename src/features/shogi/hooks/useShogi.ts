@@ -9,20 +9,15 @@ import { isSentePiece } from '@/features/shogi/logic/shogiHelpers';
  */
 export const useShogi = (): UseShogiReturn => {
   const [state, dispatch] = useReducer(shogiReducer, initialShogiState);
-
-  // 持ち駒選択用の一時 state
-  const [selectedHand, setSelectedHand] = useState<string | null>(null);
+  const [selectedHand, setSelectedHand] = useState<string | null>(null); // 持ち駒選択用の一時 state
 
   /**
   * 盤面セルクリック時の処理
-  * @param uiX クリックされたセルの列番号（UI座標系）
-  * @param uiY クリックされたセルの行番号（UI座標系）
+  * @param x クリックされたセルの列番号（UI座標系）
+  * @param u クリックされたセルの行番号（UI座標系）
   * @returns void
   */
-  const handleCellClick = (uiX: number, uiY: number) => {
-    // board[y][x] に合わせて座標を設定
-    const x = uiX;
-    const y = uiY; // 0が上段、8が下段ならこのままでOK
+  const handleCellClick = (x: number, y: number) => {
     if (state.pendingPromotion) return; // 成り選択中は盤面クリック無効
 
     if (selectedHand) {

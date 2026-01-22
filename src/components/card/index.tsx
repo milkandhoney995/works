@@ -1,24 +1,22 @@
 import Link from "next/link"
 import classes from "./card.module.scss"
 
-type propsType = {
+interface CardProps {
   title: string
   description: string
   href: string
 }
 
-const Card = (props: propsType) => {
+const Card = ({ title, description, href }: CardProps) => {
   return (
     <Link
       className={classes.card}
       target="_blank"
       rel="noopener noreferrer"
-      href={props.href}
+      href={href}
     >
-      <h2>
-        { props.title } <span>-&gt;</span>
-      </h2>
-      <p>{ props.description }</p>
+      <h2 className={classes.card__title}>{title} <span>-&gt;</span></h2>
+      <p>{description}</p>
     </Link>
   )
 }

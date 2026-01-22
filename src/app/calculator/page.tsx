@@ -19,18 +19,20 @@ const Calculator = () => {
     getDisplayNumber
   } = useCalculator();
 
-  // 各ボタンにクリック処理を割り当てる
+  // ラベルと処理をマップで定義
+  const buttonHandlers: Record<string, () => void> = {
+    'AC': allClear,
+    'DEL': deleteLast,
+    '=': compute,
+    '+': () => chooseOperation('+'),
+    '-': () => chooseOperation('-'),
+    '*': () => chooseOperation('*'),
+    '÷': () => chooseOperation('÷'),
+  };
+
+  // ボタン押下時に処理を返す関数
   const getButtonOnClick = (btn: CalculatorButtonData) => {
-    switch (btn.label) {
-      case 'AC': return allClear;
-      case 'DEL': return deleteLast;
-      case '=': return compute;
-      case '+':
-      case '-':
-      case '*':
-      case '÷': return () => chooseOperation(btn.label as any);
-      default: return () => appendNumber(btn.label);
-    }
+    return buttonHandlers[btn.label] ?? (() => appendNumber(btn.label));
   };
 
   return (

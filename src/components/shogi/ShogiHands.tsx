@@ -1,6 +1,7 @@
 import { pieceMap } from '@/features/shogi/data/pieces';
 import { Hands } from '@/features/shogi/state/types';
 import classes from '@/app/shogi/page.module.scss';
+import clsx from 'clsx';
 
 interface Props {
   hands: Hands;
@@ -10,10 +11,14 @@ interface Props {
 
 export const ShogiHands = ({ hands, onSelect, className }: Props) => {
   return (
-    <div className={[classes.shogi__hands, className].filter(Boolean).join(' ')}>
+    <div className={clsx(classes.shogi__hands, className)}>
       {Object.entries(hands).map(([piece, count]) =>
         count > 0 ? (
-          <button key={piece} onClick={() => onSelect(piece)}>
+          <button
+            key={piece}
+            onClick={() => onSelect(piece)}
+            aria-label={`${pieceMap[piece]} ${count}個`}
+          >
             {pieceMap[piece]} × {count}
           </button>
         ) : null
