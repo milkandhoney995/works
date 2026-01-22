@@ -35,7 +35,7 @@ export const isKingInCheck = (
       // 相手の駒だけ見る
       if (isSentePiece(piece) === isSente) continue;
 
-      const moves = pieceMoves[piece]?.({ x, y }, board) ?? [];
+      const moves = pieceMoves[piece.toLowerCase()]?.({ x, y }, board) ?? [];
       if (moves.some(m => m.x === kingPos.x && m.y === kingPos.y)) {
         return true;
       }
