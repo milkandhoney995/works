@@ -6,6 +6,7 @@ import { Position, Hands, PendingPromotion } from '@/features/shogi/state/types'
  * @interface ShogiState
  * @property board 現在の盤面
  * @property selected 選択されている駒の位置
+ * @property selectedHandPiece 選択されている持ち駒
  * @property legalMoves 選択されている駒の合法手リスト
  * @property hands 各プレイヤーの持ち駒
  * @property pendingPromotion 昇格待ちの駒情報
@@ -16,10 +17,11 @@ import { Position, Hands, PendingPromotion } from '@/features/shogi/state/types'
 export interface ShogiState {
   board: string[][];
   selected: Position | null;
+  selectedHandPiece: string | null;
   legalMoves: Position[];
   hands: Hands;
   pendingPromotion: PendingPromotion;
-  turn: 'sente' | 'gote'; // 先手か後手
+  turn: 'sente' | 'gote';
   isInCheck: boolean;
   kingPosition: Position | null;
 }
@@ -28,6 +30,7 @@ export interface ShogiState {
  * UIイベント単位で Action を設計
  * @property type アクションの種類
  * @property SELECT_CELL セルを選択するアクション
+ * @property SELECT_HAND_PIECE 持ち駒を選択するアクション
  * @property MOVE_PIECE 駒を移動するアクション
  * @property DROP_PIECE 駒を打つアクション
  * @property CANCEL_SELECTION 選択をキャンセルするアクション
@@ -35,6 +38,7 @@ export interface ShogiState {
  */
 export type ShogiAction =
   | { type: 'SELECT_CELL'; x: number; y: number }
+  | { type: 'SELECT_HAND_PIECE'; piece: string }
   | { type: 'MOVE_PIECE'; x: number; y: number }
   | { type: 'DROP_PIECE'; piece: string; x: number; y: number }
   | { type: 'CANCEL_SELECTION' }
@@ -47,6 +51,7 @@ export type ShogiAction =
 export const initialShogiState: ShogiState = {
   board: initialBoard,
   selected: null,
+  selectedHandPiece: null,
   legalMoves: [],
   hands: {},
   pendingPromotion: null,

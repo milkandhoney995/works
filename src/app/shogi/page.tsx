@@ -8,6 +8,7 @@ const ShogiPage = () => {
   const {
     board,
     selected,
+    selectedHandPiece,
     legalMoves,
     hands,
     pendingPromotion,
@@ -24,6 +25,7 @@ const ShogiPage = () => {
       <ShogiBoardWithPromotion
         board={board}
         selected={selected}
+        selectedHandPiece={selectedHandPiece}
         legalMoves={legalMoves}
         hands={hands}
         pendingPromotion={pendingPromotion}

@@ -1,5 +1,5 @@
 import { ShogiState, ShogiAction } from '@/features/shogi/state/shogiState';
-import { isSentePiece } from '@/features/shogi/logic/shogiHelpers';
+import { isSentePiece, isInsideBoard } from '@/features/shogi/logic/shogiHelpers';
 import { getLegalMoves } from '@/features/shogi/logic/getLegalMoves';
 import { withCheckState } from '@/features/shogi/logic/withCheckState';
 import {
@@ -8,6 +8,34 @@ import {
   tryMovePiece,
   resetSelection,
 } from '../logic/shogiRules';
+import { Position } from '@/features/shogi/state/types';
+
+/**
+ * 王手中の合法 DROP マスを計算
+ */
+const getLegalDropMoves = (
+  state: ShogiState,
+  piece: string
+): Position[] => {
+  const moves: Position[] = [];
+
+  for (let y = 0; y < 9; y++) {
+    for (let x = 0; x < 9; x++) {
+      if (!isInsideBoard(x, y)) continue;
+      if (state.board[y][x] !== '') continue;
+
+      const dropped = tryDropPiece(state, piece, { x, y });
+      const evaluated = withCheckState(dropped);
+
+      // 王手が解消される打ちだけ許可
+      if (!evaluated.isInCheck) {
+        moves.push({ x, y });
+      }
+    }
+  }
+
+  return moves;
+};
 
 /**
  * 将棋の状態を管理するリデューサー関数
@@ -20,11 +48,13 @@ export const shogiReducer = (
   action: ShogiAction
 ): ShogiState => {
   switch (action.type) {
+
+    /* ================= セル選択 ================= */
     case 'SELECT_CELL': {
       const piece = state.board[action.y][action.x];
       if (!piece) return state;
 
-      /* ================= 手番チェック ================= */
+      /* 手番チェック */
       const isSente = isSentePiece(piece);
       if (
         (state.turn === 'sente' && !isSente) ||
@@ -33,33 +63,48 @@ export const shogiReducer = (
         return state;
       }
 
-      /* ================= 王手中は玉のみ選択可 ================= */
-      if (state.isInCheck) {
-        const isKing = piece.toLowerCase() === 'k';
-        if (!isKing) return state;
-      }
-
       const selected = { x: action.x, y: action.y };
 
       return {
         ...state,
         selected,
+        selectedHandPiece: null,
         legalMoves: getLegalMoves(selected, state.board),
       };
     }
 
+    /* ================= 持ち駒選択 ================= */
+    case 'SELECT_HAND_PIECE': {
+      return {
+        ...state,
+        selected: null,
+        selectedHandPiece: action.piece,
+        legalMoves: state.isInCheck ? getLegalDropMoves(state, action.piece) : [],
+      };
+    }
+
+    /* ================= 駒移動 ================= */
     case 'MOVE_PIECE': {
       const next = tryMovePiece(state, { x: action.x, y: action.y });
-      return withCheckState(next);
+      return withCheckState({
+        ...next,
+        selected: null,
+        selectedHandPiece: null,
+      });
     }
 
+    /* ================= 成り ================= */
     case 'PROMOTE': {
       const next = finalizePromotion(state, action.promote);
-      return withCheckState(next);
+      return withCheckState({
+        ...next,
+        selected: null,
+        selectedHandPiece: null,
+      });
     }
 
+    /* ================= 打ち駒 ================= */
     case 'DROP_PIECE': {
-      /* ================= 王手中の打ち駒制限 ================= */
       const next = tryDropPiece(state, action.piece, { x: action.x, y: action.y });
       const evaluated = withCheckState(next);
 
@@ -68,11 +113,19 @@ export const shogiReducer = (
         return state;
       }
 
-      return evaluated;
+      return {
+        ...evaluated,
+        selected: null,
+        selectedHandPiece: null,
+      };
     }
 
+    /* ================= 選択解除 ================= */
     case 'CANCEL_SELECTION':
-      return resetSelection(state);
+      return {
+        ...resetSelection(state),
+        selectedHandPiece: null,
+      };
 
     default:
       return state;

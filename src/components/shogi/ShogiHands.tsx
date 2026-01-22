@@ -5,18 +5,25 @@ import clsx from 'clsx';
 
 interface Props {
   hands: Hands;
+  selectedHandPiece: string | null;
   onSelect: (piece: string) => void;
   className?: string;
 }
 
-export const ShogiHands = ({ hands, onSelect, className }: Props) => {
+export const ShogiHands = ({ hands, selectedHandPiece, onSelect, className }: Props) => {
   return (
     <div className={clsx(classes.shogi__hands, className)}>
       {Object.entries(hands).map(([piece, count]) =>
         count > 0 ? (
           <button
             key={piece}
+            type="button"
             onClick={() => onSelect(piece)}
+            className={clsx(
+              classes.shogi__handPiece,
+              selectedHandPiece === piece && classes.selected
+            )}
+            aria-pressed={selectedHandPiece === piece}
             aria-label={`${pieceMap[piece]} ${count}個`}
           >
             {pieceMap[piece]} × {count}

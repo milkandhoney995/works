@@ -159,29 +159,33 @@
   }
 
   /* =========================
-     持ち駒
+    持ち駒
   ========================= */
   &__hands {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+  }
 
-    button {
-      padding: 6px 12px;
-      font-size: 14px;
-      cursor: pointer;
-      border: 1px solid #333;
-      border-radius: 4px;
-      background-color: #f0f0f0;
+  &__handPiece {
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background-color: #f0f0f0;
 
-      &:hover {
-        background-color: #dcdcdc;
-      }
+    &:hover {
+      background-color: #dcdcdc;
+    }
+    &.selected {
+      outline: 2px solid #ff9800;
+      background: #fff3e0;
     }
   }
 
   /* =========================
-     成り選択ダイアログ
+    成り選択ダイアログ
   ========================= */
   &__promotionDialog {
     position: absolute;

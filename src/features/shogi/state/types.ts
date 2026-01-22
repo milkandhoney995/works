@@ -23,6 +23,7 @@ export type MoveFunc = (pos: Position, board: string[][]) => Position[];
 export interface UseShogiReturn {
   board: string[][];
   selected: Position | null;
+  selectedHandPiece: string | null;
   legalMoves: Position[];
   hands: HandsByPlayer;
   pendingPromotion: PendingPromotion;

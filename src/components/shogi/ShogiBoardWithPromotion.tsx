@@ -6,6 +6,7 @@ import classes from '@/app/shogi/page.module.scss';
 interface Props {
   board: string[][];
   selected: Position | null;
+  selectedHandPiece: string | null;
   legalMoves: Position[];
   hands: HandsByPlayer;
   pendingPromotion: PendingPromotion;
@@ -19,6 +20,7 @@ interface Props {
 export const ShogiBoardWithPromotion = ({
   board,
   selected,
+  selectedHandPiece,
   legalMoves,
   hands,
   pendingPromotion,
@@ -38,6 +40,7 @@ export const ShogiBoardWithPromotion = ({
       {/* 持ち駒（後手） */}
       <ShogiHands
         hands={hands.gote}
+        selectedHandPiece={selectedHandPiece}
         onSelect={onHandSelect}
         className={classes.shogi__handsGote}
       />
@@ -55,6 +58,7 @@ export const ShogiBoardWithPromotion = ({
       {/* 持ち駒（先手） */}
       <ShogiHands
         hands={hands.sente}
+        selectedHandPiece={selectedHandPiece}
         onSelect={onHandSelect}
         className={classes.shogi__handsSente}
       />

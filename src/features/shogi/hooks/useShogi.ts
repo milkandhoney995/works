@@ -73,6 +73,7 @@ export const useShogi = (): UseShogiReturn => {
   return {
     board: state.board,
     selected: state.selected,
+    selectedHandPiece: state.selectedHandPiece,
     legalMoves: state.legalMoves,
     hands,
     pendingPromotion: state.pendingPromotion,
