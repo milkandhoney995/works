@@ -24,13 +24,21 @@ export const shogiReducer = (
       const piece = state.board[action.y][action.x];
       if (!piece) return state;
 
-      // 手番チェック
+      /* ================= 手番チェック ================= */
       const isSente = isSentePiece(piece);
       if (
         (state.turn === 'sente' && !isSente) ||
         (state.turn === 'gote' && isSente)
       ) {
         return state;
+      }
+
+      /* ================= 王手中は玉のみ選択可 ================= */
+      if (state.isInCheck) {
+        const isKing = piece.toLowerCase() === 'k';
+        if (!isKing) {
+          return state;
+        }
       }
 
       const selected = { x: action.x, y: action.y };
@@ -47,9 +55,10 @@ export const shogiReducer = (
       return withCheckState(next);
     }
 
-    case 'PROMOTE':
+    case 'PROMOTE': {
       const next = finalizePromotion(state, action.promote);
       return withCheckState(next);
+    }
 
     case 'DROP_PIECE': {
       const next = tryDropPiece(state, action.piece, { x: action.x, y: action.y });
