@@ -68,7 +68,7 @@ export const tryMovePiece = (
  * @param promote 成るかどうか
  * @returns 更新された将棋の状態
  */
-export const finalizePromotion = (state: any, promote: boolean) => {
+export const finalizePromotion = (state: ShogiState, promote: boolean) => {
   const { from, to, piece } = state.pendingPromotion!;
   const board = copyBoard(state.board);
 
@@ -94,7 +94,7 @@ export const finalizePromotion = (state: any, promote: boolean) => {
  * @returns 更新された将棋の状態
  */
 export const tryDropPiece = (
-  state: any,
+  state: ShogiState,
   piece: string,
   pos: Position
 ) => {
