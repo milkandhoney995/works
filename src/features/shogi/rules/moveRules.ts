@@ -1,149 +1,79 @@
-import { MoveFunc, Position } from '@/features/shogi/state/types';
-import { isSentePiece, isEnemyPiece, isInsideBoard, pushIfValid } from '@/features/shogi/logic/shogiHelpers';
+import { MoveFunc } from '@/features/shogi/state/types';
+import { isSentePiece } from '@/features/shogi/logic/shogiHelpers';
+import { stepMoves, rayMoves } from './moveGenerators';
 
 /* ================= 王 ================= */
 export const kingMoves: MoveFunc = ({ x, y }, board) => {
-  const moves: Position[] = [];
   const isSente = isSentePiece(board[y][x]);
-
-  for (let dx = -1; dx <= 1; dx++) {
-    for (let dy = -1; dy <= 1; dy++) {
-      if (dx === 0 && dy === 0) continue;
-      pushIfValid(moves, board, x + dx, y + dy, isSente);
-    }
-  }
-  return moves;
+  return stepMoves(x, y, board, isSente, [
+    [-1, -1], [0, -1], [1, -1],
+    [-1,  0],          [1,  0],
+    [-1,  1], [0,  1], [1,  1],
+  ]);
 };
 
 /* ================= 金 ================= */
 export const goldMoves: MoveFunc = ({ x, y }, board) => {
-  const moves: Position[] = [];
   const isSente = isSentePiece(board[y][x]);
   const dir = isSente ? -1 : 1;
 
-  [
-    [0, dir], [-1, 0], [1, 0],
-    [0, -dir], [-1, dir], [1, dir],
-  ].forEach(([dx, dy]) =>
-    pushIfValid(moves, board, x + dx, y + dy, isSente)
-  );
-
-  return moves;
+  return stepMoves(x, y, board, isSente, [
+    [0, dir],
+    [-1, 0], [1, 0],
+    [0, -dir],
+    [-1, dir], [1, dir],
+  ]);
 };
 
 /* ================= 銀 ================= */
 export const silverMoves: MoveFunc = ({ x, y }, board) => {
-  const moves: Position[] = [];
   const isSente = isSentePiece(board[y][x]);
   const dir = isSente ? -1 : 1;
 
-  [
-    [0, dir], [-1, dir], [1, dir],
+  return stepMoves(x, y, board, isSente, [
+    [0, dir],
+    [-1, dir], [1, dir],
     [-1, -dir], [1, -dir],
-  ].forEach(([dx, dy]) =>
-    pushIfValid(moves, board, x + dx, y + dy, isSente)
-  );
-
-  return moves;
+  ]);
 };
 
 /* ================= 桂 ================= */
 export const knightMoves: MoveFunc = ({ x, y }, board) => {
-  const moves: Position[] = [];
   const isSente = isSentePiece(board[y][x]);
   const dir = isSente ? -1 : 1;
 
-  [
+  return stepMoves(x, y, board, isSente, [
     [-1, 2 * dir],
-    [1, 2 * dir],
-  ].forEach(([dx, dy]) =>
-    pushIfValid(moves, board, x + dx, y + dy, isSente)
-  );
-
-  return moves;
+    [ 1, 2 * dir],
+  ]);
 };
 
 /* ================= 香 ================= */
 export const lanceMoves: MoveFunc = ({ x, y }, board) => {
-  const moves: Position[] = [];
   const isSente = isSentePiece(board[y][x]);
   const dir = isSente ? -1 : 1;
 
-  for (let ny = y + dir; isInsideBoard(x, ny); ny += dir) {
-    const target = board[ny][x];
-    if (target === '') moves.push({ x, y: ny });
-    else {
-      if (isEnemyPiece(target, isSente)) moves.push({ x, y: ny });
-      break;
-    }
-  }
-  return moves;
+  return rayMoves(x, y, board, isSente, [[0, dir]]);
 };
 
 /* ================= 歩 ================= */
 export const pawnMoves: MoveFunc = ({ x, y }, board) => {
-  const moves: Position[] = [];
   const isSente = isSentePiece(board[y][x]);
-  const ny = y + (isSente ? -1 : 1);
+  const dir = isSente ? -1 : 1;
 
-  if (isInsideBoard(x, ny)) {
-    const target = board[ny][x];
-    if (target === '' || isEnemyPiece(target, isSente)) {
-      moves.push({ x, y: ny });
-    }
-  }
-  return moves;
+  return stepMoves(x, y, board, isSente, [[0, dir]]);
 };
 
-/* ================= 飛 ================= */
-export const rookMoves: MoveFunc = ({ x, y }, board) => {
-  const moves: Position[] = [];
-  const isSente = isSentePiece(board[y][x]);
-
-  [
+/* ================= 飛・角 ================= */
+export const rookMoves: MoveFunc = ({ x, y }, board) =>
+  rayMoves(x, y, board, isSentePiece(board[y][x]), [
     [1, 0], [-1, 0], [0, 1], [0, -1],
-  ].forEach(([dx, dy]) => {
-    let nx = x + dx;
-    let ny = y + dy;
-    while (isInsideBoard(nx, ny)) {
-      const target = board[ny][nx];
-      if (target === '') moves.push({ x: nx, y: ny });
-      else {
-        if (isEnemyPiece(target, isSente)) moves.push({ x: nx, y: ny });
-        break;
-      }
-      nx += dx;
-      ny += dy;
-    }
-  });
+  ]);
 
-  return moves;
-};
-
-/* ================= 角 ================= */
-export const bishopMoves: MoveFunc = ({ x, y }, board) => {
-  const moves: Position[] = [];
-  const isSente = isSentePiece(board[y][x]);
-
-  [
+export const bishopMoves: MoveFunc = ({ x, y }, board) =>
+  rayMoves(x, y, board, isSentePiece(board[y][x]), [
     [1, 1], [-1, 1], [1, -1], [-1, -1],
-  ].forEach(([dx, dy]) => {
-    let nx = x + dx;
-    let ny = y + dy;
-    while (isInsideBoard(nx, ny)) {
-      const target = board[ny][nx];
-      if (target === '') moves.push({ x: nx, y: ny });
-      else {
-        if (isEnemyPiece(target, isSente)) moves.push({ x: nx, y: ny });
-        break;
-      }
-      nx += dx;
-      ny += dy;
-    }
-  });
-
-  return moves;
-};
+  ]);
 
 /* ================= 成り ================= */
 export const bishopMovesWithKingLike: MoveFunc = (p, b) => [

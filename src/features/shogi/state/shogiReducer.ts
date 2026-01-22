@@ -1,7 +1,7 @@
 import { ShogiState, ShogiAction } from '@/features/shogi/state/shogiState';
-import { promotable } from '@/features/shogi/data/pieces';
 import { pieceMoves } from '@/features/shogi/rules/moveRules';
-import { capturePiece, copyBoard, inEnemyCamp, isSentePiece, nextTurn, resetSelection } from '@/features/shogi/logic/shogiHelpers';
+import { isSentePiece } from '@/features/shogi/logic/shogiHelpers';
+import { finalizePromotion, tryDropPiece, tryMovePiece, resetSelection } from '../logic/shogiRules';
 /**
  * 将棋の状態を管理するリデューサー関数
  * @param state 現在の将棋の状態
@@ -29,91 +29,17 @@ export const shogiReducer = (state: ShogiState, action: ShogiAction): ShogiState
       };
     }
 
-    case 'MOVE_PIECE': {
-      if (!state.selected) return state;
-      const { x, y } = action;
+    case 'MOVE_PIECE':
+      return tryMovePiece(state, { x: action.x, y: action.y });
 
-      if (!state.legalMoves.some(p => p.x === x && p.y === y)) {
-        return resetSelection(state);
-      }
+    case 'PROMOTE':
+      return finalizePromotion(state, action.promote);
 
-      const board = copyBoard(state.board);
-      const from = state.selected;
-      const piece = board[from.y][from.x];
-      const captured = board[y][x];
-      let hands = { ...state.hands };
-
-      hands = capturePiece(hands, captured);
-
-      const canPromote =
-        promotable[piece] &&
-        (inEnemyCamp(from.y, piece) || inEnemyCamp(y, piece));
-
-      if (canPromote) {
-        return {
-          ...state,
-          pendingPromotion: { from, to: { x, y }, piece },
-          selected: null,
-          legalMoves: []
-        };
-      }
-
-      board[y][x] = piece;
-      board[from.y][from.x] = '';
-
-
-      return {
-        ...state,
-        board,
-        hands,
-        selected: null,
-        legalMoves: [],
-        turn: nextTurn(state.turn)
-      };
-    }
-
-    case 'PROMOTE': {
-      if (!state.pendingPromotion) return state;
-      const { from, to, piece } = state.pendingPromotion;
-
-      const board = copyBoard(state.board);
-      const captured = board[to.y][to.x]; // 取った駒（あれば）
-      let hands = { ...state.hands };
-      hands = capturePiece(hands, captured);
-
-      board[to.y][to.x] = action.promote ? promotable[piece]! : piece;
-      board[from.y][from.x] = '';
-
-      return {
-        ...state,
-        board,
-        hands,
-        pendingPromotion: null,
-        selected: null,
-        legalMoves: [],
-        turn: nextTurn(state.turn)
-      };
-    }
-
-    case 'DROP_PIECE': {
-      if (state.board[action.y][action.x] !== '') return state;
-      if (!state.hands[action.piece]) return state;
-
-      const board = copyBoard(state.board);
-      board[action.y][action.x] = action.piece.toLowerCase();
-
-      return {
-        ...state,
-        board,
-        hands: {
-          ...state.hands,
-          [action.piece]: state.hands[action.piece] - 1,
-        },
-        selected: null,
-        legalMoves: [],
-        turn: nextTurn(state.turn)
-      };
-    }
+    case 'DROP_PIECE':
+      return tryDropPiece(state, action.piece, {
+        x: action.x,
+        y: action.y,
+      });
 
     case 'CANCEL_SELECTION':
       return resetSelection(state);
