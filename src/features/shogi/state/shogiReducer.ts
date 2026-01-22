@@ -36,9 +36,7 @@ export const shogiReducer = (
       /* ================= 王手中は玉のみ選択可 ================= */
       if (state.isInCheck) {
         const isKing = piece.toLowerCase() === 'k';
-        if (!isKing) {
-          return state;
-        }
+        if (!isKing) return state;
       }
 
       const selected = { x: action.x, y: action.y };
@@ -61,8 +59,16 @@ export const shogiReducer = (
     }
 
     case 'DROP_PIECE': {
+      /* ================= 王手中の打ち駒制限 ================= */
       const next = tryDropPiece(state, action.piece, { x: action.x, y: action.y });
-      return withCheckState(next);
+      const evaluated = withCheckState(next);
+
+      // 王手が解消されていなければ無効
+      if (state.isInCheck && evaluated.isInCheck) {
+        return state;
+      }
+
+      return evaluated;
     }
 
     case 'CANCEL_SELECTION':
