@@ -1,6 +1,7 @@
 import { ShogiState, ShogiAction } from '@/features/shogi/state/shogiState';
 import { isSentePiece } from '@/features/shogi/logic/shogiHelpers';
 import { getLegalMoves } from '@/features/shogi/logic/getLegalMoves';
+import { withCheckState } from '@/features/shogi/logic/withCheckState';
 import {
   finalizePromotion,
   tryDropPiece,
@@ -41,20 +42,19 @@ export const shogiReducer = (
       };
     }
 
-    case 'MOVE_PIECE':
-      return tryMovePiece(state, {
-        x: action.x,
-        y: action.y,
-      });
+    case 'MOVE_PIECE': {
+      const next = tryMovePiece(state, { x: action.x, y: action.y });
+      return withCheckState(next);
+    }
 
     case 'PROMOTE':
-      return finalizePromotion(state, action.promote);
+      const next = finalizePromotion(state, action.promote);
+      return withCheckState(next);
 
-    case 'DROP_PIECE':
-      return tryDropPiece(state, action.piece, {
-        x: action.x,
-        y: action.y,
-      });
+    case 'DROP_PIECE': {
+      const next = tryDropPiece(state, action.piece, { x: action.x, y: action.y });
+      return withCheckState(next);
+    }
 
     case 'CANCEL_SELECTION':
       return resetSelection(state);

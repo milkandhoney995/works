@@ -3,12 +3,15 @@ import { Position, Hands, PendingPromotion } from '@/features/shogi/state/types'
 
 /**
  * 将棋の状態を表すインターフェース
+ * @interface ShogiState
  * @property board 現在の盤面
  * @property selected 選択されている駒の位置
  * @property legalMoves 選択されている駒の合法手リスト
  * @property hands 各プレイヤーの持ち駒
  * @property pendingPromotion 昇格待ちの駒情報
  * @property turn 現在の手番（先手か後手）
+ * @property isInCheck 現在の王手状態
+ * @property kingPosition 王の位置
  */
 export interface ShogiState {
   board: string[][];
@@ -17,6 +20,8 @@ export interface ShogiState {
   hands: Hands;
   pendingPromotion: PendingPromotion;
   turn: 'sente' | 'gote'; // 先手か後手
+  isInCheck: boolean;
+  kingPosition: Position | null;
 }
 
 /**
@@ -45,5 +50,7 @@ export const initialShogiState: ShogiState = {
   legalMoves: [],
   hands: {},
   pendingPromotion: null,
-  turn: 'sente'
+  turn: 'sente',
+  isInCheck: false,
+  kingPosition: null
 };
