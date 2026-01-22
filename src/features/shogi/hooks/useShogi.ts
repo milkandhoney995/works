@@ -77,6 +77,8 @@ export const useShogi = (): UseShogiReturn => {
     hands,
     pendingPromotion: state.pendingPromotion,
     turn: state.turn,
+    isInCheck: state.isInCheck,
+    kingPosition: state.kingPosition,
     handleCellClick,
     promotePiece,
     dropPiece: (piece: string, x: number, y: number) => {

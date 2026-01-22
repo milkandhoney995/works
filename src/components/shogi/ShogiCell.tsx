@@ -11,6 +11,7 @@ interface Props {
   piece: string;
   selected: Position | null;
   legal: boolean;
+  isCheckedKing: boolean;
   onClick: (x: number, y: number) => void;
 }
 
@@ -21,6 +22,7 @@ export const ShogiCell = memo(function ShogiCell({
   piece,
   selected,
   legal,
+  isCheckedKing,
   onClick,
 }: Props) {
   const isSelected = selected?.x === x && selected?.y === y;
@@ -30,11 +32,19 @@ export const ShogiCell = memo(function ShogiCell({
 
   return (
     <button
-      className={clsx(classes.shogi__cell, { [classes.selected]: isSelected, [classes.legal]: legal })}
+      className={clsx(
+        classes.shogi__cell,
+        {
+          [classes.selected]: isSelected,
+          [classes.legal]: legal,
+          [classes.check]: isCheckedKing,
+        }
+      )}
       onClick={() => onClick(x, y)}
-      aria-label={`Cell ${x}, ${y}: ${pieceMap[piece]}`}
+      aria-label={`Cell ${x}, ${y}: ${pieceMap[piece] ?? '空'}`}
+      type="button"
     >
-      <span className={isGote ? classes.gote : ''}>
+      <span className={isGote ? classes.gote : undefined}>
         {pieceMap[piece]}
       </span>
     </button>

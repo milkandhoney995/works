@@ -7,6 +7,8 @@ interface Props {
   selected: Position | null;
   legalMoves: Position[];
   onCellClick: (x: number, y: number) => void;
+  isInCheck: boolean;
+  kingPosition: Position | null;
 }
 
 const KANJI_RANKS = ['一', '二', '三', '四', '五', '六', '七', '八', '九'];
@@ -16,12 +18,14 @@ export const ShogiBoard = ({
   selected,
   legalMoves,
   onCellClick,
+  isInCheck,
+  kingPosition,
 }: Props) => {
   return (
     <div className={classes.shogi__wrapper}>
       {/* 上：筋（9〜1） */}
       <div className={classes.shogi__files}>
-        {[...Array(9)].map((_, i) => (
+        {Array.from({ length: 9 }).map((_, i) => (
           <div key={i} className={classes.shogi__file}>
             {9 - i}
           </div>
@@ -32,17 +36,29 @@ export const ShogiBoard = ({
         {/* 盤面 */}
         <div className={classes.shogi__board}>
           {board.map((row, y) =>
-            row.map((piece, x) => (
-              <ShogiCell
-                key={`${x}-${y}`}
-                x={x}
-                y={y}
-                piece={piece}
-                selected={selected}
-                legal={legalMoves.some(p => p.x === x && p.y === y)}
-                onClick={onCellClick}
-              />
-            ))
+            row.map((piece, x) => {
+              const isLegalMove = legalMoves.some(
+                (p) => p.x === x && p.y === y
+              );
+
+              const isCheckedKing =
+                isInCheck &&
+                kingPosition?.x === x &&
+                kingPosition?.y === y;
+
+              return (
+                <ShogiCell
+                  key={`${x}-${y}`}
+                  x={x}
+                  y={y}
+                  piece={piece}
+                  selected={selected}
+                  legal={isLegalMove}
+                  isCheckedKing={isCheckedKing}
+                  onClick={onCellClick}
+                />
+              );
+            })
           )}
         </div>
 

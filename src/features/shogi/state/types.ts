@@ -26,6 +26,8 @@ export interface UseShogiReturn {
   legalMoves: Position[];
   hands: HandsByPlayer;
   pendingPromotion: PendingPromotion;
+  isInCheck: boolean;
+  kingPosition: Position | null;
   handleCellClick: (x: number, y: number) => void;
   promotePiece: (promote: boolean) => void;
   dropPiece: (piece: string, x: number, y: number) => void;

@@ -9,6 +9,8 @@ interface Props {
   legalMoves: Position[];
   hands: HandsByPlayer;
   pendingPromotion: PendingPromotion;
+  isInCheck: boolean;
+  kingPosition: Position | null;
   onCellClick: (x: number, y: number) => void;
   onHandSelect: (piece: string) => void;
   onPromote: (promote: boolean) => void;
@@ -20,13 +22,20 @@ export const ShogiBoardWithPromotion = ({
   legalMoves,
   hands,
   pendingPromotion,
+  isInCheck,
+  kingPosition,
   onCellClick,
   onHandSelect,
   onPromote,
 }: Props) => {
   return (
     <div className={classes.shogi__container}>
-      {/* 持ち駒 */}
+      { isInCheck && (
+        <div className={classes.shogi__checkAlert}>
+          王手！
+        </div>
+      )}
+      {/* 持ち駒（後手） */}
       <ShogiHands
         hands={hands.gote}
         onSelect={onHandSelect}
@@ -38,10 +47,12 @@ export const ShogiBoardWithPromotion = ({
         board={board}
         selected={selected}
         legalMoves={legalMoves}
+        isInCheck={isInCheck}
+        kingPosition={kingPosition}
         onCellClick={onCellClick}
       />
 
-      {/* 先手の持ち駒（右下） */}
+      {/* 持ち駒（先手） */}
       <ShogiHands
         hands={hands.sente}
         onSelect={onHandSelect}

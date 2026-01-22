@@ -11,10 +11,11 @@ const ShogiPage = () => {
     legalMoves,
     hands,
     pendingPromotion,
+    isInCheck,
+    kingPosition,
     handleCellClick,
     promotePiece,
-    dropPiece,
-    onHandSelect
+    onHandSelect,
   } = useShogi();
 
   return (
@@ -26,11 +27,12 @@ const ShogiPage = () => {
         legalMoves={legalMoves}
         hands={hands}
         pendingPromotion={pendingPromotion}
+        isInCheck={isInCheck}
+        kingPosition={kingPosition}
         onCellClick={handleCellClick}
         onHandSelect={onHandSelect}
         onPromote={promotePiece}
       />
-
     </div>
   );
 }
