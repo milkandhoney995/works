@@ -1,4 +1,4 @@
-import { useReducer, useState } from 'react';
+import { useReducer, useMemo } from 'react';
 import { shogiReducer } from '@/features/shogi/state/shogiReducer';
 import { initialShogiState } from '@/features/shogi/state/shogiState';
 import { HandsByPlayer, UseShogiReturn } from '@/features/shogi/state/types';
@@ -9,29 +9,26 @@ import { isSentePiece } from '@/features/shogi/logic/shogiHelpers';
  */
 export const useShogi = (): UseShogiReturn => {
   const [state, dispatch] = useReducer(shogiReducer, initialShogiState);
-  const [selectedHand, setSelectedHand] = useState<string | null>(null); // 持ち駒選択用の一時 state
 
   /**
   * 盤面セルクリック時の処理
   * @param x クリックされたセルの列番号（UI座標系）
-  * @param u クリックされたセルの行番号（UI座標系）
+  * @param y クリックされたセルの行番号（UI座標系）
   * @returns void
   */
   const handleCellClick = (x: number, y: number) => {
-    if (state.pendingPromotion) return; // 成り選択中は盤面クリック無効
+    if (state.pendingPromotion) return;
 
-    if (selectedHand) {
-      // 持ち駒を打つ
-      dispatch({ type: 'DROP_PIECE', piece: selectedHand, x, y });
-      setSelectedHand(null);
+    // 持ち駒選択中なら打ち駒
+    if (state.selectedHandPiece) {
+      dispatch({ type: 'DROP_PIECE', piece: state.selectedHandPiece, x, y });
       return;
     }
 
+    // 駒選択 or 移動
     if (state.selected) {
-      // 駒を移動
       dispatch({ type: 'MOVE_PIECE', x, y });
     } else {
-      // 駒を選択
       dispatch({ type: 'SELECT_CELL', x, y });
     }
   };
@@ -42,10 +39,15 @@ export const useShogi = (): UseShogiReturn => {
   * @returns void
   */
   const onHandSelect = (piece: string) => {
-    if ((state.turn === 'sente' && !isSentePiece(piece)) || (state.turn === 'gote' && isSentePiece(piece))) {
-      return; // 相手の持ち駒は選択不可
+    // 手番チェック
+    if (
+      (state.turn === 'sente' && !isSentePiece(piece)) ||
+      (state.turn === 'gote' && isSentePiece(piece))
+    ) {
+      return;
     }
-    setSelectedHand(piece);
+
+    dispatch({ type: 'SELECT_HAND_PIECE', piece });
   };
 
   /**
@@ -58,17 +60,19 @@ export const useShogi = (): UseShogiReturn => {
   };
 
   /**
-  * 持ち駒の初期化
-  */
-  const hands: HandsByPlayer = {
-    sente: {},
-    gote: {}
-  };
+   * 表示用：先手・後手の持ち駒に分離
+   */
+  const hands: HandsByPlayer = useMemo(() => {
+    const result: HandsByPlayer = { sente: {}, gote: {} };
 
-  Object.entries(state.hands).forEach(([piece, count]) => {
-    if (isSentePiece(piece)) hands.sente[piece] = count;
-    else hands.gote[piece] = count;
-  });
+    Object.entries(state.hands).forEach(([piece, count]) => {
+      if (count <= 0) return;
+      if (isSentePiece(piece)) result.sente[piece] = count;
+      else result.gote[piece] = count;
+    });
+
+    return result;
+  }, [state.hands]);
 
   return {
     board: state.board,
