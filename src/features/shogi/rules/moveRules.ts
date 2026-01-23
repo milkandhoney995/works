@@ -101,10 +101,20 @@ export const pieceMoves: Record<string, MoveFunc> = {
   p: pawnMoves, P: pawnMoves,
   r: rookMoves, R: rookMoves,
   b: bishopMoves, B: bishopMoves,
+
+  // ===== 成り駒（先手）=====
   '+s': promotedSilverMoves,
   '+n': promotedKnightMoves,
   '+l': promotedLanceMoves,
   '+p': promotedPawnMoves,
   '+b': bishopMovesWithKingLike,
   '+r': rookMovesWithKingLike,
+
+  // ===== 成り駒（後手） =====
+  '+S': promotedSilverMoves,
+  '+N': promotedKnightMoves,
+  '+L': promotedLanceMoves,
+  '+P': promotedPawnMoves,
+  '+B': bishopMovesWithKingLike,
+  '+R': rookMovesWithKingLike,
 };
