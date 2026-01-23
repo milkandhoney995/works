@@ -1,5 +1,10 @@
 import { ShogiState, ShogiAction } from '@/features/shogi/state/shogiState';
-import { isSentePiece, isInsideBoard, isIllegalDropPosition } from '@/features/shogi/logic/shogiHelpers';
+import {
+  isSentePiece,
+  isInsideBoard,
+  isIllegalDropPosition,
+  isNifu,
+} from '@/features/shogi/logic/shogiHelpers';
 import { getLegalMoves } from '@/features/shogi/logic/getLegalMoves';
 import { withCheckState } from '@/features/shogi/logic/withCheckState';
 import { isUchifuzume } from '@/features/shogi/logic/isUchifuzume';
@@ -19,14 +24,18 @@ const getLegalDropMoves = (
   piece: string
 ): Position[] => {
   const moves: Position[] = [];
+  const base = piece.toLowerCase();
 
   for (let y = 0; y < 9; y++) {
     for (let x = 0; x < 9; x++) {
       if (!isInsideBoard(x, y)) continue;
       if (state.board[y][x] !== '') continue;
 
-      // 不成り駒の打ち位置制限
+      // 不成り駒の打ち位置制限（歩・香・桂）
       if (isIllegalDropPosition(piece, y)) continue;
+
+      // 二歩チェック（歩のみ）
+      if (base === 'p' && isNifu(state.board, x, piece)) continue;
 
       const dropped = tryDropPiece(state, piece, { x, y });
       const evaluated = withCheckState(dropped);
@@ -58,7 +67,7 @@ export const shogiReducer = (
       const piece = state.board[action.y][action.x];
       if (!piece) return state;
 
-      /* 手番チェック */
+      // 手番チェック
       const isSente = isSentePiece(piece);
       if (
         (state.turn === 'sente' && !isSente) ||
@@ -83,7 +92,7 @@ export const shogiReducer = (
         ...state,
         selected: null,
         selectedHandPiece: action.piece,
-        legalMoves: getLegalDropMoves(state, action.piece)
+        legalMoves: getLegalDropMoves(state, action.piece),
       };
     }
 
@@ -109,11 +118,20 @@ export const shogiReducer = (
 
     /* ================= 打ち駒 ================= */
     case 'DROP_PIECE': {
-      if (isIllegalDropPosition(action.piece, action.y)) {
+      const { piece, x, y } = action;
+      const base = piece.toLowerCase();
+
+      // 不成り駒の打ち位置制限
+      if (isIllegalDropPosition(piece, y)) {
         return state;
       }
 
-      const next = tryDropPiece(state, action.piece, { x: action.x, y: action.y });
+      // 二歩チェック（歩のみ）
+      if (base === 'p' && isNifu(state.board, x, piece)) {
+        return state;
+      }
+
+      const next = tryDropPiece(state, piece, { x, y });
       const evaluated = withCheckState(next);
 
       // 王手が解消されていなければ無効
@@ -122,7 +140,7 @@ export const shogiReducer = (
       }
 
       // 打歩詰めチェック
-      if (isUchifuzume(evaluated, action.piece)) {
+      if (base === 'p' && isUchifuzume(evaluated, piece)) {
         return state;
       }
 

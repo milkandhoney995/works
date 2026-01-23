@@ -133,3 +133,27 @@ export const isIllegalDropPosition = (
 
   return false;
 };
+
+/**
+ * 二歩判定
+ * - 同じ筋（x列）に自分の歩がある場合は二歩
+ * - 成歩は対象外
+ * @param board 現在の盤面
+ * @param x 打つ筋
+ * @param piece 打つ駒（p or P）
+ */
+export const isNifu = (
+  board: string[][],
+  x: number,
+  piece: string
+): boolean => {
+  const isSente = piece === piece.toLowerCase();
+  const pawn = isSente ? 'p' : 'P';
+
+  for (let y = 0; y < 9; y++) {
+    if (board[y][x] === pawn) {
+      return true;
+    }
+  }
+  return false;
+};
