@@ -2,6 +2,7 @@ import { ShogiState, ShogiAction } from '@/features/shogi/state/shogiState';
 import { isSentePiece, isInsideBoard } from '@/features/shogi/logic/shogiHelpers';
 import { getLegalMoves } from '@/features/shogi/logic/getLegalMoves';
 import { withCheckState } from '@/features/shogi/logic/withCheckState';
+import { isUchifuzume } from '@/features/shogi/logic/isUchifuzume';
 import {
   finalizePromotion,
   tryDropPiece,
@@ -110,6 +111,11 @@ export const shogiReducer = (
 
       // 王手が解消されていなければ無効
       if (state.isInCheck && evaluated.isInCheck) {
+        return state;
+      }
+
+      // 打歩詰めチェック
+      if (isUchifuzume(evaluated, action.piece)) {
         return state;
       }
 
