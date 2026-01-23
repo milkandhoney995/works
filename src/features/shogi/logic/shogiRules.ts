@@ -4,6 +4,7 @@ import {
   capturePiece,
   copyBoard,
   inEnemyCamp,
+  mustPromote,
   nextTurn,
 } from './shogiHelpers';
 import { ShogiState } from '../state/shogiState';
@@ -39,6 +40,21 @@ export const tryMovePiece = (
     (inEnemyCamp(from.y, piece) || inEnemyCamp(to.y, piece));
 
   if (canPromote) {
+
+    if (mustPromote(piece, to.y)) {
+      const nextBoard = copyBoard(board);
+      nextBoard[to.y][to.x] = promotable[piece]!;
+      nextBoard[from.y][from.x] = '';
+
+      return {
+        ...state,
+        board: nextBoard,
+        hands: capturePiece(state.hands, captured),
+        selected: null,
+        legalMoves: [],
+        turn: nextTurn(state.turn),
+      };
+    }
     return {
       ...state,
       pendingPromotion: { from, to, piece },
