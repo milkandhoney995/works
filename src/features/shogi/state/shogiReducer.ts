@@ -1,5 +1,5 @@
 import { ShogiState, ShogiAction } from '@/features/shogi/state/shogiState';
-import { isSentePiece, isInsideBoard } from '@/features/shogi/logic/shogiHelpers';
+import { isSentePiece, isInsideBoard, isIllegalDropPosition } from '@/features/shogi/logic/shogiHelpers';
 import { getLegalMoves } from '@/features/shogi/logic/getLegalMoves';
 import { withCheckState } from '@/features/shogi/logic/withCheckState';
 import { isUchifuzume } from '@/features/shogi/logic/isUchifuzume';
@@ -24,6 +24,9 @@ const getLegalDropMoves = (
     for (let x = 0; x < 9; x++) {
       if (!isInsideBoard(x, y)) continue;
       if (state.board[y][x] !== '') continue;
+
+      // 不成り駒の打ち位置制限
+      if (isIllegalDropPosition(piece, y)) continue;
 
       const dropped = tryDropPiece(state, piece, { x, y });
       const evaluated = withCheckState(dropped);
@@ -80,7 +83,7 @@ export const shogiReducer = (
         ...state,
         selected: null,
         selectedHandPiece: action.piece,
-        legalMoves: state.isInCheck ? getLegalDropMoves(state, action.piece) : [],
+        legalMoves: getLegalDropMoves(state, action.piece)
       };
     }
 
@@ -106,6 +109,10 @@ export const shogiReducer = (
 
     /* ================= 打ち駒 ================= */
     case 'DROP_PIECE': {
+      if (isIllegalDropPosition(action.piece, action.y)) {
+        return state;
+      }
+
       const next = tryDropPiece(state, action.piece, { x: action.x, y: action.y });
       const evaluated = withCheckState(next);
 
