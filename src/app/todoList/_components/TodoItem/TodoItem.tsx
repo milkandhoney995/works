@@ -2,9 +2,9 @@
 
 import { useDispatch } from "react-redux";
 import { toggleComplete, deleteTodo, Todo } from "@/store/todoSlice";
-import classes from './todoItem.module.scss';
+import classes from './TodoItem.module.scss';
 
-export default function TodoItem({ todo }: { todo: Todo }) {
+const TodoItem = ({ todo }: { todo: Todo }) => {
   const dispatch = useDispatch();
 
   return (
@@ -22,3 +22,5 @@ export default function TodoItem({ todo }: { todo: Todo }) {
     </div>
   );
 }
+
+export default TodoItem;

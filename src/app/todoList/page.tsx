@@ -2,9 +2,9 @@
 
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import AddTodo from "@/components/todoList/addTodo";
-import TodoItem from "@/components/todoList/todoItem";
 import classes from './page.module.scss';
+import AddTodo from "./_components/AddTodo/AddTodo";
+import TodoItem from "./_components/TodoItem/TodoItem";
 
 // todo: todoリストを追加後も編集できるようにする
 const TodoList = () => {
