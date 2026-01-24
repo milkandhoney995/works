@@ -4,15 +4,15 @@ import { initialBoard } from '../board/board';
 /**
  * 将棋の状態を表すインターフェース
  * @interface ShogiState
- * @property board 現在の盤面
- * @property selected 選択されている駒の位置
- * @property selectedHandPiece 選択されている持ち駒
- * @property legalMoves 選択されている駒の合法手リスト
- * @property hands 各プレイヤーの持ち駒
- * @property pendingPromotion 昇格待ちの駒情報
- * @property turn 現在の手番（先手か後手）
- * @property isInCheck 現在の王手状態
- * @property kingPosition 王の位置
+ * @param board 現在の盤面
+ * @param selected 選択されている駒の位置
+ * @param selectedHandPiece 選択されている持ち駒
+ * @param legalMoves 選択されている駒の合法手リスト
+ * @param hands 各プレイヤーの持ち駒
+ * @param pendingPromotion 昇格待ちの駒情報
+ * @param turn 現在の手番（先手か後手）
+ * @param isInCheck 現在の王手状態
+ * @param kingPosition 王の位置
  */
 export interface ShogiState {
   board: string[][];

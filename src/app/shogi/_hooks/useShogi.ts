@@ -1,8 +1,5 @@
 import { useReducer, useMemo } from 'react';
-import { shogiReducer } from '@/features/shogi/state/shogiReducer';
-import { initialShogiState } from '@/features/shogi/state/shogiState';
-import { HandsByPlayer, UseShogiReturn } from '@/features/shogi/state/types';
-import { isSentePiece } from '@/features/shogi/utils/shogiHelpers';
+import { initialShogiState, shogiReducer, isSentePiece, HandsByPlayer, UseShogiReturn } from '@/features/shogi';
 
 /**
  * 将棋用カスタムフック
