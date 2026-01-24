@@ -2,7 +2,7 @@
 
 import { memo } from 'react';
 import classes from '@/app/meditationApp/page.module.scss';
-import { timeOptions } from '@/data/timeOptions';
+import { timeOptions } from '../_data/timeOptions';
 
 interface Props {
   changeDuration: (seconds: number) => void;

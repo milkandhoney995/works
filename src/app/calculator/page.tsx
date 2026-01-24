@@ -1,8 +1,8 @@
 'use client';
 
 import classes from "@/app/calculator/page.module.scss";
-import CalculatorButton from "@/app/calculator/_components/CalculatorButton";
-import { calculatorButtons, CalculatorButtonData } from "@/data/calculatorButton";
+import CalculatorButton from "./_components/CalculatorButton";
+import { calculatorButtons, CalculatorButtonData } from "./_data/calculatorButton";
 import { useCalculator } from "./_hooks/useCalculator";
 
 const Calculator = () => {

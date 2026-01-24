@@ -3,7 +3,7 @@
 import { memo } from 'react';
 import Image from 'next/image';
 import classes from '@/app/meditationApp/page.module.scss';
-import { soundOptions } from '@/data/soundOptions';
+import { soundOptions } from '../_data/soundOptions';
 
 interface SoundPickerProps {
   selectSound: (sound: string, video: string, duration: number) => void;

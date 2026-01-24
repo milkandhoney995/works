@@ -1,5 +1,5 @@
 import { Position } from '@/features/shogi/state/types';
-import { promotable } from '@/features/shogi/data/pieces';
+import { promotable } from '@/app/shogi/_data/pieces';
 import {
   capturePiece,
   copyBoard,

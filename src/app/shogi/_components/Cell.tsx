@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import clsx from 'clsx';
-import { pieceMap } from '@/features/shogi/data/pieces';
+import { pieceMap } from '@/app/shogi/_data/pieces';
 import { Position } from '@/features/shogi/state/types';
 import classes from '@/app/shogi/page.module.scss';
 import { isSentePiece } from '@/features/shogi/logic/shogiHelpers';
