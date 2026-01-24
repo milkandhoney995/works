@@ -14,4 +14,4 @@ export { isSentePiece } from "./utils/shogiHelpers";
 export { initialShogiState } from "./state/shogiState";
 export { shogiReducer } from "./state/shogiReducer";
 
-export type { HandsByPlayer, UseShogiReturn } from "./state/types"
+export type { HandsByPlayer, UseShogiReturn, Position, Hands, PendingPromotion  } from "./state/types"

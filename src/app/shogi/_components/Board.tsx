@@ -1,6 +1,6 @@
-import { Position } from '@/features/shogi/state/types';
 import classes from '@/app/shogi/page.module.scss';
 import Cell from './Cell';
+import { Position } from '@/features/shogi';
 
 interface Props {
   board: string[][];

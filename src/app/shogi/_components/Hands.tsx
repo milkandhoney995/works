@@ -1,7 +1,6 @@
-import { Hands } from '@/features/shogi/state/types';
 import classes from '@/app/shogi/page.module.scss';
 import clsx from 'clsx';
-import { pieceMap } from '@/features/shogi/board/pieces';
+import { Hands, pieceMap } from '@/features/shogi';
 
 interface Props {
   hands: Hands;
