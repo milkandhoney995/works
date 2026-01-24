@@ -40,28 +40,88 @@ A modern web application showcasing three interactive tools built with cutting-e
 ## 📁 Project Structure
 
 ```
-works/
-├── src/
-│   ├── app/
-│   │   ├── calculator/          # Calculator app
-│   │   ├── meditationApp/       # Meditation timer
-│   │   ├── todoList/           # Todo list app
-│   │   ├── globals.scss        # Global styles
-│   │   ├── layout.tsx          # Root layout
-│   │   └── page.tsx            # Home page
-│   ├── components/
-│   │   ├── card/               # Reusable card component
-│   │   ├── shogi/               # Shogi components
-│   │   ├── todoList/           # Todo-related components
-│   │   └── Providers.tsx       # Redux provider wrapper
-│   ├── hooks/
-│   │   ├── shogi/.             # Shogi-specific hooks
-│   │   └── useMeditationTimer.ts # Meditation hook
-│   └── store/                  # Redux store and slices
-├── styles/
-│   └── variables/              # Sass variables and mixins
-└── public/
-    └── assets/                 # Static assets (sounds, videos, SVGs)
+src
+├── app
+│   ├── calculator
+│   │   ├── _components
+│   │   │   └── CalculatorButton.tsx
+│   │   ├── _data
+│   │   │   └── calculatorButton.ts
+│   │   ├── _hooks
+│   │   │   └── useCalculator.ts
+│   │   ├── page.module.scss
+│   │   └── page.tsx
+│   ├── favicon.ico
+│   ├── layout.tsx
+│   ├── meditationApp
+│   │   ├── _components
+│   │   │   ├── CircleProgress.tsx
+│   │   │   ├── Player.tsx
+│   │   │   ├── SettingsModal.tsx
+│   │   │   ├── SoundPicker.tsx
+│   │   │   └── TimeSelector.tsx
+│   │   ├── _data
+│   │   │   ├── soundOptions.ts
+│   │   │   └── timeOptions.ts
+│   │   ├── _hooks
+│   │   │   └── useMeditationTimer.ts
+│   │   ├── page.module.scss
+│   │   └── page.tsx
+│   ├── page.module.scss
+│   ├── page.tsx
+│   ├── shogi
+│   │   ├── _components
+│   │   │   ├── Board.tsx
+│   │   │   ├── Cell.tsx
+│   │   │   ├── Hands.tsx
+│   │   │   └── ShogiBoardWithPromotion.tsx
+│   │   ├── _data
+│   │   │   ├── board.ts
+│   │   │   └── pieces.ts
+│   │   ├── _hooks
+│   │   │   └── useShogi.ts
+│   │   ├── page.module.scss
+│   │   └── page.tsx
+│   └── todoList
+│       ├── _components
+│       │   ├── AddTodo
+│       │   │   ├── AddTodo.module.scss
+│       │   │   └── AddTodo.tsx
+│       │   └── TodoItem
+│       │       ├── TodoItem.module.scss
+│       │       └── TodoItem.tsx
+│       ├── page.module.scss
+│       └── page.tsx
+├── components
+│   ├── Providers.tsx
+│   └── card
+│       ├── card.module.scss
+│       └── index.tsx
+├── data
+│   └── cards.ts
+├── features
+│   └── shogi
+│       ├── check
+│       │   ├── findKingPosition.ts
+│       │   ├── isKingInCheck.ts
+│       │   └── isUchifuzume.ts
+│       ├── move
+│       │   ├── applyMove.ts
+│       │   ├── getLegalMoves.ts
+│       │   ├── moveGenerators.ts
+│       │   └── moveRules.ts
+│       ├── rules
+│       │   └── shogiRules.ts
+│       ├── state
+│       │   ├── shogiReducer.ts
+│       │   ├── shogiState.ts
+│       │   └── types.ts
+│       └── utils
+│           ├── shogiHelpers.ts
+│           └── withCheckState.ts
+├── store
+│   ├── index.ts
+│   └── todoSlice.ts
 ```
 
 ## 🎨 Design Features

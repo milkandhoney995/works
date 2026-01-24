@@ -83,17 +83,85 @@ npm run dev
 src
 ├── app
 │   ├── calculator
+│   │   ├── _components
+│   │   │   └── CalculatorButton.tsx
+│   │   ├── _data
+│   │   │   └── calculatorButton.ts
+│   │   ├── _hooks
+│   │   │   └── useCalculator.ts
+│   │   ├── page.module.scss
+│   │   └── page.tsx
+│   ├── favicon.ico
+│   ├── layout.tsx
 │   ├── meditationApp
+│   │   ├── _components
+│   │   │   ├── CircleProgress.tsx
+│   │   │   ├── Player.tsx
+│   │   │   ├── SettingsModal.tsx
+│   │   │   ├── SoundPicker.tsx
+│   │   │   └── TimeSelector.tsx
+│   │   ├── _data
+│   │   │   ├── soundOptions.ts
+│   │   │   └── timeOptions.ts
+│   │   ├── _hooks
+│   │   │   └── useMeditationTimer.ts
+│   │   ├── page.module.scss
+│   │   └── page.tsx
+│   ├── page.module.scss
+│   ├── page.tsx
 │   ├── shogi
+│   │   ├── _components
+│   │   │   ├── Board.tsx
+│   │   │   ├── Cell.tsx
+│   │   │   ├── Hands.tsx
+│   │   │   └── ShogiBoardWithPromotion.tsx
+│   │   ├── _data
+│   │   │   ├── board.ts
+│   │   │   └── pieces.ts
+│   │   ├── _hooks
+│   │   │   └── useShogi.ts
+│   │   ├── page.module.scss
+│   │   └── page.tsx
 │   └── todoList
+│       ├── _components
+│       │   ├── AddTodo
+│       │   │   ├── AddTodo.module.scss
+│       │   │   └── AddTodo.tsx
+│       │   └── TodoItem
+│       │       ├── TodoItem.module.scss
+│       │       └── TodoItem.tsx
+│       ├── page.module.scss
+│       └── page.tsx
 ├── components
-│   ├── card
-│   ├── shogi
-│   └── todoList
-├── hooks
-│   ├── shogi
-│   └── useMeditationTimer.ts
-└── store
+│   ├── Providers.tsx
+│   └── card
+│       ├── card.module.scss
+│       └── index.tsx
+├── data
+│   └── cards.ts
+├── features
+│   └── shogi
+│       ├── check
+│       │   ├── findKingPosition.ts
+│       │   ├── isKingInCheck.ts
+│       │   └── isUchifuzume.ts
+│       ├── move
+│       │   ├── applyMove.ts
+│       │   ├── getLegalMoves.ts
+│       │   ├── moveGenerators.ts
+│       │   └── moveRules.ts
+│       ├── rules
+│       │   └── shogiRules.ts
+│       ├── state
+│       │   ├── shogiReducer.ts
+│       │   ├── shogiState.ts
+│       │   └── types.ts
+│       └── utils
+│           ├── shogiHelpers.ts
+│           └── withCheckState.ts
+├── store
+│   ├── index.ts
+│   └── todoSlice.ts
 ```
 
 ※ 詳細はコード内コメント参照。
