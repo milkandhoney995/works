@@ -1,9 +1,9 @@
 import { memo } from 'react';
 import clsx from 'clsx';
-import { pieceMap } from '@/app/shogi/_data/pieces';
 import { Position } from '@/features/shogi/state/types';
 import classes from '@/app/shogi/page.module.scss';
 import { isSentePiece } from '@/features/shogi/utils/shogiHelpers';
+import { pieceMap } from '@/features/shogi/board/pieces';
 
 interface Props {
   x: number;

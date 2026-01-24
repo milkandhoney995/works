@@ -1,4 +1,4 @@
-import { unpromote } from "@/app/shogi/_data/pieces";
+import { unpromote } from "../board/pieces";
 
 /* ================= 定数 ================= */
 export const BOARD_SIZE = 9;
