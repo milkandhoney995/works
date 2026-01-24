@@ -1,7 +1,7 @@
 'use client';
 
 import classes from "@/app/calculator/page.module.scss";
-import CalculatorButton from "@/app/calculator/components/CalculatorButton";
+import CalculatorButton from "@/app/calculator/_components/CalculatorButton";
 import { useCalculator } from "@/features/calculator/hooks/useCalculator";
 import { calculatorButtons, CalculatorButtonData } from "@/data/calculatorButton";
 
