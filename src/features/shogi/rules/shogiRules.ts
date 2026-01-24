@@ -6,7 +6,7 @@ import {
   inEnemyCamp,
   mustPromote,
   nextTurn,
-} from './shogiHelpers';
+} from '../utils/shogiHelpers';
 import { ShogiState } from '../state/shogiState';
 
 /**

@@ -1,5 +1,5 @@
 import { Position } from '@/features/shogi/state/types';
-import { isEnemyPiece, isInsideBoard } from '@/features/shogi/logic/shogiHelpers';
+import { isEnemyPiece, isInsideBoard } from '@/features/shogi/utils/shogiHelpers';
 
 /**
  * 決まった方向に一歩ずつ移動する駒の合法手を取得するヘルパー関数

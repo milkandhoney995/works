@@ -1,8 +1,8 @@
 import { Position } from '@/features/shogi/state/types';
-import { pieceMoves } from '@/features/shogi/rules/moveRules';
+import { pieceMoves } from './moveRules';
 import { applyMove } from './applyMove';
-import { isKingInCheck } from './isKingInCheck';
-import { isSentePiece } from './shogiHelpers';
+import { isKingInCheck } from '../check/isKingInCheck';
+import { isSentePiece } from '../utils/shogiHelpers';
 
 /**
  * 自殺手を除外した合法手を取得する

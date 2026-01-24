@@ -1,6 +1,6 @@
 import { ShogiState } from '@/features/shogi/state/shogiState';
-import { isKingInCheck } from './isKingInCheck';
-import { findKingPosition } from './findKingPosition';
+import { isKingInCheck } from '../check/isKingInCheck';
+import { findKingPosition } from '../check/findKingPosition';
 
 /**
  * 局面が確定したら、王手状態などを再評価する

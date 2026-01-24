@@ -2,7 +2,7 @@ import { useReducer, useMemo } from 'react';
 import { shogiReducer } from '@/features/shogi/state/shogiReducer';
 import { initialShogiState } from '@/features/shogi/state/shogiState';
 import { HandsByPlayer, UseShogiReturn } from '@/features/shogi/state/types';
-import { isSentePiece } from '@/features/shogi/logic/shogiHelpers';
+import { isSentePiece } from '@/features/shogi/utils/shogiHelpers';
 
 /**
  * 将棋用カスタムフック

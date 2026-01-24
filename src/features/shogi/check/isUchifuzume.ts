@@ -1,7 +1,7 @@
 import { ShogiState } from '@/features/shogi/state/shogiState';
 import { isKingInCheck } from './isKingInCheck';
-import { getLegalMoves } from './getLegalMoves';
-import { nextTurn, isSentePiece } from './shogiHelpers';
+import { getLegalMoves } from '../move/getLegalMoves';
+import { nextTurn, isSentePiece } from '../utils/shogiHelpers';
 
 /**
  * 打歩詰めかどうかを判定

@@ -4,16 +4,16 @@ import {
   isInsideBoard,
   isIllegalDropPosition,
   isNifu,
-} from '@/features/shogi/logic/shogiHelpers';
-import { getLegalMoves } from '@/features/shogi/logic/getLegalMoves';
-import { withCheckState } from '@/features/shogi/logic/withCheckState';
-import { isUchifuzume } from '@/features/shogi/logic/isUchifuzume';
+} from '@/features/shogi/utils/shogiHelpers';
+import { getLegalMoves } from '@/features/shogi/move/getLegalMoves';
+import { withCheckState } from '@/features/shogi/utils/withCheckState';
+import { isUchifuzume } from '@/features/shogi/check/isUchifuzume';
 import {
   finalizePromotion,
   tryDropPiece,
   tryMovePiece,
   resetSelection,
-} from '../logic/shogiRules';
+} from '../rules/shogiRules';
 import { Position } from '@/features/shogi/state/types';
 
 /**

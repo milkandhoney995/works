@@ -1,5 +1,5 @@
 import { MoveFunc } from '@/features/shogi/state/types';
-import { isSentePiece } from '@/features/shogi/logic/shogiHelpers';
+import { isSentePiece } from '@/features/shogi/utils/shogiHelpers';
 import { stepMoves, rayMoves } from './moveGenerators';
 
 /* ================= 王 ================= */
