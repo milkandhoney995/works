@@ -3,10 +3,10 @@
 import { useCallback, useState } from 'react';
 import classes from './page.module.scss';
 import { useMeditationTimer } from '@/features/meditationApp/hooks/useMeditationTimer';
-import TimeSelector from '@/app/meditationApp/components/TimeSelector';
-import Player from '@/app/meditationApp/components/Player';
-import SoundPicker from '@/app/meditationApp/components/SoundPicker';
-import SettingsModal from '@/app/meditationApp/components/SettingsModal';
+import TimeSelector from '@/app/meditationApp/_components/TimeSelector';
+import Player from '@/app/meditationApp/_components/Player';
+import SoundPicker from '@/app/meditationApp/_components/SoundPicker';
+import SettingsModal from '@/app/meditationApp/_components/SettingsModal';
 
 const MeditationApp = () => {
   const {
