@@ -16,7 +16,7 @@ interface Props {
 }
 
 // 不必要な再レンダリングを防ぐために memo を使用
-export const ShogiCell = memo(function ShogiCell({
+const Cell = memo(function Cell({
   x,
   y,
   piece,
@@ -50,3 +50,5 @@ export const ShogiCell = memo(function ShogiCell({
     </button>
   );
 });
+
+export default Cell;

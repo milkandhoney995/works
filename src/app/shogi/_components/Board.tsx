@@ -1,6 +1,6 @@
 import { Position } from '@/features/shogi/state/types';
-import { ShogiCell } from './ShogiCell';
 import classes from '@/app/shogi/page.module.scss';
+import Cell from './Cell';
 
 interface Props {
   board: string[][];
@@ -13,7 +13,7 @@ interface Props {
 
 const KANJI_RANKS = ['一', '二', '三', '四', '五', '六', '七', '八', '九'];
 
-export const ShogiBoard = ({
+const Board = ({
   board,
   selected,
   legalMoves,
@@ -47,7 +47,7 @@ export const ShogiBoard = ({
                 kingPosition?.y === y;
 
               return (
-                <ShogiCell
+                <Cell
                   key={`${x}-${y}`}
                   x={x}
                   y={y}
@@ -74,3 +74,5 @@ export const ShogiBoard = ({
     </div>
   );
 };
+
+export default Board;

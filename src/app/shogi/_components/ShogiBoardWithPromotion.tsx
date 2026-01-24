@@ -1,7 +1,7 @@
-import { ShogiBoard } from './ShogiBoard';
-import { ShogiHands } from './ShogiHands';
 import { PendingPromotion, Position, HandsByPlayer } from '@/features/shogi/state/types';
 import classes from '@/app/shogi/page.module.scss';
+import Board from './Board';
+import Hand from './Hands';
 
 interface Props {
   board: string[][];
@@ -38,7 +38,7 @@ export const ShogiBoardWithPromotion = ({
         </div>
       )}
       {/* 持ち駒（後手） */}
-      <ShogiHands
+      <Hand
         hands={hands.gote}
         selectedHandPiece={selectedHandPiece}
         onSelect={onHandSelect}
@@ -46,7 +46,7 @@ export const ShogiBoardWithPromotion = ({
       />
 
       {/* 将棋盤 */}
-      <ShogiBoard
+      <Board
         board={board}
         selected={selected}
         legalMoves={legalMoves}
@@ -56,7 +56,7 @@ export const ShogiBoardWithPromotion = ({
       />
 
       {/* 持ち駒（先手） */}
-      <ShogiHands
+      <Hand
         hands={hands.sente}
         selectedHandPiece={selectedHandPiece}
         onSelect={onHandSelect}

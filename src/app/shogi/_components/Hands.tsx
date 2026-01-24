@@ -10,7 +10,7 @@ interface Props {
   className?: string;
 }
 
-export const ShogiHands = ({ hands, selectedHandPiece, onSelect, className }: Props) => {
+const Hand = ({ hands, selectedHandPiece, onSelect, className }: Props) => {
   return (
     <div className={clsx(classes.shogi__hands, className)}>
       {Object.entries(hands).map(([piece, count]) =>
@@ -33,3 +33,5 @@ export const ShogiHands = ({ hands, selectedHandPiece, onSelect, className }: Pr
     </div>
   );
 };
+
+export default Hand;
