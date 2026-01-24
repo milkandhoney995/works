@@ -1,8 +1,8 @@
 'use client';
 
-import { useShogi } from '@/features/shogi/hooks/useShogi';
 import classes from './page.module.scss';
 import { ShogiBoardWithPromotion } from './_components/ShogiBoardWithPromotion';
+import { useShogi } from './_hooks/useShogi';
 
 const ShogiPage = () => {
   const {
