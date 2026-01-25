@@ -2,7 +2,7 @@ import { Position } from '@/features/shogi/state/types';
 import { isEnemyPiece, isInsideBoard } from '@/features/shogi/utils/shogiHelpers';
 
 /**
- * 決まった方向に一歩ずつ移動する駒の合法手を取得するヘルパー関数
+ * 決まった方向に一歩ずつ移動する駒の合法手を取得する
  * @function stepMoves
  * @param x 列番号
  * @param y 行番号
@@ -33,7 +33,7 @@ export const stepMoves = (
 }
 
 /**
- * 同じ方向に当たるまで移動する駒の合法手を取得するヘルパー関数
+ * 同じ方向に当たるまで移動する駒の合法手を取得する
  * @function rayMoves
  * @param x 列番号
  * @param y 行番号
