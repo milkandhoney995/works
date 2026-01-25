@@ -69,7 +69,7 @@ src/features/shogi/
 
 ---
 
-## レイヤ別 詳細説明
+## レイヤー別 詳細説明
 
 ### ドメイン層
 
@@ -108,7 +108,7 @@ src/features/shogi/
 
 ##### `generateLegalMoves.ts`
 - 擬似合法手から **自殺手を除外**
-- `check` レイヤに依存
+- `check` レイヤーに依存
 
 ---
 
@@ -203,7 +203,7 @@ src/features/shogi/
 
 #### `utils/`
 
-**将棋に依存するが、どのレイヤにも属さない汎用処理**
+**将棋に依存するが、どのレイヤーにも属さない汎用処理**
 
 ##### `shogiHelpers.ts`
 - 陣営判定
@@ -229,16 +229,13 @@ src/features/shogi/
 
 ## 補足
 
-- この構成は DDD / Clean Architecture を **将棋ドメイン向けに軽量化**したもの
-- 将来 AI 探索（minimax / alpha-beta）を追加する場合は
-  - `evaluation/`
-  - `search/`
-  レイヤを追加するだけで対応可能
+- この構成は DDD / Clean Architecture を将棋ドメイン向けに軽量化したもの
+- 将来AI対戦などを追加する場合は、新たにレイヤーを追加するだけで対応可能
 
 ---
 
 ## ゴール
 
-- reducer を読めば **UIイベントの流れが一瞬でわかる**
-- 将棋ルールは usecases / domain 以下に閉じ込める
-- 将棋以外の機能を `features/` に追加しても迷わない構造
+- reducerを読めば、**UIイベントの流れが一瞬でわかる**
+- 将棋ルールはドメイン層に閉じ込める
+- 将棋以外の機能を `features/` に追加しても問題ない構造
