@@ -30,20 +30,27 @@ src/features/shogi/
 │   ├── findKingPosition.ts
 │   ├── isKingInCheck.ts
 │   └── isUchifuzume.ts
+├── domain
+│   └── shogiRules.ts
 ├── move/
 │   ├── applyMove.ts
 │   ├── generateLegalMoves.ts
 │   ├── moveGenerators.ts
 │   └── moveRules.ts
-├── rules/
-│   └── shogiRules.ts
 ├── state/
 │   ├── shogiReducer.ts
 │   ├── shogiState.ts
 │   └── types.ts
+├── usecases
+│   ├── cancelSelection.ts
+│   ├── dropPiece.ts
+│   ├── movePiece.ts
+│   ├── promotePiece.ts
+│   ├── selectCell.ts
+│   └── selectHandPiece.ts
 ├── utils/
 │   ├── shogiHelpers.ts
-│   └── withCheckState.ts
+│   └── evaluateCheckState.ts
 └── index.ts
 ```
 
@@ -85,7 +92,7 @@ src/features/shogi/
   - 自殺手を除外
   - `check`に依存
 
-### `rules/`
+### `domain`
 
 将棋ルールに基づく State 遷移
 - `shogiRules.ts`
@@ -101,6 +108,23 @@ UI とロジックの接続点
   - State / Action 定義
 - `shogiState.ts`
   - UIイベント → ルール呼び出し
+
+### `usecases/`
+
+UIイベントごとのロジック
+
+- `selectCell.ts`
+  - セル選択時
+- `selectHandPiece.ts`
+  - 持ち駒選択時
+- `movePiece.ts`
+  - 駒移動時
+- `promotePiece.ts`
+  - 成り
+- `dropPiece.ts`
+  - 駒を打つ時
+- `cancelSelection.ts`
+  - 選択解除時
 
 ### `utils/`
 
