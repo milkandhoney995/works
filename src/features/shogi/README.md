@@ -2,25 +2,38 @@
 
 ## 概要
 
-このフォルダは UI（React Components）から完全に独立した将棋ロジック層 を表します。
+このフォルダは**UI（React Components）から完全に独立した将棋ロジック層** を表します。
 
-- 盤面表現
-- 駒の移動ルール
-- 王手・詰み関連判定
-- 状態遷移（Reducer）
+UIは**public API（`index.ts`）と reducer / state のみ** を参照し、
+将棋のルール・局面評価・探索ロジックの詳細を一切知りません。
 
-を責務ごとに分離し、UIからは reducer / state / public API のみを参照する設計を目指しています。
+本レイヤでは、以下を責務ごとに分離します。
 
-### 各フォルダ・ファイルの役割
-- `board`: 盤面(board.ts)、駒(pieces.ts)の定義（静的データ）
-- `check`: 王手、打歩詰めなどの局面評価
-- `move`: 自殺手を除く、(成り駒を含む)各駒の合法手などの盤面評価
-- `rules`: 駒の移動・成り、打ち駒、選択解除の処理
-- `state`: 将棋の状態管理。State / Reducer（UIと接続される唯一の層）
-- `utils`: 汎用ヘルパー
-- `index.ts`: Public API
+- 盤面・駒の**静的定義**
+- 駒単体の移動可能マス計算（擬似合法手）
+- 王手・打歩詰めなどの**局面評価**
+- 将棋ルールに基づく**状態遷移**
+- UIイベント単位の**ユースケース**
+
+将来的な機能追加（詰み判定、千日手、AI探索）にも耐えられる構造を目的としています。
+
+---
+
+## 設計方針
+
+- Reducerの責務は最小にとどめる
+  - 「どのイベントを呼ぶか」を決めるだけ
+- UseCase は UIイベント単位
+  - UIの関心事（クリック・選択・操作）と 1:1
+- ルール・探索・評価は純粋関数
+  - テスト容易性・再利用性を最優先
+- 依存方向は一方向
+  - `board → move → check → domain/usecases → state`
+
+---
 
 ## フォルダ構成
+
 ```
 src/features/shogi/
 ├── board/
@@ -30,7 +43,7 @@ src/features/shogi/
 │   ├── findKingPosition.ts
 │   ├── isKingInCheck.ts
 │   └── isUchifuzume.ts
-├── domain
+├── domain/
 │   └── shogiRules.ts
 ├── move/
 │   ├── applyMove.ts
@@ -41,7 +54,7 @@ src/features/shogi/
 │   ├── shogiReducer.ts
 │   ├── shogiState.ts
 │   └── types.ts
-├── usecases
+├── usecases/
 │   ├── cancelSelection.ts
 │   ├── dropPiece.ts
 │   ├── movePiece.ts
@@ -54,82 +67,173 @@ src/features/shogi/
 └── index.ts
 ```
 
+---
+
 ## レイヤ別 詳細説明
+
 ### `board/`
 
-静的データ定義のみ
+**完全に静的な定義のみ**を置くレイヤー
 
-- `board.ts`
-  - 初期盤面`initialBoard`
-  - 状態やロジックへの依存なし
-- `pieces.ts`
-  - 表示名・成り対応などのマッピング
+- 状態を持たない
+- 他レイヤーへの依存なし
 
-### `check/`
+#### `board.ts`
+- 初期盤面 `initialBoard`
 
-局面評価（王手・詰み）
+#### `pieces.ts`
+- 駒の表示名マップ
+- 成り・不成の対応表
 
-- `findKingPosition.ts`
-  - 玉の探索（純粋関数）
-- `isKingInCheck.ts`
-  - 王手判定
-  - `moveRules`に依存（攻撃可能判定）
-- `isUchifuzume.ts`
-  - 打歩詰め判定
-  - `state`/`move`に依存
+---
 
 ### `move/`
 
-駒単体の「動けるマス」を計算する
+**駒単体の「動けるマス」を計算するレイヤー**
 
-- `moveGenerators.ts`
-  - step / ray 移動の汎用ロジック
-- `moveRules.ts`
-  - `board`、`utils` のみ依存
-- `applyMoves.ts`
-  - 盤面に移動を適用（純粋関数）
-- `generateLegalMoves.ts`
-  - 自殺手を除外
-  - `check`に依存
+- 状態（State）を一切持たない
+- 盤面を入力 → マスの配列を出力
 
-### `domain`
+#### `moveGenerators.ts`
+- step / ray 移動の汎用ロジック
 
-将棋ルールに基づく State 遷移
-- `shogiRules.ts`
-  - 駒移動
-  - 成り判定
-  - 打ち駒処理
+#### `moveRules.ts`
+- 駒種別ごとの移動ルール
+- `board` / `utils` のみ依存
 
-### `state/`
+#### `applyMove.ts`
+- 盤面に移動を適用する純粋関数
 
-UI とロジックの接続点
+#### `generateLegalMoves.ts`
+- 擬似合法手から **自殺手を除外**
+- `check` レイヤに依存
 
-- `shogiState.ts`
-  - State / Action 定義
-- `shogiState.ts`
-  - UIイベント → ルール呼び出し
+---
+
+### `check/`
+
+**局面評価レイヤー**
+
+- 王手・打歩詰めなど「盤面の意味」を判定
+- State の書き換えは行わない
+
+#### `findKingPosition.ts`
+- 玉の位置探索（純粋関数）
+
+#### `isKingInCheck.ts`
+- 王手判定
+- `moveRules` を利用した攻撃可能判定
+
+#### `isUchifuzume.ts`
+- 打歩詰め判定
+- `state` / `move` に依存（例外的に重め）
+
+---
+
+### `domain/`
+
+**将棋ルールに基づく State 遷移の最小単位**
+
+- 「何が合法か」を知っている
+- UIイベントの概念は知らない
+
+#### `shogiRules.ts`
+- 駒移動
+- 成り判定
+- 打ち駒処理
+- 捕獲処理
+
+※ reducer から直接呼ばれない（UseCase 経由のみ）
+
+---
 
 ### `usecases/`
 
-UIイベントごとのロジック
+**UIイベント単位のアプリケーションロジック**
 
-- `selectCell.ts`
-  - セル選択時
-- `selectHandPiece.ts`
-  - 持ち駒選択時
-- `movePiece.ts`
-  - 駒移動時
-- `promotePiece.ts`
-  - 成り
-- `dropPiece.ts`
-  - 駒を打つ時
-- `cancelSelection.ts`
-  - 選択解除時
+- reducer から呼ばれる唯一の層
+- 複数ルール・評価を組み合わせる
+
+#### `selectCell.ts`
+- 盤面セル選択
+- 合法手計算
+
+#### `selectHandPiece.ts`
+- 持ち駒選択
+- 打てるマスの計算
+
+#### `movePiece.ts`
+- 駒移動
+- 王手状態再評価
+
+#### `promotePiece.ts`
+- 成り / 不成の確定
+
+#### `dropPiece.ts`
+- 打ち駒
+- 二歩・打歩詰め・王手回避判定
+
+#### `cancelSelection.ts`
+- 選択解除
+
+---
+
+### `state/`
+
+**UI とロジックの接続点**
+
+#### `shogiState.ts`
+- `ShogiState`
+- `ShogiAction`
+- 初期状態定義
+
+#### `shogiReducer.ts`
+- UIイベントを UseCase にルーティング
+- 将棋ルールの詳細は持たない
+
+#### `types.ts`
+- Position / Hands / PendingPromotion などの共通型
+
+---
 
 ### `utils/`
 
-汎用ヘルパー
+**将棋に依存するが、どのレイヤにも属さない汎用処理**
 
-- 盤面コピー
+#### `shogiHelpers.ts`
 - 陣営判定
-- 二歩・強制成などの補助関数
+- 二歩判定
+- 強制成り判定
+- 盤面コピー
+
+#### `evaluateCheckState.ts`
+- 局面確定後の評価
+  - 王手状態
+  - 玉の位置
+
+---
+
+### `index.ts`
+
+**Public API 定義**
+
+- UI からの import 入口を 1 箇所に集約
+- 内部構造変更に強くするためのバリア
+
+---
+
+## 補足
+
+- この構成は DDD / Clean Architecture を **将棋ドメイン向けに軽量化**したもの
+- 将来 AI 探索（minimax / alpha-beta）を追加する場合は
+  - `evaluation/`
+  - `search/`
+  レイヤを追加するだけで対応可能
+
+---
+
+## ゴール
+
+- reducer を読めば **UIイベントの流れが一瞬でわかる**
+- 将棋ルールは usecases / domain 以下に閉じ込める
+- 将棋以外の機能を `features/` に追加しても迷わない構造
