@@ -1,6 +1,6 @@
 import { ShogiState } from '@/features/shogi/state/shogiState';
 import { isKingInCheck } from './isKingInCheck';
-import { getLegalMoves } from '../move/getLegalMoves';
+import { generateLegalMoves } from '../move/generateLegalMoves';
 import { nextTurn, isSentePiece } from '../utils/shogiHelpers';
 
 /**
@@ -35,7 +35,7 @@ export const isUchifuzume = (
       // 相手の駒だけ
       if (isSentePiece(piece) !== opponentIsSente) continue;
 
-      const moves = getLegalMoves({ x, y }, stateAfterDrop.board);
+      const moves = generateLegalMoves({ x, y }, stateAfterDrop.board);
       if (moves.length > 0) {
         return false;
       }

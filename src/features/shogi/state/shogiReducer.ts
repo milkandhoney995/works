@@ -5,15 +5,15 @@ import {
   isIllegalDropPosition,
   isNifu,
 } from '@/features/shogi/utils/shogiHelpers';
-import { getLegalMoves } from '@/features/shogi/move/getLegalMoves';
+import { generateLegalMoves } from '@/features/shogi/move/generateLegalMoves';
 import { withCheckState } from '@/features/shogi/utils/withCheckState';
 import { isUchifuzume } from '@/features/shogi/check/isUchifuzume';
 import {
   finalizePromotion,
   tryDropPiece,
-  tryMovePiece,
+  applyMoveWithRules,
   resetSelection,
-} from '../rules/shogiRules';
+} from '../domain/shogiRules';
 import { Position } from '@/features/shogi/state/types';
 
 /**
@@ -82,7 +82,7 @@ export const shogiReducer = (
         ...state,
         selected,
         selectedHandPiece: null,
-        legalMoves: getLegalMoves(selected, state.board),
+        legalMoves: generateLegalMoves(selected, state.board),
       };
     }
 
@@ -98,7 +98,7 @@ export const shogiReducer = (
 
     /* ================= 駒移動 ================= */
     case 'MOVE_PIECE': {
-      const next = tryMovePiece(state, { x: action.x, y: action.y });
+      const next = applyMoveWithRules(state, { x: action.x, y: action.y });
       return withCheckState({
         ...next,
         selected: null,

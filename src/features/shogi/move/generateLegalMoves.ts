@@ -6,12 +6,12 @@ import { isSentePiece } from '../utils/shogiHelpers';
 
 /**
  * 自殺手を除外した合法手を取得する
- * @function getLegalMoves
+ * @function generateLegalMoves
  * @param pos 現在の駒の位置
  * @param board 現在の盤面
  * @returns 合法手の配列
  */
-export const getLegalMoves = (
+export const generateLegalMoves = (
   pos: Position,
   board: string[][]
 ): Position[] => {

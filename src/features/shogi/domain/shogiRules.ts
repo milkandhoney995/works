@@ -11,12 +11,12 @@ import { promotable } from '../board/pieces';
 
 /**
  * 駒を移動する
- * @function tryMovePiece
+ * @function applyMoveWithRules
  * @param state 現在の将棋の状態
  * @param to 移動先の位置
  * @returns 更新された将棋の状態
  */
-export const tryMovePiece = (
+export const applyMoveWithRules = (
   state: ShogiState,
   to: Position
 ) => {

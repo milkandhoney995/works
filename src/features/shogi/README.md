@@ -32,7 +32,7 @@ src/features/shogi/
 │   └── isUchifuzume.ts
 ├── move/
 │   ├── applyMove.ts
-│   ├── getLegalMoves.ts
+│   ├── generateLegalMoves.ts
 │   ├── moveGenerators.ts
 │   └── moveRules.ts
 ├── rules/
@@ -81,7 +81,7 @@ src/features/shogi/
   - `board`、`utils` のみ依存
 - `applyMoves.ts`
   - 盤面に移動を適用（純粋関数）
-- `getLegalMoves.ts`
+- `generateLegalMoves.ts`
   - 自殺手を除外
   - `check`に依存
 

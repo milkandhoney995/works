@@ -107,7 +107,7 @@ src
 │       │   └── isUchifuzume.ts
 │       ├── move
 │       │   ├── applyMove.ts
-│       │   ├── getLegalMoves.ts
+│       │   ├── generateLegalMoves.ts
 │       │   ├── moveGenerators.ts
 │       │   └── moveRules.ts
 │       ├── rules
