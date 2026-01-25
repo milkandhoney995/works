@@ -1,10 +1,4 @@
 import { ShogiState, ShogiAction } from '@/features/shogi/state/shogiState';
-import { withCheckState } from '@/features/shogi/utils/withCheckState';
-import {
-  finalizePromotion,
-  applyMoveWithRules,
-  resetSelection,
-} from '../domain/shogiRules';
 import { dropPieceUseCase } from '../usecases/dropPiece';
 import { selectCellUseCase } from '../usecases/selectCell';
 import { selectHandPieceUseCase } from '../usecases/selectHandPiece';
