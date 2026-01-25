@@ -23,7 +23,7 @@ UIは**public API（`index.ts`）と reducer / state のみ** を参照し、
 
 - Reducerの責務は最小にとどめる
   - 「どのイベントを呼ぶか」を決めるだけ
-- UseCase は UIイベント単位
+- ユースケースは UIイベント単位
   - UIの関心事（クリック・選択・操作）と 1:1
 - ルール・探索・評価は純粋関数
   - テスト容易性・再利用性を最優先
@@ -71,149 +71,154 @@ src/features/shogi/
 
 ## レイヤ別 詳細説明
 
-### `board/`
+### ドメイン層
+
+#### `board/`
 
 **完全に静的な定義のみ**を置くレイヤー
 
 - 状態を持たない
 - 他レイヤーへの依存なし
 
-#### `board.ts`
+##### `board.ts`
 - 初期盤面 `initialBoard`
 
-#### `pieces.ts`
+##### `pieces.ts`
 - 駒の表示名マップ
 - 成り・不成の対応表
 
 ---
 
-### `move/`
+#### `move/`
 
 **駒単体の「動けるマス」を計算するレイヤー**
 
 - 状態（State）を一切持たない
 - 盤面を入力 → マスの配列を出力
 
-#### `moveGenerators.ts`
+##### `moveGenerators.ts`
 - step / ray 移動の汎用ロジック
 
-#### `moveRules.ts`
+##### `moveRules.ts`
 - 駒種別ごとの移動ルール
 - `board` / `utils` のみ依存
 
-#### `applyMove.ts`
+##### `applyMove.ts`
 - 盤面に移動を適用する純粋関数
 
-#### `generateLegalMoves.ts`
+##### `generateLegalMoves.ts`
 - 擬似合法手から **自殺手を除外**
 - `check` レイヤに依存
 
 ---
 
-### `check/`
+#### `check/`
 
 **局面評価レイヤー**
 
 - 王手・打歩詰めなど「盤面の意味」を判定
 - State の書き換えは行わない
 
-#### `findKingPosition.ts`
+##### `findKingPosition.ts`
 - 玉の位置探索（純粋関数）
 
-#### `isKingInCheck.ts`
+##### `isKingInCheck.ts`
 - 王手判定
 - `moveRules` を利用した攻撃可能判定
 
-#### `isUchifuzume.ts`
+##### `isUchifuzume.ts`
 - 打歩詰め判定
 - `state` / `move` に依存（例外的に重め）
 
 ---
 
-### `domain/`
+#### `domain/`
 
 **将棋ルールに基づく State 遷移の最小単位**
 
 - 「何が合法か」を知っている
 - UIイベントの概念は知らない
 
-#### `shogiRules.ts`
+##### `shogiRules.ts`
 - 駒移動
 - 成り判定
 - 打ち駒処理
 - 捕獲処理
 
-※ reducer から直接呼ばれない（UseCase 経由のみ）
+※ reducer から直接呼ばれない（usecases経由のみ）
 
 ---
+### ユースケース層
 
-### `usecases/`
+#### `usecases/`
 
 **UIイベント単位のアプリケーションロジック**
 
 - reducer から呼ばれる唯一の層
 - 複数ルール・評価を組み合わせる
 
-#### `selectCell.ts`
+##### `selectCell.ts`
 - 盤面セル選択
 - 合法手計算
 
-#### `selectHandPiece.ts`
+##### `selectHandPiece.ts`
 - 持ち駒選択
 - 打てるマスの計算
 
-#### `movePiece.ts`
+##### `movePiece.ts`
 - 駒移動
 - 王手状態再評価
 
-#### `promotePiece.ts`
+##### `promotePiece.ts`
 - 成り / 不成の確定
 
-#### `dropPiece.ts`
+##### `dropPiece.ts`
 - 打ち駒
 - 二歩・打歩詰め・王手回避判定
 
-#### `cancelSelection.ts`
+##### `cancelSelection.ts`
 - 選択解除
 
 ---
+### 状態管理
 
-### `state/`
+#### `state/`
 
 **UI とロジックの接続点**
 
-#### `shogiState.ts`
+##### `shogiState.ts`
 - `ShogiState`
 - `ShogiAction`
 - 初期状態定義
 
-#### `shogiReducer.ts`
-- UIイベントを UseCase にルーティング
+##### `shogiReducer.ts`
+- UIイベントをユースケースにルーティング
 - 将棋ルールの詳細は持たない
 
-#### `types.ts`
+##### `types.ts`
 - Position / Hands / PendingPromotion などの共通型
 
 ---
+### 汎用関数
 
-### `utils/`
+#### `utils/`
 
 **将棋に依存するが、どのレイヤにも属さない汎用処理**
 
-#### `shogiHelpers.ts`
+##### `shogiHelpers.ts`
 - 陣営判定
 - 二歩判定
 - 強制成り判定
 - 盤面コピー
 
-#### `evaluateCheckState.ts`
+##### `evaluateCheckState.ts`
 - 局面確定後の評価
   - 王手状態
   - 玉の位置
 
 ---
-
-### `index.ts`
+### Public API 定義
+#### `index.ts`
 
 **Public API 定義**
 
