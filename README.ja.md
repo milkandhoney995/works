@@ -158,7 +158,7 @@ src
 │       │   └── types.ts
 │       └── utils
 │           ├── shogiHelpers.ts
-│           └── withCheckState.ts
+│           └── evaluateCheckState.ts
 ├── store
 │   ├── index.ts
 │   └── todoSlice.ts
