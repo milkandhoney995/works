@@ -148,7 +148,7 @@ src/features/shogi/
 ※ reducer から直接呼ばれない（usecases経由のみ）
 
 ---
-### ユースケース層
+### アプリケーション層
 
 #### `usecases/`
 
