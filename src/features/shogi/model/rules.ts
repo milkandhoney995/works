@@ -1,4 +1,4 @@
-import { Position } from '@/features/shogi/model/types';
+import { Position, MoveResult } from '@/features/shogi/model/types';
 import {
   capturePiece,
   copyBoard,
@@ -12,26 +12,20 @@ import { promotable } from './pieces';
 /**
  * 駒を移動する
  * @function applyMoveWithRules
- * @param state 現在の将棋の状態
+ * @param board 現在の盤面
+ * @param turn 現在の手番（先手か後手）
+ * @param hands 各プレイヤーの持ち駒
+ * @param from 移動元の位置
  * @param to 移動先の位置
  * @returns 更新された将棋の状態
  */
 export const applyMoveWithRules = (
-  state: ShogiState,
+  board: string[][],
+  hands: Record<string, number>,
+  turn: 'sente' | 'gote',
+  from: Position,
   to: Position
-) => {
-  const { selected, board } = state;
-  if (!selected) return state;
-
-  if (!state.legalMoves.some(p => p.x === to.x && p.y === to.y)) {
-    return {
-      ...state,
-      selected: null,
-      legalMoves: [],
-    };
-  }
-
-  const from = selected;
+): MoveResult => {
   const piece = board[from.y][from.x];
   const captured = board[to.y][to.x];
 
@@ -39,27 +33,25 @@ export const applyMoveWithRules = (
     promotable[piece] &&
     (inEnemyCamp(from.y, piece) || inEnemyCamp(to.y, piece));
 
-  if (canPromote) {
+  if (canPromote && mustPromote(piece, to.y)) {
+    const nextBoard = copyBoard(board);
+    nextBoard[to.y][to.x] = promotable[piece]!;
+    nextBoard[from.y][from.x] = '';
 
-    if (mustPromote(piece, to.y)) {
-      const nextBoard = copyBoard(board);
-      nextBoard[to.y][to.x] = promotable[piece]!;
-      nextBoard[from.y][from.x] = '';
-
-      return {
-        ...state,
-        board: nextBoard,
-        hands: capturePiece(state.hands, captured),
-        selected: null,
-        legalMoves: [],
-        turn: nextTurn(state.turn),
-      };
-    }
     return {
-      ...state,
-      pendingPromotion: { from, to, piece },
-      selected: null,
-      legalMoves: [],
+      type: 'moved',
+      board: nextBoard,
+      hands: capturePiece(hands, captured),
+      turn: nextTurn(turn),
+    };
+  }
+
+  if (canPromote) {
+    return {
+      type: 'promotionRequired',
+      from,
+      to,
+      piece,
     };
   }
 
@@ -68,12 +60,10 @@ export const applyMoveWithRules = (
   nextBoard[from.y][from.x] = '';
 
   return {
-    ...state,
+    type: 'moved',
     board: nextBoard,
-    hands: capturePiece(state.hands, captured),
-    selected: null,
-    legalMoves: [],
-    turn: nextTurn(state.turn),
+    hands: capturePiece(hands, captured),
+    turn: nextTurn(turn),
   };
 };
 

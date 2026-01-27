@@ -19,6 +19,20 @@ export type PendingPromotion =
 // 移動関数の型
 export type MoveFunc = (pos: Position, board: string[][]) => Position[];
 
+export type MoveResult =
+  | {
+      type: 'moved';
+      board: string[][];
+      hands: Record<string, number>;
+      turn: 'sente' | 'gote';
+    }
+  | {
+      type: 'promotionRequired';
+      from: Position;
+      to: Position;
+      piece: string;
+    };
+
 /**
  * useShogiが返す型
  * @interface UseShogiReturn
