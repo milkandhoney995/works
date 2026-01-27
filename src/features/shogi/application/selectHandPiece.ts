@@ -2,7 +2,7 @@ import { tryDropPiece } from "../model/rules";
 import { ShogiState } from "../state/shogiState";
 import { Position } from "../model/types";
 import { isIllegalDropPosition, isInsideBoard, isNifu } from "../utils/shogiHelpers";
-import { evaluateCheckState } from "../utils/evaluateCheckState";
+import { evaluateCheck } from "../judge/evaluateCheck";
 
 export const selectHandPiece = (
   state: ShogiState,
@@ -38,7 +38,10 @@ const getLegalDropMoves = (
       if (base === 'p' && isNifu(state.board, x, piece)) continue;
 
       const dropped = tryDropPiece(state, piece, { x, y });
-      const evaluated = evaluateCheckState(dropped);
+      const evaluated = {
+        ...dropped,
+        ...evaluateCheck(dropped.board, dropped.turn)
+      }
 
       // 王手が解消される打ちだけ許可
       if (!evaluated.isInCheck) {

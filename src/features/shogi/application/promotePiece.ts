@@ -1,15 +1,16 @@
 import { finalizePromotion } from "../model/rules";
 import { ShogiState } from "../state/shogiState"
-import { evaluateCheckState } from "../utils/evaluateCheckState";
+import { evaluateCheck } from "../judge/evaluateCheck";
 
 export const promotePiece  = (
   state: ShogiState,
   action: { type: 'PROMOTE', promote: boolean }
 ): ShogiState => {
   const next = finalizePromotion(state, action.promote);
-  return evaluateCheckState({
+  return {
     ...next,
+    ...evaluateCheck(next.board, next.turn),
     selected: null,
     selectedHandPiece: null,
-  });
+  };
 }

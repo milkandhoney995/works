@@ -28,7 +28,7 @@ UIは**public API（`index.ts`）と reducer / state のみ** を参照し、
 - ルール・探索・評価は純粋関数
   - テスト容易性・再利用性を最優先
 - 依存方向は一方向
-  - `board → move → check → domain/application → state`
+  - `model → move → judge → application → state`
 
 ---
 
@@ -37,12 +37,13 @@ UIは**public API（`index.ts`）と reducer / state のみ** を参照し、
 ```
 src/features/shogi/
 ├── model/
-│   ├── rules
+│   ├── rules.ts
 │   ├── board.ts
 │   └── pieces.ts
 ├── judge/
 │   ├── findKing.ts
 │   ├── check.ts
+│   ├── evaluateCheck.ts
 │   └── uchifuzume.ts
 ├── move/
 │   ├── applyMove.ts
@@ -61,8 +62,7 @@ src/features/shogi/
 │   ├── selectCell.ts
 │   └── selectHandPiece.ts
 ├── utils/
-│   ├── shogiHelpers.ts
-│   └── evaluateCheckState.ts
+│   └── shogiHelpers.ts
 └── index.ts
 ```
 
@@ -202,7 +202,7 @@ src/features/shogi/
 - 強制成り判定
 - 盤面コピー
 
-##### `evaluateCheckState.ts`
+##### `evaluateCheck.ts`
 - 局面確定後の評価
   - 王手状態
   - 玉の位置

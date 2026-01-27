@@ -144,6 +144,7 @@ src
 │       ├── judge
 │       │   ├── findKing.ts
 │       │   ├── check.ts
+│       │   ├── evaluateCheck.ts
 │       │   └── uchifuzume.ts
 │       ├── move
 │       │   ├── applyMove.ts
@@ -157,8 +158,7 @@ src
 │       │   ├── shogiState.ts
 │       │   └── types.ts
 │       └── utils
-│           ├── shogiHelpers.ts
-│           └── evaluateCheckState.ts
+│           └── shogiHelpers.ts
 ├── store
 │   ├── index.ts
 │   └── todoSlice.ts
