@@ -115,7 +115,8 @@ export const dropPieceWithRules = (
   pos: Position
 ) => {
   const nextBoard = copyBoard(board);
-  nextBoard[pos.y][pos.x] = piece.toLowerCase();
+  const droppedPiece = turn === TeamType.OUR ? piece.toLowerCase() : piece.toUpperCase()
+  nextBoard[pos.y][pos.x] = droppedPiece
 
   return {
     board: nextBoard,
