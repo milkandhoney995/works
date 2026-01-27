@@ -6,11 +6,27 @@ export const promotePiece  = (
   state: ShogiState,
   action: { type: 'PROMOTE', promote: boolean }
 ): ShogiState => {
-  const next = finalizePromotion(state, action.promote);
+  if (!state.pendingPromotion) return state;
+  const { from, to, piece } = state.pendingPromotion;
+
+  const next = finalizePromotion(
+    state.board,
+    state.hands,
+    state.turn,
+    from,
+    to,
+    piece,
+    action.promote
+  );
   return {
-    ...next,
+    ...state,
+    board: next.board,
+    hands: next.hands,
+    turn: next.turn,
     ...evaluateCheck(next.board, next.turn),
+    pendingPromotion: null,
     selected: null,
     selectedHandPiece: null,
+    legalMoves: []
   };
 }

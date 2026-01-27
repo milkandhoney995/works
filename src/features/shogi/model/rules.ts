@@ -13,8 +13,8 @@ import { promotable } from './pieces';
  * 駒を移動する
  * @function applyMoveWithRules
  * @param board 現在の盤面
- * @param turn 現在の手番（先手か後手）
  * @param hands 各プレイヤーの持ち駒
+ * @param turn 現在の手番（先手か後手）
  * @param from 移動元の位置
  * @param to 移動先の位置
  * @returns 更新された将棋の状態
@@ -70,24 +70,34 @@ export const applyMoveWithRules = (
 /**
  * 駒を成る・成らないを確定する
  * @function finalizePromotion
- * @param state 現在の将棋の状態
+ * @param board 現在の盤面
+ * @param hands 各プレイヤーの持ち駒
+ * @param turn 現在の手番（先手か後手）
+ * @param from 移動元の位置
+ * @param to 移動先の位置
+ * @param piece 駒の種類
  * @param promote 成るかどうか
  * @returns 更新された将棋の状態
  */
-export const finalizePromotion = (state: ShogiState, promote: boolean) => {
-  const { from, to, piece } = state.pendingPromotion!;
-  const board = copyBoard(state.board);
+export const finalizePromotion = (
+  board: string[][],
+  hands: Record<string, number>,
+  turn: 'sente' | 'gote',
+  from: Position,
+  to: Position,
+  piece: string,
+  promote: boolean
+) => {
+  const nextBoard = copyBoard(board);
+  const captured = nextBoard[to.y][to.x];
 
-  const captured = board[to.y][to.x];
-  board[to.y][to.x] = promote ? promotable[piece]! : piece;
-  board[from.y][from.x] = '';
+  nextBoard[to.y][to.x] = promote ? promotable[piece]! : piece;
+  nextBoard[from.y][from.x] = '';
 
   return {
-    ...state,
-    board,
-    hands: capturePiece(state.hands, captured),
-    pendingPromotion: null,
-    turn: nextTurn(state.turn),
+    board: nextBoard,
+    hands: capturePiece(hands, captured),
+    turn: nextTurn(turn),
   };
 };
 
