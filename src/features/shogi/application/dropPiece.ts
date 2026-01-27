@@ -21,7 +21,7 @@ export const dropPiece = (
   };
 
   if (state.isInCheck && evaluated.isInCheck) return state;
-  if (base === 'p' && uchifuzume(evaluated, piece)) return state;
+  if (base === 'p' && uchifuzume(evaluated.board, evaluated.turn, piece)) return state;
 
   return {
     ...evaluated,
