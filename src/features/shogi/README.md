@@ -74,7 +74,7 @@ src/features/shogi/
 
 #### `model/`
 
-将棋というゲームを成立させる最小単位
+将棋を成立させる最小単位
 **完全に静的な定義のみ**を置くレイヤー
 
 - 状態を持たない
@@ -94,6 +94,9 @@ src/features/shogi/
 - 捕獲処理
 
 ※ reducer から直接呼ばれない（application経由のみ）
+
+##### `types.ts`
+- Position / Hands / PendingPromotion などの共通型
 
 ---
 
@@ -185,9 +188,6 @@ src/features/shogi/
 ##### `shogiReducer.ts`
 - UIイベントをユースケースにルーティング
 - 将棋ルールの詳細は持たない
-
-##### `types.ts`
-- Position / Hands / PendingPromotion などの共通型
 
 ---
 ### 汎用関数
