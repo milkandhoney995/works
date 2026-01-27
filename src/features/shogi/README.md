@@ -40,10 +40,15 @@ src/features/shogi
 │   ├── board.ts
 │   ├── pieces.ts
 │   ├── rules.ts
-│   └── types.ts
+│   ├── types.ts
+│   └── helpers/
+│       ├── camp.ts
+│       ├── promotion.ts
+│       └── turn.ts
 ├── judge/
 │   ├── check.ts
 │   ├── evaluateCheck.ts
+│   ├── dropRules.ts
 │   ├── findKing.ts
 │   └── uchifuzume.ts
 ├── move/
@@ -91,6 +96,11 @@ src/features/shogi
 - 成り判定
 - 打ち駒処理
 - 捕獲処理
+
+##### `helpers/`
+- `camp.ts`: 陣営・敵陣判定
+- `promotion.ts`: 成り・不成りルール
+- `turn.ts`: 手番
 
 ※ reducer から直接呼ばれない（application経由のみ）
 
@@ -140,6 +150,9 @@ src/features/shogi
 - 局面確定後の評価
   - 王手状態
   - 玉の位置
+
+##### `dropRules.ts`
+- 二歩・打ち位置など禁止判定
 
 ##### `uchifuzume.ts`
 - 打歩詰め判定
