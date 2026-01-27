@@ -2,12 +2,12 @@ import { Position } from '@/features/shogi/model/types';
 
 /**
  * 王の位置を見つける
- * @function findKingPosition
+ * @function findKing
  * @param board 現在の盤面
  * @param turn 先手か後手か
  * @returns 王の位置、見つからなければ null
  */
-export const findKingPosition = (
+export const findKing = (
   board: string[][],
   turn: 'sente' | 'gote'
 ): Position | null => {

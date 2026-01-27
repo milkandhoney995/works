@@ -1,4 +1,4 @@
-import { isUchifuzume } from "../check/isUchifuzume";
+import { uchifuzume } from "../judge/uchifuzume";
 import { tryDropPiece } from "../model/rules";
 import { ShogiState } from "../state/shogiState";
 import { isIllegalDropPosition, isNifu } from "../utils/shogiHelpers";
@@ -18,7 +18,7 @@ export const dropPieceUseCase = (
   const evaluated = evaluateCheckState(next);
 
   if (state.isInCheck && evaluated.isInCheck) return state;
-  if (base === 'p' && isUchifuzume(evaluated, piece)) return state;
+  if (base === 'p' && uchifuzume(evaluated, piece)) return state;
 
   return {
     ...evaluated,

@@ -101,10 +101,10 @@ src
 │   └── cards.ts
 ├── features
 │   └── shogi
-│       ├── check
-│       │   ├── findKingPosition.ts
-│       │   ├── isKingInCheck.ts
-│       │   └── isUchifuzume.ts
+│       ├── judge
+│       │   ├── findKing.ts
+│       │   ├── check.ts
+│       │   └── uchifuzume.ts
 │       ├── move
 │       │   ├── applyMove.ts
 │       │   ├── generateLegalMoves.ts

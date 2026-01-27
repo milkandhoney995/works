@@ -1,7 +1,7 @@
 import { Position } from '@/features/shogi/model/types';
 import { pieceMoves } from './moveRules';
 import { applyMove } from './applyMove';
-import { isKingInCheck } from '../check/isKingInCheck';
+import { check } from '../judge/check';
 import { isSentePiece } from '../utils/shogiHelpers';
 
 /**
@@ -31,6 +31,6 @@ export const generateLegalMoves = (
       piece,
     });
 
-    return !isKingInCheck(nextBoard, isSente);
+    return !check(nextBoard, isSente);
   });
 };

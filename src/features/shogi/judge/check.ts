@@ -15,12 +15,12 @@ const findKing = (board: string[][], isSente: boolean): Position | null => {
 
 /**
  * 王が王手されているかを判定する
- * @function isKingInCheck
+ * @function check
  * @param board 現在の盤面
  * @param isSente 先手かどうか
  * @returns 王手されている場合は true、それ以外は false
  */
-export const isKingInCheck = (
+export const check = (
   board: string[][],
   isSente: boolean
 ): boolean => {

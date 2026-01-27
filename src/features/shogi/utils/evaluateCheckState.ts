@@ -1,6 +1,6 @@
 import { ShogiState } from '@/features/shogi/state/shogiState';
-import { isKingInCheck } from '../check/isKingInCheck';
-import { findKingPosition } from '../check/findKingPosition';
+import { check } from '../judge/check';
+import { findKing } from '../judge/findKing';
 
 /**
  * 局面が確定したら、王手状態などを再評価する
@@ -13,7 +13,7 @@ export const evaluateCheckState = (state: ShogiState): ShogiState => {
 
   return {
     ...state,
-    isInCheck: isKingInCheck(state.board, isSenteTurn),
-    kingPosition: findKingPosition(state.board, state.turn),
+    isInCheck: check(state.board, isSenteTurn),
+    kingPosition: findKing(state.board, state.turn),
   };
 };

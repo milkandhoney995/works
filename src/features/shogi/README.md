@@ -40,10 +40,10 @@ src/features/shogi/
 │   ├── rules
 │   ├── board.ts
 │   └── pieces.ts
-├── check/
-│   ├── findKingPosition.ts
-│   ├── isKingInCheck.ts
-│   └── isUchifuzume.ts
+├── judge/
+│   ├── findKing.ts
+│   ├── check.ts
+│   └── uchifuzume.ts
 ├── move/
 │   ├── applyMove.ts
 │   ├── generateLegalMoves.ts
@@ -120,21 +120,21 @@ src/features/shogi/
 
 ---
 
-#### `check/`
+#### `judge/`
 
 **局面評価レイヤー**
 
 - 王手・打歩詰めなど「盤面の意味」を判定
 - State の書き換えは行わない
 
-##### `findKingPosition.ts`
+##### `findKing.ts`
 - 玉の位置探索（純粋関数）
 
-##### `isKingInCheck.ts`
+##### `check.ts`
 - 王手判定
 - `moveRules` を利用した攻撃可能判定
 
-##### `isUchifuzume.ts`
+##### `uchifuzume.ts`
 - 打歩詰め判定
 - `state` / `move` に依存（例外的に重め）
 

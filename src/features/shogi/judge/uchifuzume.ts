@@ -1,7 +1,7 @@
 import { ShogiState } from '@/features/shogi/state/shogiState';
-import { isKingInCheck } from './isKingInCheck';
 import { generateLegalMoves } from '../move/generateLegalMoves';
 import { nextTurn, isSentePiece } from '../utils/shogiHelpers';
+import { check } from '../judge/check';
 
 /**
  * 打歩詰めかどうかを判定
@@ -9,7 +9,7 @@ import { nextTurn, isSentePiece } from '../utils/shogiHelpers';
  * @param droppedPiece 打った駒の種類
  * @returns 打歩詰めなら true、そうでなければ false
  */
-export const isUchifuzume = (
+export const uchifuzume = (
   stateAfterDrop: ShogiState,
   droppedPiece: string
 ): boolean => {
@@ -22,7 +22,7 @@ export const isUchifuzume = (
   const opponentIsSente = opponentTurn === 'sente';
 
   // 相手玉が王手されていなければ詰みではない
-  if (!isKingInCheck(stateAfterDrop.board, opponentIsSente)) {
+  if (!check(stateAfterDrop.board, opponentIsSente)) {
     return false;
   }
 
