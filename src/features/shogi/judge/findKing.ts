@@ -1,4 +1,4 @@
-import { Position } from '@/features/shogi/model/types';
+import { Position, TeamType } from '@/features/shogi/model/types';
 
 /**
  * 王の位置を見つける
@@ -9,9 +9,9 @@ import { Position } from '@/features/shogi/model/types';
  */
 export const findKing = (
   board: string[][],
-  turn: 'sente' | 'gote'
+  turn: TeamType
 ): Position | null => {
-  const king = turn === 'sente' ? 'k' : 'K';
+  const king = turn === TeamType.OUR ? 'k' : 'K';
 
   for (let y = 0; y < board.length; y++) {
     for (let x = 0; x < board[y].length; x++) {

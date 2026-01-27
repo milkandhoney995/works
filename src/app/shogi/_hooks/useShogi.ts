@@ -1,5 +1,6 @@
 import { useReducer, useMemo } from 'react';
 import { initialShogiState, shogiReducer, isSentePiece, HandsByPlayer, UseShogiReturn } from '@/features/shogi';
+import { TeamType } from '@/features/shogi/model/types';
 
 /**
  * 将棋用カスタムフック
@@ -38,7 +39,7 @@ export const useShogi = (): UseShogiReturn => {
   const onHandSelect = (piece: string) => {
     // 手番チェック
     if (
-      (state.turn === 'sente' && !isSentePiece(piece)) ||
+      (state.turn === TeamType.OUR && !isSentePiece(piece)) ||
       (state.turn === 'gote' && isSentePiece(piece))
     ) {
       return;

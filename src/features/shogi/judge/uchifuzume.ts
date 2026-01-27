@@ -2,6 +2,7 @@ import { generateLegalMoves } from '../move/generateLegalMoves';
 import { isSentePiece } from '../model/helpers/camp';
 import { check } from '../judge/check';
 import { nextTurn } from '../model/helpers/turn';
+import { TeamType } from '../model/types';
 
 /**
  * 打歩詰めかどうかを判定
@@ -12,7 +13,7 @@ import { nextTurn } from '../model/helpers/turn';
  */
 export const uchifuzume = (
   board: string[][],
-  turn: 'sente' | 'gote',
+  turn: TeamType,
   droppedPiece: string
 ): boolean => {
   // 歩以外は関係なし
@@ -21,7 +22,7 @@ export const uchifuzume = (
 
   // 相手番
   const opponentTurn = nextTurn(turn);
-  const opponentIsSente = opponentTurn === 'sente';
+  const opponentIsSente = opponentTurn === TeamType.OUR;
 
   // 相手玉が王手されていなければ詰みではない
   if (!check(board, opponentIsSente)) {

@@ -1,5 +1,6 @@
 import { check } from '../judge/check';
 import { findKing } from '../judge/findKing';
+import { TeamType } from '../model/types';
 
 /**
  * 局面が確定したら、王手状態などを再評価する
@@ -10,10 +11,10 @@ import { findKing } from '../judge/findKing';
  */
 export const evaluateCheck = (
   board: string[][],
-  turn: 'sente' | 'gote'
+  turn: TeamType
 ) => {
   return {
-    isInCheck: check(board, turn === 'sente'),
+    isInCheck: check(board, turn === TeamType.OUR),
     kingPosition: findKing(board, turn),
   };
 };

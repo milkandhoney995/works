@@ -1,4 +1,4 @@
-import { Position, MoveResult } from './types';
+import { Position, MoveResult, TeamType } from './types';
 import { copyBoard } from './board';
 import { capturePiece, promotable } from './pieces';
 import { inEnemyCamp } from './helpers/camp';
@@ -18,7 +18,7 @@ import { mustPromote } from './helpers/promotion';
 export const applyMoveWithRules = (
   board: string[][],
   hands: Record<string, number>,
-  turn: 'sente' | 'gote',
+  turn: TeamType,
   from: Position,
   to: Position
 ): MoveResult => {
@@ -78,7 +78,7 @@ export const applyMoveWithRules = (
 export const finalizePromotion = (
   board: string[][],
   hands: Record<string, number>,
-  turn: 'sente' | 'gote',
+  turn: TeamType,
   from: Position,
   to: Position,
   piece: string,
@@ -110,7 +110,7 @@ export const finalizePromotion = (
 export const dropPieceWithRules = (
   board: string[][],
   hands: Record<string, number>,
-  turn: 'sente' | 'gote',
+  turn: TeamType,
   piece: string,
   pos: Position
 ) => {

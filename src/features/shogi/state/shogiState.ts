@@ -1,4 +1,4 @@
-import { Position, Hands, PendingPromotion } from '@/features/shogi/model/types';
+import { Position, Hands, PendingPromotion, TeamType } from '@/features/shogi/model/types';
 import { initialBoard } from '..';
 
 /**
@@ -21,7 +21,7 @@ export interface ShogiState {
   legalMoves: Position[];
   hands: Hands;
   pendingPromotion: PendingPromotion;
-  turn: 'sente' | 'gote';
+  turn: TeamType;
   isInCheck: boolean;
   kingPosition: Position | null;
 }
@@ -55,7 +55,7 @@ export const initialShogiState: ShogiState = {
   legalMoves: [],
   hands: {},
   pendingPromotion: null,
-  turn: 'sente',
+  turn: TeamType.OUR,
   isInCheck: false,
   kingPosition: null
 };

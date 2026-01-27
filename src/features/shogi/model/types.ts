@@ -4,6 +4,12 @@ export type Position = { x: number; y: number };
 // 持ち駒
 export type Hands = { [piece: string]: number };
 
+// 陣営
+export enum TeamType {
+  OUR = 'sente',
+  OPPONENT = 'gote'
+}
+
 // プレイヤーごとの持ち駒
 export interface HandsByPlayer {
   sente: Hands;
@@ -24,7 +30,7 @@ export type MoveResult =
       type: 'moved';
       board: string[][];
       hands: Record<string, number>;
-      turn: 'sente' | 'gote';
+      turn: TeamType;
     }
   | {
       type: 'promotionRequired';
@@ -57,7 +63,7 @@ export interface UseShogiReturn {
   legalMoves: Position[];
   hands: HandsByPlayer;
   pendingPromotion: PendingPromotion;
-  turn: 'sente' | 'gote';
+  turn: TeamType;
   isInCheck: boolean;
   kingPosition: Position | null;
   handleCellClick: (x: number, y: number) => void;
