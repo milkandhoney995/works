@@ -4,8 +4,8 @@
  * - 内部構造の変更に柔軟
  */
 // ===== Board / Pieces =====
-export { initialBoard } from "./board/board";
-export { pieceMap, promotable, unpromote } from "./board/pieces";
+export { initialBoard } from "./model/board";
+export { pieceMap, promotable, unpromote } from "./model/pieces";
 
 // ===== Helpers =====
 export { isSentePiece } from "./utils/shogiHelpers";
@@ -14,4 +14,4 @@ export { isSentePiece } from "./utils/shogiHelpers";
 export { initialShogiState } from "./state/shogiState";
 export { shogiReducer } from "./state/shogiReducer";
 
-export type { HandsByPlayer, UseShogiReturn, Position, Hands, PendingPromotion  } from "./state/types"
+export type { HandsByPlayer, UseShogiReturn, Position, Hands, PendingPromotion  } from "./model/types"

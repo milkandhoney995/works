@@ -1,4 +1,4 @@
-import { MoveFunc } from '@/features/shogi/state/types';
+import { MoveFunc } from '@/features/shogi/model/types';
 import { isSentePiece } from '@/features/shogi/utils/shogiHelpers';
 import { stepMoves, rayMoves } from './moveGenerators';
 

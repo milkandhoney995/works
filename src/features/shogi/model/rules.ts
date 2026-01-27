@@ -1,4 +1,4 @@
-import { Position } from '@/features/shogi/state/types';
+import { Position } from '@/features/shogi/model/types';
 import {
   capturePiece,
   copyBoard,
@@ -7,7 +7,7 @@ import {
   nextTurn,
 } from '../utils/shogiHelpers';
 import { ShogiState } from '../state/shogiState';
-import { promotable } from '../board/pieces';
+import { promotable } from './pieces';
 
 /**
  * 駒を移動する

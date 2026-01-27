@@ -1,4 +1,4 @@
-import { finalizePromotion } from "../domain/shogiRules";
+import { finalizePromotion } from "../model/rules";
 import { ShogiState } from "../state/shogiState"
 import { evaluateCheckState } from "../utils/evaluateCheckState";
 

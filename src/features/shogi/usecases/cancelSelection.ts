@@ -1,4 +1,4 @@
-import { resetSelection } from "../domain/shogiRules";
+import { resetSelection } from "../model/rules";
 import { ShogiState } from "../state/shogiState";
 
 export const cancelSelectionUseCase = (

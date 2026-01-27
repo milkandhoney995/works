@@ -1,4 +1,4 @@
-import { Position } from '@/features/shogi/state/types';
+import { Position } from '@/features/shogi/model/types';
 import { pieceMoves } from './moveRules';
 import { applyMove } from './applyMove';
 import { isKingInCheck } from '../check/isKingInCheck';

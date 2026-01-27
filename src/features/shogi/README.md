@@ -36,15 +36,14 @@ UIは**public API（`index.ts`）と reducer / state のみ** を参照し、
 
 ```
 src/features/shogi/
-├── board/
+├── model/
+│   ├── rules
 │   ├── board.ts
 │   └── pieces.ts
 ├── check/
 │   ├── findKingPosition.ts
 │   ├── isKingInCheck.ts
 │   └── isUchifuzume.ts
-├── domain/
-│   └── shogiRules.ts
 ├── move/
 │   ├── applyMove.ts
 │   ├── generateLegalMoves.ts
@@ -73,8 +72,9 @@ src/features/shogi/
 
 ### ドメイン層
 
-#### `board/`
+#### `model/`
 
+将棋というゲームを成立させる最小単位
 **完全に静的な定義のみ**を置くレイヤー
 
 - 状態を持たない
@@ -86,6 +86,14 @@ src/features/shogi/
 ##### `pieces.ts`
 - 駒の表示名マップ
 - 成り・不成の対応表
+
+##### `rules.ts`
+- 駒移動
+- 成り判定
+- 打ち駒処理
+- 捕獲処理
+
+※ reducer から直接呼ばれない（usecases経由のみ）
 
 ---
 
@@ -129,23 +137,6 @@ src/features/shogi/
 ##### `isUchifuzume.ts`
 - 打歩詰め判定
 - `state` / `move` に依存（例外的に重め）
-
----
-
-#### `domain/`
-
-**将棋ルールに基づく State 遷移の最小単位**
-
-- 「何が合法か」を知っている
-- UIイベントの概念は知らない
-
-##### `shogiRules.ts`
-- 駒移動
-- 成り判定
-- 打ち駒処理
-- 捕獲処理
-
-※ reducer から直接呼ばれない（usecases経由のみ）
 
 ---
 ### アプリケーション層

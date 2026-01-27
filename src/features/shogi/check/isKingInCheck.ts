@@ -1,4 +1,4 @@
-import { Position } from '@/features/shogi/state/types';
+import { Position } from '@/features/shogi/model/types';
 import { isSentePiece } from '../utils/shogiHelpers';
 import { pieceMoves } from '../move/moveRules';
 

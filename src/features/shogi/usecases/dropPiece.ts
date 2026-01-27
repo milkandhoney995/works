@@ -1,5 +1,5 @@
 import { isUchifuzume } from "../check/isUchifuzume";
-import { tryDropPiece } from "../domain/shogiRules";
+import { tryDropPiece } from "../model/rules";
 import { ShogiState } from "../state/shogiState";
 import { isIllegalDropPosition, isNifu } from "../utils/shogiHelpers";
 import { evaluateCheckState } from "../utils/evaluateCheckState";

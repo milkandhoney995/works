@@ -1,4 +1,4 @@
-import { applyMoveWithRules } from "../domain/shogiRules";
+import { applyMoveWithRules } from "../model/rules";
 import { ShogiState } from "../state/shogiState"
 import { evaluateCheckState } from "../utils/evaluateCheckState";
 

@@ -1,4 +1,4 @@
-import { unpromote } from "../board/pieces";
+import { unpromote } from "../model/pieces";
 
 /* ================= 定数 ================= */
 export const BOARD_SIZE = 9;

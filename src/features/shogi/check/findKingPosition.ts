@@ -1,4 +1,4 @@
-import { Position } from '@/features/shogi/state/types';
+import { Position } from '@/features/shogi/model/types';
 
 /**
  * 王の位置を見つける

@@ -1,6 +1,6 @@
-import { tryDropPiece } from "../domain/shogiRules";
+import { tryDropPiece } from "../model/rules";
 import { ShogiState } from "../state/shogiState";
-import { Position } from "../state/types";
+import { Position } from "../model/types";
 import { isIllegalDropPosition, isInsideBoard, isNifu } from "../utils/shogiHelpers";
 import { evaluateCheckState } from "../utils/evaluateCheckState";
 
