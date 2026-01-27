@@ -52,7 +52,7 @@ const Board = ({
                   x={x}
                   y={y}
                   piece={piece}
-                  selected={selected}
+                  isSelected={selected?.x === x && selected?.y === y}
                   legal={isLegalMove}
                   isCheckedKing={isCheckedKing}
                   onClick={onCellClick}

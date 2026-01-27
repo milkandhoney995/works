@@ -1,13 +1,13 @@
 import { memo } from 'react';
 import clsx from 'clsx';
 import classes from '@/app/shogi/page.module.scss';
-import { Position, isSentePiece, pieceMap } from '@/features/shogi';
+import { isSentePiece, pieceMap } from '@/features/shogi';
 
 interface Props {
   x: number;
   y: number;
   piece: string;
-  selected: Position | null;
+  isSelected: boolean;
   legal: boolean;
   isCheckedKing: boolean;
   onClick: (x: number, y: number) => void;
@@ -18,13 +18,11 @@ const Cell = memo(function Cell({
   x,
   y,
   piece,
-  selected,
+  isSelected,
   legal,
   isCheckedKing,
   onClick,
 }: Props) {
-  const isSelected = selected?.x === x && selected?.y === y;
-
   // 後手（大文字）なら反転
   const isGote = piece !== '' && !isSentePiece(piece);
 
