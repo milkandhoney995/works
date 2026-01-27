@@ -35,25 +35,22 @@ UIは**public API（`index.ts`）と reducer / state のみ** を参照し、
 ## フォルダ構成
 
 ```
-src/features/shogi/
+src/features/shogi
 ├── model/
-│   ├── rules.ts
 │   ├── board.ts
-│   └── pieces.ts
+│   ├── pieces.ts
+│   ├── rules.ts
+│   └── types.ts
 ├── judge/
-│   ├── findKing.ts
 │   ├── check.ts
 │   ├── evaluateCheck.ts
+│   ├── findKing.ts
 │   └── uchifuzume.ts
 ├── move/
 │   ├── applyMove.ts
 │   ├── generateLegalMoves.ts
 │   ├── generators.ts
 │   └── rules.ts
-├── state/
-│   ├── shogiReducer.ts
-│   ├── shogiState.ts
-│   └── types.ts
 ├── application/
 │   ├── cancelSelection.ts
 │   ├── dropPiece.ts
@@ -61,8 +58,12 @@ src/features/shogi/
 │   ├── promotePiece.ts
 │   ├── selectCell.ts
 │   └── selectHandPiece.ts
+├── state/
+│   ├── shogiReducer.ts
+│   └── shogiState.ts
 ├── utils/
-│   └── shogiHelpers.ts
+│    └── shogiHelpers.ts
+├── README.md
 └── index.ts
 ```
 
