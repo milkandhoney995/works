@@ -1,6 +1,6 @@
 import { Position } from '@/features/shogi/model/types';
 import { isSentePiece } from '../utils/shogiHelpers';
-import { pieceMoves } from '../move/moveRules';
+import { pieceMoves } from '../move/rules';
 
 const findKing = (board: string[][], isSente: boolean): Position | null => {
   const king = isSente ? 'k' : 'K';

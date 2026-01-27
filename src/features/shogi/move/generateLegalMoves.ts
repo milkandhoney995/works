@@ -1,5 +1,5 @@
 import { Position } from '@/features/shogi/model/types';
-import { pieceMoves } from './moveRules';
+import { pieceMoves } from './rules';
 import { applyMove } from './applyMove';
 import { check } from '../judge/check';
 import { isSentePiece } from '../utils/shogiHelpers';

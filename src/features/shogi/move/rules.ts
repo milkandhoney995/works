@@ -1,6 +1,6 @@
 import { MoveFunc } from '@/features/shogi/model/types';
 import { isSentePiece } from '@/features/shogi/utils/shogiHelpers';
-import { stepMoves, rayMoves } from './moveGenerators';
+import { stepMoves, rayMoves } from './generators';
 
 /* ================= 王 ================= */
 export const kingMoves: MoveFunc = ({ x, y }, board) => {

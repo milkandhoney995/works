@@ -47,8 +47,8 @@ src/features/shogi/
 ├── move/
 │   ├── applyMove.ts
 │   ├── generateLegalMoves.ts
-│   ├── moveGenerators.ts
-│   └── moveRules.ts
+│   ├── generators.ts
+│   └── rules.ts
 ├── state/
 │   ├── shogiReducer.ts
 │   ├── shogiState.ts
@@ -104,10 +104,10 @@ src/features/shogi/
 - 状態（State）を一切持たない
 - 盤面を入力 → マスの配列を出力
 
-##### `moveGenerators.ts`
+##### `generators.ts`
 - step / ray 移動の汎用ロジック
 
-##### `moveRules.ts`
+##### `rules.ts`
 - 駒種別ごとの移動ルール
 - `board` / `utils` のみ依存
 
@@ -132,7 +132,7 @@ src/features/shogi/
 
 ##### `check.ts`
 - 王手判定
-- `moveRules` を利用した攻撃可能判定
+- `rules` を利用した攻撃可能判定
 
 ##### `uchifuzume.ts`
 - 打歩詰め判定

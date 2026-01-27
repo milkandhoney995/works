@@ -148,8 +148,8 @@ src
 │       ├── move
 │       │   ├── applyMove.ts
 │       │   ├── generateLegalMoves.ts
-│       │   ├── moveGenerators.ts
-│       │   └── moveRules.ts
+│       │   ├── generators.ts
+│       │   └── rules.ts
 │       ├── rules
 │       │   └── shogiRules.ts
 │       ├── state
