@@ -1,3 +1,5 @@
+import { TeamType } from "../types";
+
 /**
  * 駒が先手かどうか
  * @param piece 駒の種類
@@ -8,6 +10,20 @@ export const isSentePiece = (piece: string): boolean => {
   const base = piece.startsWith('+') ? piece[1] : piece[0];
   return base === base.toLowerCase();
 }
+
+/**
+ * 自分の駒か判定
+ * @param piece 駒の種類
+ * @returns 自分の駒なら true、敵の駒なら false
+ */
+export const isOwnPiece = (
+  piece: string,
+  turn: TeamType
+): boolean => {
+  if (!piece) return false;
+  const pieceIsSente = isSentePiece(piece);
+  return turn === TeamType.OUR ? pieceIsSente : !pieceIsSente;
+};
 
 /**
  * 敵駒かどうかを判定するヘルパー関数

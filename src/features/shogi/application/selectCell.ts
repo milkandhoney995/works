@@ -1,6 +1,6 @@
 import { generateLegalMoves } from "../move/generateLegalMoves";
 import { ShogiState } from "../state/shogiState";
-import { isSentePiece } from "../model/helpers/camp";
+import { isOwnPiece, isSentePiece } from "../model/helpers/camp";
 
 export const selectCell = (
   state: ShogiState,
@@ -9,8 +9,8 @@ export const selectCell = (
   const piece = state.board[action.y][action.x];
   if (!piece) return state;
 
-  const isSente = isSentePiece(piece);
-  if ((state.turn === 'sente' && !isSente) || (state.turn === 'gote' && isSente)) {
+  // 自分の駒でなければ選択不可
+  if (!isOwnPiece(piece, state.turn)) {
     return state;
   }
 
