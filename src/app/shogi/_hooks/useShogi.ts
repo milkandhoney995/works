@@ -1,6 +1,6 @@
 import { useReducer, useMemo } from 'react';
 import { initialShogiState, shogiReducer, isSentePiece, HandsByPlayer, UseShogiReturn } from '@/features/shogi';
-import { TeamType } from '@/features/shogi/model/types';
+import { isOwnPiece } from '@/features/shogi/model/helpers/camp';
 
 /**
  * 将棋用カスタムフック
@@ -38,10 +38,7 @@ export const useShogi = (): UseShogiReturn => {
   */
   const onHandSelect = (piece: string) => {
     // 手番チェック
-    if (
-      (state.turn === TeamType.OUR && !isSentePiece(piece)) ||
-      (state.turn === 'gote' && isSentePiece(piece))
-    ) {
+    if (!isOwnPiece(piece, state.turn)) {
       return;
     }
 
