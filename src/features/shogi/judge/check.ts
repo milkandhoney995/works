@@ -14,7 +14,7 @@ const findKing = (board: string[][], isSente: boolean): Position | null => {
 };
 
 /**
- * 王が王手されているかを判定する
+ * 王手されているかを判定する
  * @function check
  * @param board 現在の盤面
  * @param isSente 先手かどうか

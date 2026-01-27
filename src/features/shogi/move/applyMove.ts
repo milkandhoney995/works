@@ -8,11 +8,11 @@ interface Move {
 }
 
 /**
- * 盤面に移動を適用する
+ * 手を適用した盤面を作る
  * @function applyMove
  * @param board 現在の盤面
  * @param move 移動情報
- * @returns 移動後の盤面
+ * @returns 適用後の盤面
  */
 export const applyMove = (
   board: string[][],

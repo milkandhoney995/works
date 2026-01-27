@@ -5,7 +5,7 @@ import { check } from '../judge/check';
 import { isSentePiece } from '../model/helpers/camp';
 
 /**
- * 自殺手を除外した合法手を取得する
+ * 自殺手を除外した合法手を生成する
  * @function generateLegalMoves
  * @param pos 現在の駒の位置
  * @param board 現在の盤面
