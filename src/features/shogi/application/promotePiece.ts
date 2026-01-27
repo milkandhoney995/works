@@ -1,12 +1,12 @@
-import { applyMoveWithRules } from "../model/rules";
+import { finalizePromotion } from "../model/rules";
 import { ShogiState } from "../state/shogiState"
 import { evaluateCheckState } from "../utils/evaluateCheckState";
 
-export const movePieceUseCase  = (
+export const promotePiece  = (
   state: ShogiState,
-  action: { type: 'MOVE_PIECE'; x: number; y: number }
+  action: { type: 'PROMOTE', promote: boolean }
 ): ShogiState => {
-  const next = applyMoveWithRules(state, { x: action.x, y: action.y });
+  const next = finalizePromotion(state, action.promote);
   return evaluateCheckState({
     ...next,
     selected: null,

@@ -28,7 +28,7 @@ UIは**public API（`index.ts`）と reducer / state のみ** を参照し、
 - ルール・探索・評価は純粋関数
   - テスト容易性・再利用性を最優先
 - 依存方向は一方向
-  - `board → move → check → domain/usecases → state`
+  - `board → move → check → domain/application → state`
 
 ---
 
@@ -53,7 +53,7 @@ src/features/shogi/
 │   ├── shogiReducer.ts
 │   ├── shogiState.ts
 │   └── types.ts
-├── usecases/
+├── application/
 │   ├── cancelSelection.ts
 │   ├── dropPiece.ts
 │   ├── movePiece.ts
@@ -93,7 +93,7 @@ src/features/shogi/
 - 打ち駒処理
 - 捕獲処理
 
-※ reducer から直接呼ばれない（usecases経由のみ）
+※ reducer から直接呼ばれない（application経由のみ）
 
 ---
 
@@ -141,7 +141,7 @@ src/features/shogi/
 ---
 ### アプリケーション層
 
-#### `usecases/`
+#### `application/`
 
 **UIイベント単位のアプリケーションロジック**
 

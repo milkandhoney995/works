@@ -4,7 +4,7 @@ import { ShogiState } from "../state/shogiState";
 import { isIllegalDropPosition, isNifu } from "../utils/shogiHelpers";
 import { evaluateCheckState } from "../utils/evaluateCheckState";
 
-export const dropPieceUseCase = (
+export const dropPiece = (
   state: ShogiState,
   action: { type: 'DROP_PIECE'; piece: string; x: number; y: number }
 ): ShogiState => {

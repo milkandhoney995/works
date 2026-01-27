@@ -4,7 +4,7 @@ import { Position } from "../model/types";
 import { isIllegalDropPosition, isInsideBoard, isNifu } from "../utils/shogiHelpers";
 import { evaluateCheckState } from "../utils/evaluateCheckState";
 
-export const selectHandPieceUseCase = (
+export const selectHandPiece = (
   state: ShogiState,
   action: { type: 'SELECT_HAND_PIECE'; piece: string }
 ): ShogiState => {

@@ -1,10 +1,10 @@
 import { ShogiState, ShogiAction } from '@/features/shogi/state/shogiState';
-import { dropPieceUseCase } from '../usecases/dropPiece';
-import { selectCellUseCase } from '../usecases/selectCell';
-import { selectHandPieceUseCase } from '../usecases/selectHandPiece';
-import { cancelSelectionUseCase } from '../usecases/cancelSelection';
-import { promotePieceUseCase } from '../usecases/promotePiece';
-import { movePieceUseCase } from '../usecases/movePiece';
+import { dropPiece } from '../application/dropPiece';
+import { selectCell } from '../application/selectCell';
+import { selectHandPiece } from '../application/selectHandPiece';
+import { cancelSelection } from '../application/cancelSelection';
+import { promotePiece } from '../application/promotePiece';
+import { movePiece } from '../application/movePiece';
 
 
 /**
@@ -20,22 +20,22 @@ export const shogiReducer = (
   switch (action.type) {
 
     case 'SELECT_CELL':
-      return selectCellUseCase(state, action)
+      return selectCell(state, action)
 
     case 'SELECT_HAND_PIECE':
-      return selectHandPieceUseCase(state, action)
+      return selectHandPiece(state, action)
 
     case 'MOVE_PIECE':
-      return movePieceUseCase(state, action)
+      return movePiece(state, action)
 
     case 'PROMOTE':
-      return promotePieceUseCase(state, action)
+      return promotePiece(state, action)
 
     case 'DROP_PIECE':
-      return dropPieceUseCase(state, action);
+      return dropPiece(state, action);
 
     case 'CANCEL_SELECTION':
-      return cancelSelectionUseCase(state, action);
+      return cancelSelection(state, action);
 
     default:
       return state;

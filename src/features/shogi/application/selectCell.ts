@@ -2,7 +2,7 @@ import { generateLegalMoves } from "../move/generateLegalMoves";
 import { ShogiState } from "../state/shogiState";
 import { isSentePiece } from "../utils/shogiHelpers";
 
-export const selectCellUseCase = (
+export const selectCell = (
   state: ShogiState,
   action: { type: 'SELECT_CELL'; x: number; y: number }
 ): ShogiState => {
