@@ -1,6 +1,6 @@
 import { generateLegalMoves } from "../move/generateLegalMoves";
 import { ShogiState } from "../state/shogiState";
-import { isOwnPiece, isSentePiece } from "../model/helpers/camp";
+import { isOwnPiece } from "../model/helpers/camp";
 
 export const selectCell = (
   state: ShogiState,

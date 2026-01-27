@@ -8,6 +8,19 @@ export const movePiece  = (
 ): ShogiState => {
   if (!state.selected) return state;
 
+  // 合法手があるか確認
+  const isLegal = state.legalMoves.some(
+    m => m.x === action.x && m.y === action.y
+  );
+
+  if (!isLegal) {
+    return {
+      ...state,
+      selected: null,
+      legalMoves: []
+    }
+  }
+
   const result = applyMoveWithRules(
     state.board,
     state.hands,

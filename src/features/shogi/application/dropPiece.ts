@@ -14,6 +14,18 @@ export const dropPiece = (
   if (isIllegalDropPosition(piece, y)) return state;
   if (base === 'p' && isNifu(state.board, x, piece)) return state;
 
+  // 合法手があるか確認
+  const isLegal = state.legalMoves.some(
+    m => m.x === x && m.y === y
+  );
+  if (!isLegal) {
+    return {
+      ...state,
+      selectedHandPiece: null,
+      legalMoves: []
+    };
+  }
+
   const next = dropPieceWithRules(
     state.board,
     state.hands,
