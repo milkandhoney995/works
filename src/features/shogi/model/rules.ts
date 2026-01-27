@@ -130,15 +130,3 @@ export const tryDropPiece = (
     turn: nextTurn(state.turn),
   };
 };
-
-/**
- * 選択解除処理
- * @function resetSelection
- * @param state 現在の状態
- * @returns 選択解除後の状態
- */
-export const resetSelection = <T extends { selected: any; legalMoves: any[] }>(state: T) => ({
-  ...state,
-  selected: null,
-  legalMoves: [],
-});
