@@ -20,3 +20,17 @@ export const unpromote: Record<string, string> = {
   '+p': 'p', '+l': 'l', '+n': 'n', '+s': 's', '+r': 'r', '+b': 'b',
   '+P': 'P', '+L': 'L', '+N': 'N', '+S': 'S', '+R': 'R', '+B': 'B',
 };
+
+/**
+ * 駒を取って持ち駒に加えるヘルパー関数
+ * @param hands 現在の持ち駒
+ * @param captured 取った駒
+ * @returns 更新後の持ち駒
+ */
+export const capturePiece = (hands: Record<string, number>, captured: string): Record<string, number> => {
+  if (!captured) return hands;
+  const basePiece = unpromote[captured] || captured;
+  const handPiece =
+    basePiece === basePiece.toUpperCase() ? basePiece.toLowerCase() : basePiece.toUpperCase();
+  return { ...hands, [handPiece]: (hands[handPiece] || 0) + 1 };
+};

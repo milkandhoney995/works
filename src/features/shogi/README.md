@@ -61,8 +61,6 @@ src/features/shogi
 ├── state/
 │   ├── shogiReducer.ts
 │   └── shogiState.ts
-├── utils/
-│    └── shogiHelpers.ts
 ├── README.md
 └── index.ts
 ```
@@ -138,6 +136,11 @@ src/features/shogi
 - 王手判定
 - `rules` を利用した攻撃可能判定
 
+##### `evaluateCheck.ts`
+- 局面確定後の評価
+  - 王手状態
+  - 玉の位置
+
 ##### `uchifuzume.ts`
 - 打歩詰め判定
 - `state` / `move` に依存（例外的に重め）
@@ -202,11 +205,6 @@ src/features/shogi
 - 二歩判定
 - 強制成り判定
 - 盤面コピー
-
-##### `evaluateCheck.ts`
-- 局面確定後の評価
-  - 王手状態
-  - 玉の位置
 
 ---
 ### Public API 定義

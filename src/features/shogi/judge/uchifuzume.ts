@@ -1,6 +1,7 @@
 import { generateLegalMoves } from '../move/generateLegalMoves';
-import { nextTurn, isSentePiece } from '../utils/shogiHelpers';
+import { isSentePiece } from '../model/helpers/camp';
 import { check } from '../judge/check';
+import { nextTurn } from '../model/helpers/turn';
 
 /**
  * 打歩詰めかどうかを判定

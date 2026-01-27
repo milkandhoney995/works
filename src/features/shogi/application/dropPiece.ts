@@ -1,8 +1,8 @@
+import { isIllegalDropPosition, isNifu } from "../judge/dropRules";
 import { evaluateCheck } from "../judge/evaluateCheck";
 import { uchifuzume } from "../judge/uchifuzume";
 import { dropPieceWithRules } from "../model/rules";
 import { ShogiState } from "../state/shogiState";
-import { isIllegalDropPosition, isNifu } from "../utils/shogiHelpers";
 
 export const dropPiece = (
   state: ShogiState,

@@ -2,7 +2,7 @@ import { Position } from '@/features/shogi/model/types';
 import { pieceMoves } from './rules';
 import { applyMove } from './applyMove';
 import { check } from '../judge/check';
-import { isSentePiece } from '../utils/shogiHelpers';
+import { isSentePiece } from '../model/helpers/camp';
 
 /**
  * 自殺手を除外した合法手を取得する

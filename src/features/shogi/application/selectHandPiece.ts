@@ -1,8 +1,9 @@
 import { dropPieceWithRules } from "../model/rules";
 import { ShogiState } from "../state/shogiState";
 import { Position } from "../model/types";
-import { isIllegalDropPosition, isInsideBoard, isNifu } from "../utils/shogiHelpers";
 import { evaluateCheck } from "../judge/evaluateCheck";
+import { isInsideBoard } from "../model/board";
+import { isIllegalDropPosition, isNifu } from "../judge/dropRules";
 
 export const selectHandPiece = (
   state: ShogiState,

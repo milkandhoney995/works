@@ -1,12 +1,9 @@
 import { Position, MoveResult } from './types';
-import { promotable } from './pieces';
-import {
-  capturePiece,
-  copyBoard,
-  inEnemyCamp,
-  mustPromote,
-  nextTurn,
-} from '../utils/shogiHelpers';
+import { copyBoard } from './board';
+import { capturePiece, promotable } from './pieces';
+import { inEnemyCamp } from './helpers/camp';
+import { nextTurn } from './helpers/turn';
+import { mustPromote } from './helpers/promotion';
 
 /**
  * 駒を移動する

@@ -1,5 +1,5 @@
 import { Position } from '@/features/shogi/model/types';
-import { copyBoard } from '../utils/shogiHelpers';
+import { copyBoard } from '../model/board';
 
 interface Move {
   from: Position;

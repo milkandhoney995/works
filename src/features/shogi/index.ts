@@ -8,7 +8,7 @@ export { initialBoard } from "./model/board";
 export { pieceMap, promotable, unpromote } from "./model/pieces";
 
 // ===== Helpers =====
-export { isSentePiece } from "./utils/shogiHelpers";
+export { isSentePiece } from "./model/helpers/camp";
 
 // ===== State =====
 export { initialShogiState } from "./state/shogiState";

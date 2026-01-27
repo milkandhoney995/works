@@ -1,5 +1,6 @@
 import { Position } from '@/features/shogi/model/types';
-import { isEnemyPiece, isInsideBoard } from '@/features/shogi/utils/shogiHelpers';
+import { isEnemyPiece } from '../model/helpers/camp';
+import { isInsideBoard } from '../model/board';
 
 /**
  * 決まった方向に一歩ずつ移動する駒の合法手を取得する

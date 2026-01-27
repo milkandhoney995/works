@@ -153,12 +153,10 @@ src
 │       │   └── rules.ts
 │       ├── rules
 │       │   └── shogiRules.ts
-│       ├── state
-│       │   ├── shogiReducer.ts
-│       │   ├── shogiState.ts
-│       │   └── types.ts
-│       └── utils
-│           └── shogiHelpers.ts
+│       └── state
+│           ├── shogiReducer.ts
+│           ├── shogiState.ts
+│           └── types.ts
 ├── store
 │   ├── index.ts
 │   └── todoSlice.ts
