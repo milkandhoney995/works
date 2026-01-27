@@ -1,4 +1,5 @@
-import { Position, MoveResult } from '@/features/shogi/model/types';
+import { Position, MoveResult } from './types';
+import { promotable } from './pieces';
 import {
   capturePiece,
   copyBoard,
@@ -6,8 +7,6 @@ import {
   mustPromote,
   nextTurn,
 } from '../utils/shogiHelpers';
-import { ShogiState } from '../state/shogiState';
-import { promotable } from './pieces';
 
 /**
  * 駒を移動する
@@ -103,30 +102,30 @@ export const finalizePromotion = (
 
 /**
  * 駒を打つ
- * @function tryDropPiece
- * @param state 現在の将棋の状態
+ * @function dropPieceWithRules
+ * @param board 現在の盤面
+ * @param hands 各プレイヤーの持ち駒
+ * @param turn 現在の手番（先手か後手）
  * @param piece 打つ駒
  * @param pos 打つ位置
  * @returns 更新された将棋の状態
  */
-export const tryDropPiece = (
-  state: ShogiState,
+export const dropPieceWithRules = (
+  board: string[][],
+  hands: Record<string, number>,
+  turn: 'sente' | 'gote',
   piece: string,
   pos: Position
 ) => {
-  if (state.board[pos.y][pos.x] !== '') return state;
-  if (!state.hands[piece]) return state;
-
-  const board = copyBoard(state.board);
-  board[pos.y][pos.x] = piece.toLowerCase();
+  const nextBoard = copyBoard(board);
+  nextBoard[pos.y][pos.x] = piece.toLowerCase();
 
   return {
-    ...state,
-    board,
+    board: nextBoard,
     hands: {
-      ...state.hands,
-      [piece]: state.hands[piece] - 1,
+      ...hands,
+      [piece]: hands[piece] - 1,
     },
-    turn: nextTurn(state.turn),
+    turn: nextTurn(turn),
   };
 };

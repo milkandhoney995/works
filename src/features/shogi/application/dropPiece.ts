@@ -1,6 +1,6 @@
 import { evaluateCheck } from "../judge/evaluateCheck";
 import { uchifuzume } from "../judge/uchifuzume";
-import { tryDropPiece } from "../model/rules";
+import { dropPieceWithRules } from "../model/rules";
 import { ShogiState } from "../state/shogiState";
 import { isIllegalDropPosition, isNifu } from "../utils/shogiHelpers";
 
@@ -14,7 +14,12 @@ export const dropPiece = (
   if (isIllegalDropPosition(piece, y)) return state;
   if (base === 'p' && isNifu(state.board, x, piece)) return state;
 
-  const next = tryDropPiece(state, piece, { x, y });
+  const next = dropPieceWithRules(
+    state.board,
+    state.hands,
+    state.turn,
+    piece, { x, y }
+  );
   const evaluated = {
     ...next,
     ...evaluateCheck(next.board, next.turn)
@@ -24,8 +29,10 @@ export const dropPiece = (
   if (base === 'p' && uchifuzume(evaluated.board, evaluated.turn, piece)) return state;
 
   return {
+    ...state,
     ...evaluated,
     selected: null,
     selectedHandPiece: null,
+    legalMoves: []
   };
 };

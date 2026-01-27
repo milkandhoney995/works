@@ -1,4 +1,4 @@
-import { tryDropPiece } from "../model/rules";
+import { dropPieceWithRules } from "../model/rules";
 import { ShogiState } from "../state/shogiState";
 import { Position } from "../model/types";
 import { isIllegalDropPosition, isInsideBoard, isNifu } from "../utils/shogiHelpers";
@@ -37,9 +37,15 @@ const getLegalDropMoves = (
       // 二歩チェック（歩のみ）
       if (base === 'p' && isNifu(state.board, x, piece)) continue;
 
-      const dropped = tryDropPiece(state, piece, { x, y });
+      const dropped = dropPieceWithRules(
+        state.board,
+        state.hands,
+        state.turn,
+        piece, { x, y }
+      );
       const evaluated = {
         ...dropped,
+        hands: state.hands, // 持ち駒の試し打ちなので、hands を戻す
         ...evaluateCheck(dropped.board, dropped.turn)
       }
 
