@@ -54,7 +54,7 @@ Next.js 16（App Router）と React 19、TypeScript を使用しています。
 - [React 19](https://react.dev/)
 - TypeScript
 - SCSS モジュールによるスタイリング
-- Zustand / Redux などの状態管理（`store` フォルダ内）
+- Redux の状態管理（`store` フォルダ内）
 
 ---
 
