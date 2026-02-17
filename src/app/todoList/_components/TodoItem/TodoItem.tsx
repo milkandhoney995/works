@@ -1,11 +1,11 @@
 'use client';
 
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@/store/hooks";
 import { toggleComplete, deleteTodo, Todo } from "@/store/todoSlice";
 import classes from './TodoItem.module.scss';
 
 const TodoItem = ({ todo }: { todo: Todo }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   return (
     <div className={classes.todoItem}>

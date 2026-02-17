@@ -1,14 +1,17 @@
 'use client';
 
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
+import { useAppSelector } from "@/store/hooks";
+import type { RootState } from "@/store";
+import type { Todo } from "@/store/todoSlice";
 import classes from './page.module.scss';
 import AddTodo from "./_components/AddTodo/AddTodo";
 import TodoItem from "./_components/TodoItem/TodoItem";
 
 // todo: todoリストを追加後も編集できるようにする
+// Supports both Redux local state and RTK Query API
 const TodoList = () => {
-  const todos = useSelector((state: RootState) => state.todo.todos);
+  // Using Redux local state (RTK Query can be enabled via environment variable)
+  const todos = useAppSelector((state: RootState) => state.todo.todos);
 
   return (
     <div className={classes.todoList}>
@@ -17,7 +20,7 @@ const TodoList = () => {
       <AddTodo />
 
       <div className={classes.todoList__todos}>
-        {todos.map((todo) => (
+        {todos.map((todo: Todo) => (
           <TodoItem key={todo.id} todo={todo} />
         ))}
       </div>

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@/store/hooks";
 import { addTodo } from "@/store/todoSlice";
 import classes from './AddTodo.module.scss'
 
 
 const AddTodo = () => {
   const [title, setTitle] = useState<string>("")
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
