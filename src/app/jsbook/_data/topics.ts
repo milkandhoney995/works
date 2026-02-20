@@ -4,4 +4,5 @@ export const topics = [
   { slug: 'events', title: 'イベント' },
   { slug: 'arrays', title: '配列とメソッド' },
   { slug: 'advanced', title: 'JavaScriptの高度なトピック' },
+  { slug: 'interview', title: '面接で出るJavaScriptの問題' },
 ];
