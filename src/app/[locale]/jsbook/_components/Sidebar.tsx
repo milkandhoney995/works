@@ -11,6 +11,7 @@ interface SidebarProps {
 
 export function Sidebar({ activeSlug }: SidebarProps) {
   const t = useTranslations('jsbook');
+  const item = useTranslations('jsbook.slugs');
   const locale = useLocale();
 
   return (
@@ -51,7 +52,7 @@ export function Sidebar({ activeSlug }: SidebarProps) {
                   activeSlug === topic.slug ? styles.active : ''
                 }
               >
-                {(topic.title as any)[locale] || (topic.title as any).ja}
+                {item(topic.slug)}
               </Link>
             </li>
           ))}

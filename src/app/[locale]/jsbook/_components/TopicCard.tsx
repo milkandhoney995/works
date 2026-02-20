@@ -6,19 +6,18 @@ import styles from './topicCard.module.scss';
 
 interface TopicCardProps {
   slug: string;
-  title: { ja: string; en: string };
 }
 
-export function TopicCard({ slug, title }: TopicCardProps) {
+export function TopicCard({ slug }: TopicCardProps) {
   const t = useTranslations('jsbook');
+  const item = useTranslations('jsbook.slugs');
   const locale = useLocale();
 
   return (
     <Link href={`/${locale}/jsbook/${slug}`} className={styles.card}>
       <div className={styles.content}>
-        <h3 className={styles.title}>{typeof title === 'string' ? title : title.ja}</h3>
-        <p className={styles.description}>
-          {t('learnTopic')} <span className={styles.arrow}>→</span>
+        <h3 className={styles.title}>{item(slug)}</h3>
+        <p className={styles.description}>{t('learnTopic')}<span className={styles.arrow}>→</span>
         </p>
       </div>
     </Link>
