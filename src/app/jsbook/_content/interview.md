@@ -25,14 +25,14 @@ setTimeout(() => {
 
 Promise.resolve()
   .then(() => {
-    console.log('4. Promise.then（マイクロタスク）');
+    console.log('3. Promise.then（マイクロタスク）');
   })
   .then(() => {
     console.log('5. 2つ目のPromise.then');
   });
 
 queueMicrotask(() => {
-  console.log('3. queueMicrotask（マイクロタスク）');
+  console.log('4. queueMicrotask（マイクロタスク）');
 });
 
 console.log('2. 同期コード終了');
@@ -40,9 +40,9 @@ console.log('2. 同期コード終了');
 // 出力順序:
 // 1. スタート
 // 2. 同期コード終了
-// 3. queueMicrotask（マイクロタスク）
-// 4. Promise.then（マイクロタスク）
-// 5. 2つ目のPromise.then
+// 3. Promise.then（マイクロタスク）
+// 4. queueMicrotask（マイクロタスク）
+// 5. 2つ目のPromise.then (Promise の次の then は「前の then が完了した後」に登録される)
 // 6. setTimeout（マクロタスク）
 ```
 
