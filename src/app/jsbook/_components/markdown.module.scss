@@ -1,0 +1,133 @@
+@import '@/styles/tokens/colors';
+@import '@/styles/tokens/spacing';
+@import '@/styles/tokens/typography';
+
+.markdown {
+  line-height: 1.8;
+  color: var(--color-text-primary);
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    font-weight: 700;
+  }
+
+  h1 {
+    font-size: 2rem;
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: var(--spacing-sm);
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin-top: var(--spacing-xl);
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  p {
+    margin: var(--spacing-md) 0;
+  }
+
+  code {
+    background-color: var(--color-bg-secondary);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    color: var(--color-accent);
+  }
+
+  pre {
+    background-color: var(--color-bg-code);
+    padding: var(--spacing-md);
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: var(--spacing-md) 0;
+    border-left: 4px solid var(--color-accent);
+
+    code {
+      background-color: transparent;
+      padding: 0;
+      color: var(--color-text-primary);
+      font-size: inherit;
+    }
+  }
+
+  strong {
+    font-weight: 700;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  ul,
+  ol {
+    margin: var(--spacing-md) 0;
+    padding-left: var(--spacing-lg);
+  }
+
+  li {
+    margin: var(--spacing-sm) 0;
+  }
+
+  blockquote {
+    border-left: 4px solid var(--color-border);
+    padding-left: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+    color: var(--color-text-secondary);
+    font-style: italic;
+  }
+
+  hr {
+    border: none;
+    border-top: 2px solid var(--color-border);
+    margin: var(--spacing-lg) 0;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: var(--spacing-md) 0;
+
+    th,
+    td {
+      border: 1px solid var(--color-border);
+      padding: var(--spacing-sm);
+      text-align: left;
+    }
+
+    th {
+      background-color: var(--color-bg-secondary);
+      font-weight: 700;
+    }
+
+    tr:nth-child(even) {
+      background-color: var(--color-bg-secondary);
+    }
+  }
+
+  a {
+    color: var(--color-accent);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    margin: var(--spacing-md) 0;
+  }
+}
