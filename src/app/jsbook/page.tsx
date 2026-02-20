@@ -10,7 +10,7 @@ const JSBookPage = () => {
     <Layout>
       <div className={styles.container}>
         <header className={styles.header}>
-          <h1>JavaScript Primer</h1>
+          <h1>JavaScript Book</h1>
           <p className={styles.subtitle}>
             JavaScriptの基礎から応用まで、包括的に学べるリソース集
           </p>
@@ -19,7 +19,9 @@ const JSBookPage = () => {
         <section className={styles.intro}>
           <h2>このコースについて</h2>
           <p>
-            このJavaScript Primerは、初心者から中級者向けの包括的な学習リソースです。
+            このJavaScript Bookは、JavaScriptの基本的な構文から始まり、DOM操作、イベント処理、関数型プログラミング、非同期処理など、実務的なスキルまで幅広くカバーしています。
+          </p>
+          <p>
             JavaScriptの基本的な構文から始まり、DOM操作、イベント処理、
             関数型プログラミング、非同期処理など、実務的なスキルまで幅広くカバーしています。
           </p>

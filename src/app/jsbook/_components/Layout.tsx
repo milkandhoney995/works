@@ -15,7 +15,7 @@ export function Layout({ children, activeSlug }: LayoutProps) {
     <div className={styles.container}>
       <aside className={styles.sidebar}>
         <div className={styles.header}>
-          <h2>JavaScript Primer</h2>
+          <h2>JavaScript Book</h2>
         </div>
         <nav className={styles.nav}>
           <Link href="/jsbook" className={styles.homeLink}>

@@ -3,26 +3,30 @@
 @import '../../../styles/tokens/typography';
 
 .container {
-  max-width: 900px;
+  max-width: 1000px;
 }
 
 .header {
-  margin-bottom: var(--spacing-xl);
-  border-bottom: 2px solid var(--color-border);
-  padding-bottom: var(--spacing-lg);
+  margin-bottom: calc(var(--spacing-xl) * 1.5);
+  padding: calc(var(--spacing-xl) * 1.5) 0 var(--spacing-lg) 0;
 
   h1 {
     margin: 0 0 var(--spacing-md) 0;
-    font-size: 2.5rem;
-    font-weight: 700;
+    font-size: 3rem;
+    font-weight: 200;
+    letter-spacing: -1.5px;
     color: var(--color-text-primary);
+    line-height: 1.2;
   }
 }
 
 .subtitle {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   color: var(--color-text-secondary);
   margin: 0;
+  font-weight: 300;
+  letter-spacing: 0.3px;
+  line-height: 1.6;
 }
 
 .intro {
