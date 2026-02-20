@@ -1,29 +1,27 @@
-@import '../../../../styles/tokens/spacing';
-@import '../../../../styles/tokens/colors';
-@import '../../../../styles/tokens/typography';
+@use '../../../../styles/index' as *;
 
 .container {
   max-width: 900px;
 }
 
 .header {
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: $space-5;
   border-bottom: 1px solid #e8e8e8;
-  padding-bottom: var(--spacing-lg);
+  padding-bottom: $space-5;
 
   h1 {
-    margin: var(--spacing-md) 0 0 0;
+    margin: $space-4 0 0 0;
     font-size: 2rem;
     font-weight: 300;
     letter-spacing: -1px;
-    color: var(--color-text-primary);
+    color: $title;
   }
 }
 
 .backLink {
   display: inline-block;
-  margin-bottom: var(--spacing-md);
-  color: var(--color-accent);
+  margin-bottom: $space-4;
+  color: $accent;
   text-decoration: none;
   font-weight: 400;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -36,42 +34,42 @@
 
 .content {
   line-height: 1.8;
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: $space-5;
 
   h1 {
     font-size: 2rem;
     font-weight: 300;
     letter-spacing: -1px;
-    margin: var(--spacing-xl) 0 var(--spacing-md) 0;
+    margin: $space-5 0 $space-4 0;
     border-bottom: 1px solid #e8e8e8;
-    padding-bottom: var(--spacing-md);
+    padding-bottom: $space-4;
   }
 
   h2 {
     font-size: 1.5rem;
     font-weight: 400;
     letter-spacing: -0.5px;
-    margin: var(--spacing-lg) 0 var(--spacing-md) 0;
-    color: var(--color-text-primary);
+    margin: $space-5 0 $space-4 0;
+    color: $sentence;
     border-bottom: 1px solid #f0f0f0;
-    padding-bottom: var(--spacing-sm);
+    padding-bottom: $space-2;
   }
 
   h3 {
     font-size: 1.25rem;
     font-weight: 400;
-    margin: var(--spacing-lg) 0 var(--spacing-sm) 0;
+    margin: $space-5 0 $space-2 0;
   }
 
   h4,
   h5,
   h6 {
     font-weight: 400;
-    margin: var(--spacing-md) 0 var(--spacing-sm) 0;
+    margin: $space-5 0 $space-2 0;
   }
 
   p {
-    margin: var(--spacing-sm) 0;
+    margin: $space-2 0;
   }
 
   code {
@@ -80,23 +78,23 @@
     border-radius: 3px;
     font-family: 'Courier New', monospace;
     font-size: 0.9em;
-    color: var(--color-accent);
+    color: $accent;
     border: 1px solid #e8e8e8;
   }
 
   pre {
     background-color: #f5f5f5;
-    padding: var(--spacing-md);
+    padding: $space-4;
     border-radius: 6px;
     overflow-x: auto;
-    margin: var(--spacing-md) 0;
-    border-left: 3px solid var(--color-accent);
+    margin: $space-4 0;
+    border-left: 3px solid $accent;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 
     code {
       background-color: transparent;
       padding: 0;
-      color: var(--color-text-primary);
+      color: $sentence;
       font-size: inherit;
       font-family: 'Courier New', monospace;
     }
@@ -112,19 +110,19 @@
 
   ul,
   ol {
-    margin: var(--spacing-md) 0;
-    padding-left: var(--spacing-lg);
+    margin: $space-4 0;
+    padding-left: $space-5;
   }
 
   li {
-    margin: var(--spacing-sm) 0;
+    margin: $space-2 0;
   }
 
   blockquote {
     border-left: 3px solid #d0d0d0;
-    padding-left: var(--spacing-md);
-    margin: var(--spacing-md) 0;
-    color: var(--color-text-secondary);
+    padding-left: $space-5;
+    margin: $space-5 0;
+    color: $secondary;
     font-style: italic;
     font-weight: 300;
   }
@@ -132,18 +130,18 @@
   hr {
     border: none;
     border-top: 1px solid #e8e8e8;
-    margin: var(--spacing-lg) 0;
+    margin: $space-5 0;
   }
 
   table {
     border-collapse: collapse;
     width: 100%;
-    margin: var(--spacing-md) 0;
+    margin: $space-4 0;
 
     th,
     td {
       border: 1px solid #e8e8e8;
-      padding: var(--spacing-sm);
+      padding: $space-2;
       text-align: left;
     }
 
@@ -158,7 +156,7 @@
   }
 
   a {
-    color: var(--color-accent);
+    color: $accent;
     text-decoration: none;
 
     &:hover {
@@ -170,30 +168,30 @@
     max-width: 100%;
     height: auto;
     border-radius: 6px;
-    margin: var(--spacing-md) 0;
+    margin: $space-5 0;
   }
 }
 
 .loading {
-  padding: var(--spacing-lg);
+  padding: $space-5;
   text-align: center;
-  color: var(--color-text-secondary);
+  color: $secondary;
 }
 
 .notFound {
   text-align: center;
-  padding: var(--spacing-xl);
+  padding: $space-5;
 
   h1 {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: $space-4;
   }
 
   a {
     display: inline-block;
-    margin-top: var(--spacing-lg);
-    padding: var(--spacing-sm) var(--spacing-lg);
-    background-color: var(--color-accent);
-    color: var(--color-bg-primary);
+    margin-top: $space-5;
+    padding: $space-2 $space-5;
+    background-color: $accent;
+    color: $pageBg;
     text-decoration: none;
     border-radius: 6px;
 
@@ -206,10 +204,10 @@
 .navigation {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-lg);
-  margin-top: var(--spacing-xl);
-  padding-top: var(--spacing-lg);
-  border-top: 2px solid var(--color-border);
+  gap: $space-5;
+  margin-top: $space-5;
+  padding-top: $space-5;
+  border-top: 2px solid $border;
 
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
@@ -230,12 +228,11 @@
 
 .navLink {
   flex: 1;
-  padding: var(--spacing-md);
-  background-color: var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
+  padding: $space-4;
+  border: 1px solid $border;
   border-radius: 6px;
   text-decoration: none;
-  color: var(--color-text-primary);
+  color: $sentence;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -243,14 +240,14 @@
 
   span {
     display: block;
-    margin-top: var(--spacing-sm);
-    color: var(--color-accent);
+    margin-top: $space-2;
+    color: $accent;
     font-weight: 600;
   }
 
   &:hover {
-    background-color: var(--color-bg-primary);
-    border-color: var(--color-accent);
+    background-color: $pageBg;
+    border-color: $accent;
     transform: translateX(-4px);
   }
 
