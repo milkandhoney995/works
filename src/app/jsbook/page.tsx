@@ -4,6 +4,7 @@ import Link from 'next/link';
 import styles from './page.module.scss';
 import { topics } from './_data/topics';
 import { Layout } from './_components/Layout';
+import { TopicCard } from './_components/TopicCard';
 
 const JSBookPage = () => {
   return (
@@ -35,14 +36,11 @@ const JSBookPage = () => {
           <h2>学習トピック</h2>
           <div className={styles.topicGrid}>
             {topics.map((topic) => (
-              <Link
+              <TopicCard
                 key={topic.slug}
-                href={`/jsbook/${topic.slug}`}
-                className={styles.topicCard}
-              >
-                <h3>{topic.title}</h3>
-                <p>このトピックについて学ぶ →</p>
-              </Link>
+                slug={topic.slug}
+                title={topic.title}
+              />
             ))}
           </div>
         </section>

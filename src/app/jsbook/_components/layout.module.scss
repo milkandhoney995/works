@@ -113,6 +113,9 @@
   flex: 1;
   padding: var(--spacing-xl);
   overflow-y: auto;
+  & div {
+    padding: 1rem 2rem;
+  }
 
   @media (max-width: 768px) {
     padding: var(--spacing-lg);
