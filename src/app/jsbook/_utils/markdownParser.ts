@@ -39,7 +39,7 @@ export function markdownToHtml(markdown: string): string {
     '<li>$1</li>'
   );
   html = html.replace(
-    /(<li>.*?<\/li>)/s,
+    /(<li>[\s\S]*?<\/li>)/g,
     '<ol>$1</ol>'
   );
 
@@ -49,7 +49,7 @@ export function markdownToHtml(markdown: string): string {
     '<li>$1</li>'
   );
   html = html.replace(
-    /(<li>.*?<\/li>)/s,
+    /(<li>[\s\S]*?<\/li>)/g,
     (match) => {
       if (!match.includes('<ol>')) {
         return `<ul>${match}</ul>`;
@@ -71,7 +71,7 @@ export function markdownToHtml(markdown: string): string {
     }
   );
   html = html.replace(
-    /(<tr>.*?<\/tr>)/s,
+    /(<tr>[\s\S]*?<\/tr>)/g,
     '<table>$1</table>'
   );
 

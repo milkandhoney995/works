@@ -4,13 +4,14 @@ import path from 'path';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { topic: string } }
+  { params }: { params: Promise<{ topic: string }> }
 ) {
   try {
+    const { topic } = await params;
     const filePath = path.join(
       process.cwd(),
       'src/app/jsbook/_content',
-      `${params.topic}.md`
+      `${topic}.md`
     );
 
     // ファイルが存在するか確認

@@ -25,4 +25,9 @@ export const cards: CardItem[] = [
     description: 'Japanese Shogi App with React + TypeScript.',
     href: '/shogi',
   },
+  {
+    title: 'JS Book',
+    description: 'JavaScript Book with React + TypeScript.',
+    href: '/jsbook',
+  },
 ]
