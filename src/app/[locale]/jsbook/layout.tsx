@@ -1,4 +1,4 @@
-import { Layout } from './_components/Layout';
+import { Layout } from "./_components/Layout";
 
 interface JSBookLayoutProps {
   children: React.ReactNode;

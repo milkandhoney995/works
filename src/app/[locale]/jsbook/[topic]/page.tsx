@@ -1,4 +1,3 @@
-import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { topics } from '../_data/topics';
@@ -43,7 +42,6 @@ export default async function TopicPage({ params }: TopicPageProps) {
           <Link href={`/${locale}/jsbook`} className={styles.backLink}>
             ← {t('goHome')}
           </Link>
-          <h1>{(topic.title as any)[locale] || (topic.title as any).ja}</h1>
         </header>
 
         {content ? (
