@@ -1,0 +1,128 @@
+@use '../../../../styles/index' as *;
+
+.container {
+  max-width: 1000px;
+}
+
+.header {
+  margin-bottom: calc($space-5 * 1.5);
+  padding: calc($space-5 * 1.5) 0 $space-5 0;
+
+  h1 {
+    margin: 0 0 $space-4 0;
+    font-size: 3rem;
+    font-weight: 200;
+    letter-spacing: -1.5px;
+    color: $title;
+    line-height: 1.2;
+  }
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+  font-weight: 300;
+  letter-spacing: 0.3px;
+  line-height: 1.6;
+}
+
+.intro {
+  margin-bottom: $space-5;
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: $space-4;
+  }
+
+  p {
+    margin: $space-2 0;
+    line-height: 1.8;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.topics {
+  margin-bottom: $space-5;
+
+  h2 {
+    margin-bottom: $space-4;
+    border-bottom: 2px solid $border;
+    padding-bottom: $space-2;
+  }
+}
+
+.topicGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: $space-5;
+  margin-bottom: $space-5;
+}
+
+.features {
+  background-color: $bgSecondary;
+  padding: $space-5;
+  border-radius: 8px;
+  margin-bottom: $space-5;
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: $space-4;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      padding: $space-2 0;
+      line-height: 1.8;
+
+      strong {
+        color: $accent;
+      }
+    }
+  }
+}
+
+.getStarted {
+  text-align: center;
+  padding: $space-5;
+  border: 2px solid $accent;
+  border-radius: 8px;
+  background: linear-gradient(
+    135deg,
+    var(--color-bg-primary) 0%,
+    var(--color-bg-secondary) 100%
+  );
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: $space-4;
+  }
+
+  p {
+    margin-bottom: $space-5;
+    color: $secondary;
+  }
+}
+
+.cta {
+  display: inline-block;
+  padding: $space-2 $space-5;
+  background-color: $accent;
+  color: $pageBg;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+}

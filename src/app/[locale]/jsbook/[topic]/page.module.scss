@@ -1,0 +1,110 @@
+@use '../../../../../styles/index' as *;
+
+.container {
+  max-width: 900px;
+}
+
+.header {
+  margin-bottom: $space-5;
+
+  h1 {
+    margin: $space-4 0 0 0;
+    font-size: 2rem;
+    font-weight: 300;
+    letter-spacing: -1px;
+    color: $title;
+  }
+}
+
+.backLink {
+  display: inline-block;
+  margin-bottom: $space-4;
+  color: $accent;
+  text-decoration: none;
+  font-weight: 400;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    text-decoration: underline;
+    transform: translateX(-4px);
+  }
+}
+
+.content {
+  line-height: 1.8;
+  margin-bottom: $space-5;
+}
+
+.loading {
+  padding: $space-5;
+  text-align: center;
+  color: $secondary;
+}
+
+.notFound {
+  text-align: center;
+  padding: $space-5;
+
+  h1 {
+    margin-bottom: $space-4;
+  }
+
+  a {
+    display: inline-block;
+    margin-top: $space-5;
+    padding: $space-2 $space-5;
+    background-color: $accent;
+    color: $pageBg;
+    text-decoration: none;
+    border-radius: 6px;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: $space-5;
+  padding-top: $space-5;
+  border-top: 1px solid #e8e8e8;
+  gap: $space-4;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.navItem {
+  flex: 1;
+
+  &:last-child {
+    text-align: right;
+
+    @media (max-width: 768px) {
+      text-align: left;
+    }
+  }
+}
+
+.navLink {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  color: $accent;
+  text-decoration: none;
+  font-weight: 400;
+  transition: all 0.2s;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  span {
+    font-size: 0.9rem;
+    color: $sentence;
+    font-weight: 500;
+  }
+}

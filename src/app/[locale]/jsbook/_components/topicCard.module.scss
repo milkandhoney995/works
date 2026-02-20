@@ -1,0 +1,54 @@
+@use '../../../../../styles/index' as *;
+
+.card {
+  display: block;
+  padding: calc($space-5 * 1.25);
+  background-color: white;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  height: 100%;
+
+  &:hover {
+    border-color: $accent;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 400;
+  letter-spacing: -0.3px;
+  color: $sentence;
+  line-height: 1.4;
+}
+
+.description {
+  margin: 0;
+  font-size: 0.9rem;
+  color: $secondary;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 400;
+}
+
+.card:hover .arrow {
+  transform: translateX(4px);
+}

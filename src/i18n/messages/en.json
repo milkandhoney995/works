@@ -1,0 +1,21 @@
+{
+  "jsbook": {
+    "title": "JavaScript Book",
+    "subtitle": "A comprehensive resource covering JavaScript from basics to advanced topics.",
+    "about": "About This Course",
+    "aboutText": "This JavaScript Book covers everything from basic syntax to DOM manipulation, events, functional programming, and asynchronous patterns, giving you practical skills for real-world development.",
+    "topics": "Learning Topics",
+    "features": "Course Features",
+    "getStarted": "Get Started",
+    "goHome": "Back to Home",
+    "previous": "Previous Topic",
+    "next": "Next Topic",
+    "home": "Home",
+    "topicList": "Topics",
+    "learnTopic": "Learn this topic",
+    "startLearning": "Start with Basics",
+    "notFound": "Topic Not Found",
+    "notFoundMessage": "Sorry, the topic you are looking for could not be found.",
+    "contentNotFound": "Content not found."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "jsbook": {
+    "title": "JavaScript Book",
+    "subtitle": "JavaScriptの基礎から応用まで、包括的に学べるリソース集",
+    "about": "このコースについて",
+    "aboutText": "このJavaScript Bookは、JavaScriptの基本的な構文から始まり、DOM操作、イベント処理、関数型プログラミング、非同期処理など、実務的なスキルまで幅広くカバーしています。",
+    "topics": "学習トピック",
+    "features": "このコースの特徴",
+    "getStarted": "始めましょう",
+    "goHome": "トップに戻る",
+    "previous": "前のトピック",
+    "next": "次のトピック",
+    "home": "ホーム",
+    "topicList": "トピック一覧",
+    "learnTopic": "このトピックについて学ぶ",
+    "startLearning": "基本文法から学ぶ",
+    "notFound": "トピックが見つかりません",
+    "notFoundMessage": "申し訳ございません。指定されたトピックが見つかりませんでした。",
+    "contentNotFound": "コンテンツが見つかりませんでした。"
+  }
+}

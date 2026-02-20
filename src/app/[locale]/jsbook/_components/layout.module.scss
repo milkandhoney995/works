@@ -1,0 +1,131 @@
+@use '../../../../../styles/index' as *;
+
+.container {
+  display: flex;
+  min-height: 100vh;
+  background-color: $pageBg;
+}
+
+.sidebar {
+  width: 280px;
+  background-color: #f8f8f8;
+  border-right: 1px solid #e8e8e8;
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+
+  @media (max-width: 768px) {
+    position: fixed;
+    left: -280px;
+    z-index: 1000;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 280px;
+    height: 100vh;
+
+    &.open {
+      left: 0;
+    }
+  }
+}
+
+.header {
+  padding: $space-5;
+  border-bottom: 1px solid #e8e8e8;
+
+  h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+    color: $sentence;
+  }
+}
+
+.nav {
+  padding: $space-4 0;
+
+  h3 {
+    padding: $space-2 $space-5;
+    margin: $space-4 0 $space-2 0;
+    font-size: 0.75rem;
+    color: $sentence;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #e8e8e8;
+    margin: 0;
+  }
+}
+
+.homeLink {
+  display: block;
+  padding: $space-2 $space-5;
+  color: $accent;
+  text-decoration: none;
+  font-weight: 400;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.topicList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    margin: 0;
+
+    a {
+      display: block;
+      padding: $space-2 $space-5;
+      color: $sentence;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      border-left: 2px solid transparent;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.04);
+        color: $accent;
+      }
+
+      &.active {
+        background-color: rgba(0, 0, 0, 0.04);
+        color: $accent;
+        border-left-color: $accent;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.main {
+  flex: 1;
+  padding: $space-5;
+  overflow-y: auto;
+
+  @media (max-width: 768px) {
+    padding: $space-5;
+  }
+}
+
+.langButton {
+  background: none;
+  border: 1px solid #ccc;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+}
