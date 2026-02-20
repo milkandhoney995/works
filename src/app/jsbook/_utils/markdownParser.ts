@@ -1,99 +1,128 @@
-// Markdown parser and converter
-// より堅牢なMarkdownをHTMLに変換
-
+/**
+ * マークダウンをHTMLに変換する軽量な関数 Lightweight Markdown to HTML converter tailored for JSBook
+* - ヘッディング、段落、リスト、コードブロック、インラインコード、強調、リンクをサポート Headings, paragraphs, lists, code blocks, inline code, emphasis, and links supported
+* - コードブロックはHTMLエスケープされ、言語クラスが付与される Code blocks are HTML-escaped and can have language classes
+* - 余分な空行は段落の区切りとして処理される Extra blank lines are treated as paragraph breaks
+* - 追加のMarkdown機能は必要に応じて拡張可能 Additional Markdown features can be added as needed
+ */
 export function markdownToHtml(markdown: string): string {
-  let html = markdown;
+  if (!markdown) return '';
 
-  // Step 1: Protect code blocks from further processing
-  const codeBlocks: string[] = [];
-  html = html.replace(/```([\s\S]*?)```/g, (match) => {
-    const index = codeBlocks.length;
-    codeBlocks.push(match);
-    return `<!-- CODE_BLOCK_${index} -->`;
+  // Normalize newlines
+  let src = markdown.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+  // Collect code blocks and replace with placeholders that won't be touched
+  const codeBlocks: Array<{ lang: string; code: string }> = [];
+
+  // Helper to create placeholder (avoid characters matched by inline rules)
+  const placeholder = (i: number) => `<!--CODEBLOCK${i}-->`;
+
+  // 1) Fenced backtick ```lang\n...\n``` (allow optional final newline)
+  src = src.replace(/```([^\n]*)\n([\s\S]*?)\n?```/g, (_m, lang, code) => {
+    const idx = codeBlocks.length;
+    codeBlocks.push({ lang: (lang || '').trim(), code });
+    return placeholder(idx);
   });
 
-  // Step 2: 見出し（見出しは段落の前に処理）
-  html = html.replace(/^### (.*?)$/gm, '<h3>$1</h3>');
-  html = html.replace(/^## (.*?)$/gm, '<h2>$1</h2>');
-  html = html.replace(/^# (.*?)$/gm, '<h1>$1</h1>');
-
-  // Step 3: 水平線
-  html = html.replace(/^---+$/gm, '<hr />');
-
-  // Step 4: リスト（順序付き）
-  html = html.replace(/^(\d+\.\s.+?)(?=\n(?:\d+\.|[^\d]|$))/gm, (match) => {
-    const items = match.split('\n').map((line) => {
-      const itemMatch = line.match(/^\d+\.\s(.+)$/);
-      return itemMatch ? `<li>${itemMatch[1]}</li>` : '';
-    }).join('');
-    return `<ol>\n${items}\n</ol>`;
+  // 2) Fenced tildes ~~~lang\n...\n~~~
+  src = src.replace(/~~~([^\n]*)\n([\s\S]*?)\n?~~~/g, (_m, lang, code) => {
+    const idx = codeBlocks.length;
+    codeBlocks.push({ lang: (lang || '').trim(), code });
+    return placeholder(idx);
   });
 
-  // Step 5: リスト（順序なし）
-  html = html.replace(/^([-*]\s.+?)(?=\n(?:[-*]\s|[^-*]|$))/gm, (match) => {
-    const items = match.split('\n').map((line) => {
-      const itemMatch = line.match(/^[-*]\s(.+)$/);
-      return itemMatch ? `<li>${itemMatch[1]}</li>` : '';
-    }).join('');
-    return `<ul>\n${items}\n</ul>`;
+  // 3) Indented code blocks: consecutive lines starting with 4 spaces or a tab
+  src = src.replace(/(^(?:(?: {4}|\t).*(?:\n|$))+)/gm, (m) => {
+    const code = m
+      .split('\n')
+      .map((ln) => ln.replace(/^(?: {4}|\t)/, ''))
+      .join('\n')
+      .replace(/\n$/, '');
+    const idx = codeBlocks.length;
+    codeBlocks.push({ lang: '', code });
+    return placeholder(idx);
   });
 
-  // Step 6: 段落（コードブロックとリストを保護）
-  const lines = html.split('\n');
-  const processedLines: string[] = [];
-  let inParagraph = false;
-  let paragraphLines: string[] = [];
+  // Process block-level elements
+  // Headings
+  src = src.replace(/^####\s+(.*)$/gm, '<h4>$1</h4>');
+  src = src.replace(/^###\s+(.*)$/gm, '<h3>$1</h3>');
+  src = src.replace(/^##\s+(.*)$/gm, '<h2>$1</h2>');
+  src = src.replace(/^#\s+(.*)$/gm, '<h1>$1</h1>');
 
-  for (const line of lines) {
-    const trimmed = line.trim();
-    
-    // Skip empty lines and structural elements
-    if (!trimmed || trimmed.startsWith('<') || trimmed.startsWith('<!--')) {
-      if (inParagraph && paragraphLines.length > 0) {
-        processedLines.push(`<p>${paragraphLines.join(' ')}</p>`);
-        paragraphLines = [];
-        inParagraph = false;
-      }
-      if (trimmed) {
-        processedLines.push(line);
-      }
-    } else {
-      inParagraph = true;
-      paragraphLines.push(trimmed);
+  // Horizontal rules
+  src = src.replace(/^---+$/gm, '<hr />');
+
+  // Ordered lists 順番付きリスト
+  src = src.replace(/(^(?:\d+\.\s+.*(?:\n|$))+)/gm, (block) => {
+    const items = block
+      .trim()
+      .split('\n')
+      .map((l) => l.replace(/^\d+\.\s+/, ''))
+      .map((it) => `<li>${it}</li>`)
+      .join('');
+    return `<ol>${items}</ol>`;
+  });
+
+  // Unordered lists
+  src = src.replace(/(^(?:[-*]\s+.*(?:\n|$))+)/gm, (block) => {
+    const items = block
+      .trim()
+      .split('\n')
+      .map((l) => l.replace(/^[-*]\s+/, ''))
+      .map((it) => `<li>${it}</li>`)
+      .join('');
+    return `<ul>${items}</ul>`;
+  });
+
+  // Paragraphs: join non-block lines into <p>
+  const lines = src.split('\n');
+  const outLines: string[] = [];
+  let para: string[] = [];
+  const flushPara = () => {
+    if (para.length) {
+      outLines.push(`<p>${para.join(' ')}</p>`);
+      para = [];
     }
+  };
+
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
+    if (!line) {
+      flushPara();
+      continue;
+    }
+    // If it's a block element or a placeholder, flush paragraph and emit raw line
+    if (line.startsWith('<') || line.startsWith('<!--CODEBLOCK')) {
+      flushPara();
+      outLines.push(line);
+      continue;
+    }
+    para.push(line);
   }
+  flushPara();
+  let html = outLines.join('\n');
 
-  if (inParagraph && paragraphLines.length > 0) {
-    processedLines.push(`<p>${paragraphLines.join(' ')}</p>`);
-  }
-
-  html = processedLines.join('\n');
-
-  // Step 7: インラインコード
+  // Inline formatting
+  // Inline code
   html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
-
-  // Step 8: 太字
-  html = html.replace(/\*\*([^\*]+)\*\*/g, '<strong>$1</strong>');
+  // Bold **text** or __text__
+  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   html = html.replace(/__([^_]+)__/g, '<strong>$1</strong>');
-
-  // Step 9: 斜体
-  html = html.replace(/\*([^\*]+)\*/g, '<em>$1</em>');
+  // Italic *text* or _text_
+  html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
   html = html.replace(/_([^_]+)_/g, '<em>$1</em>');
+  // Links [text](url)
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
 
-  // Step 10: リンク
-  html = html.replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2">$1</a>');
-
-  // Step 11: Code blocks 復元
-  codeBlocks.forEach((block, index) => {
-    const lang = block.match(/```(\w*)/)?.[1] || '';
-    const code = block
-      .replace(/^```\w*\n?/, '')
-      .replace(/\n?```$/, '')
+  // Restore code blocks (escape HTML inside)
+  codeBlocks.forEach(({ lang, code }, i) => {
+    const escaped = code
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
-    const replacement = `<pre><code class="language-${lang}">${code}</code></pre>`;
-    html = html.replace(`<!-- CODE_BLOCK_${index} -->`, replacement);
+    const classAttr = lang ? ` class="language-${lang}"` : '';
+    html = html.replace(placeholder(i), `<pre><code${classAttr}>${escaped}</code></pre>`);
   });
 
   return html;

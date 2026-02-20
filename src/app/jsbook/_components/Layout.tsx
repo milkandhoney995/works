@@ -3,6 +3,7 @@
 import React from 'react';
 import { Sidebar } from './Sidebar';
 import styles from './layout.module.scss';
+import CodeHighlighter from './CodeHighlighter';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -16,6 +17,7 @@ export function Layout({ children, activeSlug }: LayoutProps) {
       <main className={styles.main}>
         {children}
       </main>
+      <CodeHighlighter />
     </div>
   );
 }
