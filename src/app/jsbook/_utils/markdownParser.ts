@@ -1,97 +1,100 @@
 // Markdown parser and converter
-// 簡易的なMarkdownをHTMLに変換
+// より堅牢なMarkdownをHTMLに変換
 
 export function markdownToHtml(markdown: string): string {
   let html = markdown;
 
-  // コードブロック
-  html = html.replace(
-    /```(\w*)\n([\s\S]*?)```/g,
-    (match, lang, code) => {
-      const escapedCode = code
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-      return `<pre><code class="language-${lang}">${escapedCode}</code></pre>`;
-    }
-  );
+  // Step 1: Protect code blocks from further processing
+  const codeBlocks: string[] = [];
+  html = html.replace(/```([\s\S]*?)```/g, (match) => {
+    const index = codeBlocks.length;
+    codeBlocks.push(match);
+    return `<!-- CODE_BLOCK_${index} -->`;
+  });
 
-  // インラインコード
-  html = html.replace(
-    /`([^`]+)`/g,
-    '<code>$1</code>'
-  );
-
-  // 見出し
+  // Step 2: 見出し（見出しは段落の前に処理）
   html = html.replace(/^### (.*?)$/gm, '<h3>$1</h3>');
   html = html.replace(/^## (.*?)$/gm, '<h2>$1</h2>');
   html = html.replace(/^# (.*?)$/gm, '<h1>$1</h1>');
 
-  // 太字
-  html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  // Step 3: 水平線
+  html = html.replace(/^---+$/gm, '<hr />');
 
-  // 斜体
-  html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  // Step 4: リスト（順序付き）
+  html = html.replace(/^(\d+\.\s.+?)(?=\n(?:\d+\.|[^\d]|$))/gm, (match) => {
+    const items = match.split('\n').map((line) => {
+      const itemMatch = line.match(/^\d+\.\s(.+)$/);
+      return itemMatch ? `<li>${itemMatch[1]}</li>` : '';
+    }).join('');
+    return `<ol>\n${items}\n</ol>`;
+  });
 
-  // リスト（順序付き）
-  html = html.replace(
-    /^\d+\.\s(.*?)$/gm,
-    '<li>$1</li>'
-  );
-  html = html.replace(
-    /(<li>[\s\S]*?<\/li>)/g,
-    '<ol>$1</ol>'
-  );
+  // Step 5: リスト（順序なし）
+  html = html.replace(/^([-*]\s.+?)(?=\n(?:[-*]\s|[^-*]|$))/gm, (match) => {
+    const items = match.split('\n').map((line) => {
+      const itemMatch = line.match(/^[-*]\s(.+)$/);
+      return itemMatch ? `<li>${itemMatch[1]}</li>` : '';
+    }).join('');
+    return `<ul>\n${items}\n</ul>`;
+  });
 
-  // リスト（順序なし）
-  html = html.replace(
-    /^[-*]\s(.*?)$/gm,
-    '<li>$1</li>'
-  );
-  html = html.replace(
-    /(<li>[\s\S]*?<\/li>)/g,
-    (match) => {
-      if (!match.includes('<ol>')) {
-        return `<ul>${match}</ul>`;
+  // Step 6: 段落（コードブロックとリストを保護）
+  const lines = html.split('\n');
+  const processedLines: string[] = [];
+  let inParagraph = false;
+  let paragraphLines: string[] = [];
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    
+    // Skip empty lines and structural elements
+    if (!trimmed || trimmed.startsWith('<') || trimmed.startsWith('<!--')) {
+      if (inParagraph && paragraphLines.length > 0) {
+        processedLines.push(`<p>${paragraphLines.join(' ')}</p>`);
+        paragraphLines = [];
+        inParagraph = false;
       }
-      return match;
+      if (trimmed) {
+        processedLines.push(line);
+      }
+    } else {
+      inParagraph = true;
+      paragraphLines.push(trimmed);
     }
-  );
+  }
 
-  // テーブル（簡易版）
-  html = html.replace(
-    /\|(.+?)\|/g,
-    (match) => {
-      const cells = match
-        .split('|')
-        .filter((cell) => cell.trim())
-        .map((cell) => `<td>${cell.trim()}</td>`)
-        .join('');
-      return `<tr>${cells}</tr>`;
-    }
-  );
-  html = html.replace(
-    /(<tr>[\s\S]*?<\/tr>)/g,
-    '<table>$1</table>'
-  );
+  if (inParagraph && paragraphLines.length > 0) {
+    processedLines.push(`<p>${paragraphLines.join(' ')}</p>`);
+  }
 
-  // リンク
-  html = html.replace(
-    /\[(.*?)\]\((.*?)\)/g,
-    '<a href="$2">$1</a>'
-  );
+  html = processedLines.join('\n');
 
-  // 水平線
-  html = html.replace(/^---$/gm, '<hr />');
+  // Step 7: インラインコード
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
 
-  // 段落
-  html = html.replace(/\n\n/g, '</p><p>');
-  html = `<p>${html}</p>`;
-  html = html.replace(/<p><\/p>/g, '');
-  html = html.replace(/<p>(#|<h)/g, '$1');
-  html = html.replace(/(<\/h[1-6]>)<\/p>/g, '$1');
-  html = html.replace(/<p>(<pre|<ul|<ol|<table)/g, '$1');
-  html = html.replace(/(<\/pre>|<\/ul>|<\/ol>|<\/table>)<\/p>/g, '$1');
+  // Step 8: 太字
+  html = html.replace(/\*\*([^\*]+)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+
+  // Step 9: 斜体
+  html = html.replace(/\*([^\*]+)\*/g, '<em>$1</em>');
+  html = html.replace(/_([^_]+)_/g, '<em>$1</em>');
+
+  // Step 10: リンク
+  html = html.replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2">$1</a>');
+
+  // Step 11: Code blocks 復元
+  codeBlocks.forEach((block, index) => {
+    const lang = block.match(/```(\w*)/)?.[1] || '';
+    const code = block
+      .replace(/^```\w*\n?/, '')
+      .replace(/\n?```$/, '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+    const replacement = `<pre><code class="language-${lang}">${code}</code></pre>`;
+    html = html.replace(`<!-- CODE_BLOCK_${index} -->`, replacement);
+  });
 
   return html;
 }
