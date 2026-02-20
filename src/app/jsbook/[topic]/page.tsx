@@ -48,7 +48,6 @@ export default async function TopicPage({ params }: TopicPageProps) {
           <Link href="/jsbook" className={styles.backLink}>
             ← トップに戻る
           </Link>
-          <h1>{topic.title}</h1>
         </header>
 
         {content ? (
