@@ -75,6 +75,25 @@ export function markdownToHtml(markdown: string): string {
     return `<ul>${items}</ul>`;
   });
 
+  // Tables: simple GitHub-style tables with a header, separator line, and rows
+  // Match blocks that start with a pipe and have a separator line with dashes
+  src = src.replace(/(^\|.*\n\|[ \t]*[:\- \t|]+\n(?:\|.*\n?)+)/gm, (block) => {
+    const lines = block.trim().split('\n');
+    if (lines.length < 2) return block; // not a table
+
+    const splitRow = (line: string) => line.replace(/^\||\|$/g, '').split('|').map(cell => cell.trim());
+    const headerCells = splitRow(lines[0]);
+    const bodyLines = lines.slice(2);
+
+    const thead = `<thead><tr>${headerCells.map(h => `<th>${h}</th>`).join('')}</tr></thead>`;
+    const tbody = bodyLines.map(r => {
+      const cells = splitRow(r);
+      return `<tr>${cells.map(c => `<td>${c}</td>`).join('')}</tr>`;
+    }).join('');
+
+    return `<table>${thead}<tbody>${tbody}</tbody></table>`;
+  });
+
   // Paragraphs: join non-block lines into <p>
   const lines = src.split('\n');
   const outLines: string[] = [];
