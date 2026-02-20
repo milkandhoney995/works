@@ -1,121 +1,116 @@
-# 配列とメソッド
+# Arrays and Methods
 
-## 配列の基本
+## Basic
 
-### 配列の作成
-
+### Creating an Array
 ```javascript
-// リテラル表記
+// Literal notation
 const arr1 = [1, 2, 3];
 const arr2 = ['a', 'b', 'c'];
 
-// 混合型
+// Mixed types
 const mixed = [1, 'two', true, null, undefined];
 
-// Array コンストラクタ
-const arr3 = new Array(3);     // 3つの要素を持つ配列
+// Array constructor
+const arr3 = new Array(3);  / Array with 3 empty slots
 const arr4 = new Array(1, 2, 3); // [1, 2, 3]
 
-// 空の配列
+// Empty array
 const empty = [];
 ```
 
-### 配列のプロパティ
-
+### properties
 ```javascript
 const arr = [1, 2, 3, 4, 5];
 
-// 長さを取得
+// length
 console.log(arr.length); // 5
 
-// インデックスでアクセス
+// Access by index
 console.log(arr[0]); // 1
 console.log(arr[arr.length - 1]); // 5
 
-// 要素の追加
+// Add an element by index
 arr[5] = 6;
 console.log(arr); // [1, 2, 3, 4, 5, 6]
 ```
 
-## 配列を変更するメソッド
+## Alering Array
 
 ### push / pop
-
 ```javascript
 const arr = [1, 2, 3];
 
-// 末尾に追加
+// Add an element
 arr.push(4);
 console.log(arr); // [1, 2, 3, 4]
 
-// 複数追加
+// Add multiple elements
 arr.push(5, 6);
 console.log(arr); // [1, 2, 3, 4, 5, 6]
 
-// 末尾を削除して取得
+// Remove the last element
 const last = arr.pop();
 console.log(last); // 6
 console.log(arr); // [1, 2, 3, 4, 5]
 ```
 
 ### shift / unshift
-
 ```javascript
 const arr = [1, 2, 3];
 
-// 先頭を削除して取得
+// Remove the first element
 const first = arr.shift();
 console.log(first); // 1
 console.log(arr); // [2, 3]
 
-// 先頭に追加
+// Add an element to index 0
 arr.unshift(0);
 console.log(arr); // [0, 2, 3]
 
-// 複数追加
+// Add multiple elements to the beginning
 arr.unshift(-2, -1);
 console.log(arr); // [-2, -1, 0, 2, 3]
 ```
 
 ### splice
 
-特定のインデックスで要素を削除または挿入します。
+Insert or delete elements at a specific index.
 
 ```javascript
 const arr = [1, 2, 3, 4, 5];
 
-// インデックス2から2つ削除
+// Delete 2 elements from index 2
 arr.splice(2, 2);
 console.log(arr); // [1, 2, 5]
 
-// インデックス1に要素を挿入
+// Insert elements at index 1
 arr.splice(1, 0, 'a', 'b');
 console.log(arr); // [1, 'a', 'b', 2, 3, 4, 5]
 
-// インデックス1を2つ削除して要素を挿入
+// Remove 2 elements from index 1 and insert a new element
 arr.splice(1, 2, 'x');
 console.log(arr); // [1, 'x', 4, 5]
 ```
 
 ### sort
-
 ```javascript
 const arr = [3, 1, 4, 1, 5];
 
-// アルファベット順でソート
+// Sort in lexicographical (default) order
 arr.sort();
 console.log(arr); // [1, 1, 3, 4, 5]
 
-// 数値の昇順
+// Sort numbers in ascending order
 const numbers = [10, 5, 40, 25];
 numbers.sort((a, b) => a - b);
 console.log(numbers); // [5, 10, 25, 40]
 
-// 数値の降順
+// Sort numbers in descending order
 numbers.sort((a, b) => b - a);
 console.log(numbers); // [40, 25, 10, 5]
 
-// オブジェクトの配列をソート
+// Sort an array of objects
 const users = [
   { name: 'John', age: 30 },
   { name: 'Jane', age: 25 },
@@ -135,25 +130,25 @@ arr.reverse();
 console.log(arr); // [5, 4, 3, 2, 1]
 ```
 
-## 配列を変更しないメソッド
+## Methods That Do NOT Modify the Original Array
 
 ### slice
 
-指定した範囲の要素をコピーして新しい配列を返します。
+Returns a shallow copy of a portion of an array.
 
 ```javascript
 const arr = [1, 2, 3, 4, 5];
 
-// インデックス1から3の手前まで
+// From index 1 up to (but not including) index 3
 const sliced = arr.slice(1, 3);
 console.log(sliced); // [2, 3]
-console.log(arr); // [1, 2, 3, 4, 5] （元の配列は変わらない）
+console.log(arr); // [1, 2, 3, 4, 5] (original array unchanged)
 
-// 最後から2つ
+// Last 2 elements
 const last2 = arr.slice(-2);
 console.log(last2); // [4, 5]
 
-// 全体をコピー
+// Copy the entire array
 const copy = arr.slice();
 console.log(copy); // [1, 2, 3, 4, 5]
 ```
@@ -167,7 +162,7 @@ const arr3 = [5, 6];
 
 const combined = arr1.concat(arr2, arr3);
 console.log(combined); // [1, 2, 3, 4, 5, 6]
-console.log(arr1); // [1, 2] （元の配列は変わらない）
+console.log(arr1); // [1, 2] (original array unchanged)
 ```
 
 ### join
@@ -175,18 +170,18 @@ console.log(arr1); // [1, 2] （元の配列は変わらない）
 ```javascript
 const arr = ['apple', 'banana', 'orange'];
 
-// デフォルト: カンマ区切り
+// Default: comma-separated
 console.log(arr.join()); // "apple,banana,orange"
 
-// 指定した区切り文字
+// Custom separator
 console.log(arr.join('-')); // "apple-banana-orange"
 console.log(arr.join(' ')); // "apple banana orange"
 
-// 空文字列
+// Empty string
 console.log(arr.join('')); // "applebananaorange"
 ```
 
-## 配列を「反復」するメソッド
+## Iteration Methods
 
 ### forEach
 
@@ -212,7 +207,7 @@ console.log(squared); // [1, 4, 9, 16, 25]
 const doubled = numbers.map((n) => n * 2);
 console.log(doubled); // [2, 4, 6, 8, 10]
 
-// より複雑な例
+// More complex example
 const users = [
   { name: 'John', age: 30 },
   { name: 'Jane', age: 25 },
@@ -233,7 +228,7 @@ console.log(evens); // [2, 4, 6]
 const moreThanThree = numbers.filter((n) => n > 3);
 console.log(moreThanThree); // [4, 5, 6]
 
-// オブジェクトの配列
+// Array of objects
 const users = [
   { name: 'John', age: 30 },
   { name: 'Jane', age: 25 },
@@ -249,15 +244,15 @@ const adults = users.filter((user) => user.age >= 30);
 ```javascript
 const numbers = [1, 2, 3, 4, 5];
 
-// 合計を計算
+// Calculate sum
 const sum = numbers.reduce((acc, n) => acc + n, 0);
 console.log(sum); // 15
 
-// 積を計算
+// Calculate product
 const product = numbers.reduce((acc, n) => acc * n, 1);
 console.log(product); // 120
 
-// 配列をオブジェクトに変換
+// Convert array to object
 const users = [
   { id: 1, name: 'John' },
   { id: 2, name: 'Jane' },
@@ -269,8 +264,8 @@ const userMap = users.reduce((acc, user) => {
 }, {});
 console.log(userMap); // { 1: 'John', 2: 'Jane' }
 
-// 複数行の使用例
-const result = [1, 2, 3, 4, 5].reduce((acc, n, index, array) => {
+// Multi-line example
+const result = [1, 2, 3, 4, 5].reduce((acc, n, index) => {
   console.log(`Iteration: acc=${acc}, n=${n}, index=${index}`);
   return acc + n;
 }, 0);
@@ -308,13 +303,13 @@ console.log(index); // 1
 
 ### some
 
-少なくとも1つの要素が条件を満たす場合、true を返します。
+Returns true if at least one element satisfies the condition.
 
 ```javascript
 const numbers = [1, 2, 3, 4, 5];
 
 const hasEven = numbers.some((n) => n % 2 === 0);
-console.log(hasEven); // true（2と4がある）
+console.log(hasEven); // true
 
 const hasNegative = numbers.some((n) => n < 0);
 console.log(hasNegative); // false
@@ -322,7 +317,7 @@ console.log(hasNegative); // false
 
 ### every
 
-すべての要素が条件を満たす場合、true を返します。
+Returns true if all elements satisfy the condition.
 
 ```javascript
 const numbers = [2, 4, 6, 8];
@@ -337,7 +332,7 @@ console.log(allEven2); // false
 
 ### flatMap
 
-map して flatten します。
+Maps each element and flattens the result by one level.
 
 ```javascript
 const arr = [1, 2, 3];
@@ -346,16 +341,16 @@ const result = arr.flatMap((n) => [n, n * 2]);
 console.log(result); // [1, 2, 2, 4, 3, 6]
 ```
 
-## 配列を検索するメソッド
+## Search Methods
 
 ### indexOf / lastIndexOf
 
 ```javascript
 const arr = ['a', 'b', 'c', 'b', 'd'];
 
-console.log(arr.indexOf('b')); // 1（最初のインデックス）
-console.log(arr.lastIndexOf('b')); // 3（最後のインデックス）
-console.log(arr.indexOf('e')); // -1（見つからない）
+console.log(arr.indexOf('b')); // 1 (first index)
+console.log(arr.lastIndexOf('b')); // 3 (last index)
+console.log(arr.indexOf('e')); // -1 (not found)
 
 const numbers = [1, 2, 3, 2, 1];
 console.log(numbers.indexOf(2)); // 1
@@ -371,26 +366,26 @@ console.log(arr.includes('grape')); // false
 
 const numbers = [1, 2, 3, NaN];
 console.log(numbers.includes(2)); // true
-console.log(numbers.includes(NaN)); // true（indexOf とは異なる）
+console.log(numbers.includes(NaN)); // true（different from indexOf）
 ```
 
-## 配列の展開
+## Flattening Arrays
 
 ### flat
 
 ```javascript
 const nested = [1, [2, 3], [4, [5, 6]]];
 
-// 1階層だけ展開
+// Flatten one level
 console.log(nested.flat()); // [1, 2, 3, 4, [5, 6]]
 
-// 全階層を展開
+// Flatten all levels
 console.log(nested.flat(Infinity)); // [1, 2, 3, 4, 5, 6]
 ```
 
-## 実践的な例
+## Practical Examples
 
-### データフィルタリング
+### Data Filtering
 
 ```javascript
 const products = [
@@ -400,7 +395,7 @@ const products = [
   { id: 4, name: 'D', price: 75, category: 'books' },
 ];
 
-// 電子機器で100円以上をソート
+// Filter electronics priced at 100 or more, then sort by price descending
 const filtered = products
   .filter((p) => p.category === 'electronics' && p.price >= 100)
   .sort((a, b) => b.price - a.price);
@@ -409,7 +404,7 @@ console.log(filtered);
 // [{ id: 3, name: 'C', price: 150, category: 'electronics' }]
 ```
 
-### データ変換
+### Data Transformation
 
 ```javascript
 const users = [
@@ -429,10 +424,10 @@ console.log(transformed);
 // ]
 ```
 
-## まとめ
+## Summary
 
-- **追加/削除**: push, pop, shift, unshift, splice
-- **変換**: map, filter, reduce
-- **検索**: find, findIndex, some, every, includes
-- **その他**: slice, concat, join, sort, reverse
-- **反復処理**: forEach, map, filter, reduce を使い分ける
+- **Add / Remove**: push, pop, shift, unshift, splice
+- **Transform**: map, filter, reduce
+- **Search**: find, findIndex, some, every, includes
+- **Others**: slice, concat, join, sort, reverse
+- **Iteration**: Choose between forEach, map, filter, and reduce depending on your purpose
