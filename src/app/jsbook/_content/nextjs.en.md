@@ -316,7 +316,37 @@ Reducing client-side JavaScript improves initial load performance and overall us
 
 ### Q: How does data fetching work in App Router?
 
+**A:**
+
+In App Router, data fetching is diffrent between Server Components and Client Components.
+
+#### In Server Components,
+- data fetching uses any asynchronous I/O, such as the fetch API, an ORM or database, reading from the filesystem using Node.js APIs like `fs`.
+
+
+#### In Client Components,
+- data fetching uses two ways: React's use API or A community library like SWR or React Query.
+
+
 ### Q: What is ISR?
+
+**A:**
+Incremental Static Regeneration（ISR）enables us to:
+- Update static contents without rebuilding the entire page
+- Reduce bundle sizes by streaming pre-rendered static page for most of requests
+- add `cache-control` header automatically
+- Process large contents page with `next build`
+
+For example, if we have blog page, all known blog posts are generated during `next build`. All requests made to these pages (e.g. /blog/1) are cached and instantaneous.
+If we set revalidate time (1 hour, etc.), the next request will still return the cached, stale page.
+The cache is invalidated and a new version of the page begins generating in the background.
+Once generated successfully, the next request will return the updated page and cache it for subsequent requests.
+If new page is requested, and it exists, the page will be generated on-demand. If the post does not exist, then 404 is returned.
+
+Also, it ensures the on-demand revalidation:
+- With time base revalidation, ...
+- With `revalidatePath`, cache page will be invalidated on-demand.
+- With `revalidateTag`, ...
 
 ## 5. Architecture
 
