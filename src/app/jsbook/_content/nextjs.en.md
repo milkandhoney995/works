@@ -318,35 +318,69 @@ Reducing client-side JavaScript improves initial load performance and overall us
 
 **A:**
 
-In App Router, data fetching is diffrent between Server Components and Client Components.
+In the App Router, data fetching works differently for Server Components and Client Components.
 
-#### In Server Components,
-- data fetching uses any asynchronous I/O, such as the fetch API, an ORM or database, reading from the filesystem using Node.js APIs like `fs`.
+---
 
+#### In Server Components:
 
-#### In Client Components,
-- data fetching uses two ways: React's use API or A community library like SWR or React Query.
+- Data fetching is done directly on the server.
+- You can use asynchronous I/O such as:
+  - The built-in `fetch` API
+  - An ORM or direct database queries
+  - Reading from the filesystem using Node.js APIs
+- By default, `fetch` is cached in Next.js.
+- Caching behavior can be controlled using:
+  - `cache: "no-store"` (dynamic rendering)
+  - `revalidate` (time-based revalidation)
 
+Because Server Components run only on the server, sensitive data such as API keys or database credentials are never exposed to the client.
 
-### Q: What is ISR?
+Server-side data fetching is generally preferred for performance and security reasons.
 
-**A:**
-Incremental Static Regeneration（ISR）enables us to:
-- Update static contents without rebuilding the entire page
-- Reduce bundle sizes by streaming pre-rendered static page for most of requests
-- add `cache-control` header automatically
-- Process large contents page with `next build`
+---
 
-For example, if we have blog page, all known blog posts are generated during `next build`. All requests made to these pages (e.g. /blog/1) are cached and instantaneous.
-If we set revalidate time (1 hour, etc.), the next request will still return the cached, stale page.
-The cache is invalidated and a new version of the page begins generating in the background.
-Once generated successfully, the next request will return the updated page and cache it for subsequent requests.
-If new page is requested, and it exists, the page will be generated on-demand. If the post does not exist, then 404 is returned.
+#### In Client Components:
 
-Also, it ensures the on-demand revalidation:
-- With time base revalidation, ...
-- With `revalidatePath`, cache page will be invalidated on-demand.
-- With `revalidateTag`, ...
+Data fetching happens in the browser and is used when interactivity or real-time updates are required.
+
+There are several approaches:
+
+1. **Using `useEffect` with `fetch`**
+   - Traditional client-side data fetching.
+   - Suitable when data depends on user interaction.
+
+2. **Using data fetching libraries**
+   - Libraries like SWR or React Query provide caching, revalidation, and state management.
+
+3. **Using React’s `use` hook (with Suspense)**
+
+   - The `use` hook allows a Client Component to read a Promise.
+   - Typically used when a Server Component passes a Promise as a prop.
+   - Must be used with `<Suspense>`.
+
+Example pattern:
+
+- A Server Component creates a Promise.
+- The Promise is passed to a Client Component.
+- The Client Component calls `use(promise)` to read the resolved value.
+
+This pattern enables streaming and progressive rendering.
+
+---
+
+#### When should you fetch on the server vs client?
+
+- Fetch on the **server** when:
+  - Data is required for initial render
+  - SEO is important
+  - Sensitive logic must remain secure
+  - You want to reduce client-side JavaScript
+
+- Fetch on the **client** when:
+  - Data depends on user interaction
+  - Real-time updates are required
+  - You need browser-only APIs
 
 ## 5. Architecture
 
