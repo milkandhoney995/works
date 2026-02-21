@@ -330,13 +330,11 @@ Reducing client-side JavaScript improves initial load performance and overall us
 
 ### Q: How would you deploy a Next.js application?
 
-## Other Questions
+## 7. Practical Questions
 
 ### Q: What is the difference between Node runtime and Edge runtime?
 
 ### Q: How does caching work in Next.js 13+?
-
-## 8. Practical Questions
 
 ### Q: How would you structure a large Next.js project?
 
