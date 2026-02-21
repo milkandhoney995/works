@@ -4,36 +4,77 @@
 
 ### Q: What is Next.js and why would you choose it over plain React?
 
-**A:** Next.js is a React framework that set configurations automatically and includes useful package. Next.js is more convinient than plain React, since routing structure directly reflects folder structure, has build-in API routes, meets three rendering approaches: SSR/SSG/CSR, and optimizes the image size with Next's Image component.
+**A:**
+
+Next.js is a React framework that provides a production-ready setup with many built-in features out of the box. It eliminates the need to manually configure tools like bundlers or routing.
+
+Compared to plain React, Next.js offers:
+
+- File-based routing (the folder structure directly defines routes)
+- Built-in API routes for backend logic
+- Multiple rendering strategies (SSR, SSG, CSR)
+- Automatic performance optimizations
+- Image optimization with the Next.js Image component
+- Code splitting and tree shaking by default
+
+I would choose Next.js over plain React when I need better SEO, improved performance, server-side rendering, or a full-stack solution with minimal configuration.
+
+
+---
 
 ### Q: What is the difference between SSR, SSG, and CSR?
 
-**A:**<br />
-SSR(Server Side Rendering) is:
-- Next.js pre-rendering function
-- In SSR, server generates HTML after page is accessed, and send HTML to the browser
-SSG(Static Site Generation) is:
-- Next.js another pre-rendering function
-- In SSG, HTML is generated during `next build`, which makes page speed very fast
-- High scalability as no server processing is required
-- SSG should be choosen for infrequently updated content or Pages with pre-defined content(product lists, blogs, etc.)
-CSR(Client Side Rendering) is:
-- build pages in the browser
-- Browser loads almost empty HTML recieved from server, and build page by running JavaScript
-- Initial display is slow, nothing is displayed until JavaScript loading finishes
-- Once the JavaScript is loaded, subsequent page transitions are very fast.
-- Component becomes client component (= CSR) with `use client`, which enable component to use client-only React features, like `useState` or `useEffect`
-- CSR should be choosen for highly interactive pages(UI with frequent mouse operations and dynamic displays, etc)
+**A:**
+
+#### SSR (Server-Side Rendering)
+
+- The page is rendered on the server for each request.
+- The server generates HTML after a user accesses the page.
+- The generated HTML is sent to the browser.
+- Good for dynamic content that changes frequently.
+- Improves SEO and initial load performance.
+
+#### SSG (Static Site Generation)
+
+- HTML is generated at build time using `next build`.
+- The generated pages are served as static files.
+- Very fast because no server-side computation is required at request time.
+- Highly scalable.
+- Suitable for content that does not change frequently, such as blogs or product listings.
+
+#### CSR (Client-Side Rendering)
+
+- The browser receives minimal HTML from the server.
+- The page is built by executing JavaScript in the browser.
+- Initial load may be slower because nothing is displayed until JavaScript finishes loading.
+- After the initial load, navigation is usually very fast.
+- A component becomes a Client Component in App Router when using `"use client"`, which enables client-side React features such as `useState` and `useEffect`.
+- Suitable for highly interactive pages with frequent UI updates.
+
+
+---
 
 ### Q: What is the difference between App Router and Pages Router?
 
-**A:** <br />
-App Router is:
-- support new React function such as Server Componets
-- uses React canary build-in, which includes all the stable changes in React 19, and new features that are validated in the framework before a new React release.
-Page Router is:
-- an original router
-- use React version installed in project's package.json
+**A:**
+
+#### App Router
+
+- Introduced in Next.js 13.
+- Supports React Server Components.
+- Enables nested layouts.
+- Supports streaming and improved data fetching.
+- Encourages better separation between server and client components.
+- Uses React's modern architecture aligned with upcoming React features.
+
+#### Pages Router
+
+- The original routing system in Next.js.
+- Uses `getServerSideProps`, `getStaticProps`, and `getInitialProps` for data fetching.
+- Simpler and more familiar for traditional Next.js projects.
+- Uses the React version defined in `package.json`.
+
+In short, App Router is the newer, more powerful routing system with better performance and architectural improvements, while Pages Router represents the traditional approach.
 
 
 
