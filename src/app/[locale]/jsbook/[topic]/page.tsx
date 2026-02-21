@@ -20,18 +20,6 @@ export default async function TopicPage({ params }: TopicPageProps) {
   const prevTopic = topicIndex > 0 ? topics[topicIndex - 1] : null;
   const nextTopic = topicIndex < topics.length - 1 ? topics[topicIndex + 1] : null;
 
-  if (!topic) {
-    return (
-      <Layout>
-        <div className={styles.notFound}>
-          <h1>{t('notFound')}</h1>
-          <p>{t('notFoundMessage')}</p>
-          <Link href={`/${locale}/jsbook`}>{t('goHome')}</Link>
-        </div>
-      </Layout>
-    );
-  }
-
   const markdown = getMarkdownContent(currentSlug, locale as 'ja' | 'en');
   const content = markdown ? markdownToHtml(markdown) : '';
 
@@ -44,7 +32,13 @@ export default async function TopicPage({ params }: TopicPageProps) {
           </Link>
         </header>
 
-        {content ? (
+        {!topic ? (
+          <div className={styles.notFound}>
+            <h1>{t('notFound')}</h1>
+            <p>{t('notFoundMessage')}</p>
+            <Link href={`/${locale}/jsbook`}>{t('goHome')}</Link>
+          </div>
+        ) : content ? (
           <article
             className={`${styles.content} ${markdownStyles.markdown}`}
             dangerouslySetInnerHTML={{ __html: content }}
