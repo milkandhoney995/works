@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
+import { usePathname } from 'next/navigation';
 import { topics } from '../_data/topics';
 import styles from './layout.module.scss';
 
@@ -13,6 +14,10 @@ export function Sidebar({ activeSlug }: SidebarProps) {
   const t = useTranslations('jsbook');
   const item = useTranslations('jsbook.slugs');
   const locale = useLocale();
+  const pathname = usePathname();
+
+  // Extract the topic slug from the pathname if activeSlug is not provided
+  const currentSlug = activeSlug || pathname.split('/').pop();
 
   return (
     <aside className={styles.sidebar}>
@@ -49,7 +54,7 @@ export function Sidebar({ activeSlug }: SidebarProps) {
               <Link
                 href={`/${locale}/jsbook/${topic.slug}`}
                 className={
-                  activeSlug === topic.slug ? styles.active : ''
+                  currentSlug === topic.slug ? styles.active : ''
                 }
               >
                 {item(topic.slug)}
