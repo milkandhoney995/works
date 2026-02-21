@@ -186,13 +186,68 @@ For subsequent navigations:
 
 In App Router, Server Components are rendered on the server, while Client Components are hydrated and executed in the browser.
 
+---
+
+### Q: Can Server Components use state?
+
+**A:**
+
+No, React Server Components (RSC) can't directly use state, or other client-side hooks like `useState`, `useReducer`, or `useEffect`.
+RSC is designed to run only once on the server and send the resulting HTML to the client. It doesn't persist in the memory after the initial render and doesn't have the mechanisms for re-rendering based on UI or state changes.
+
+
+---
+
+### Q: What is the difference between RSC and SSR?
+
+**A:**
+
+React Server Components (RSC) are components, and SSR (Server-Side Rendering) is one of the rendering strategy.
+RSCs are rendered on the server when a user accesses the page and do not send their JavaScript code to the client.
+By contrast, in SSR, the page is rendered on the server for each request, and the server generates HTML after a user accesses the page. The generated HTML is sent to the browser.
+
+---
+
+
+### Q: What is partial rendering?
+
+**A:**
+
+Partial Prerendering (PPR) is the default behaviour of Cache Components. It is rendering optimization that combines static and dynamic rendering in a signal route. The static shell is served immediately while dynamic content streams ready in when ready, providing the best of both rendering strategies.
+
+When Next.js renders components tree, if components don't access network resources (like certain system API), Cache components outputs is automatically added to the static shell, which is called prerendering. Prerendering generates a static shell consisting of HTML for initial page loads and a serialized RSC Payload for client-side navigation. It also ensures the browser receives fully rendered content instantly.
+
+Next.js requires us to explicitly handle components that can't complete during prerendering. If they aren't wrapped in <Suspense> or marked with`use cache`, an Uncached data was accessed outside of <Suspense> error is thrown during development and build time.
+
+---
+
+## How does streaming improve performance?
+
+**A:**
+
+Streaming fastens perceived performance...
+---
+
+
 ## 3. Performance
 
 ### Q: How does Next.js optimize performance?
 
+**A:**
+
+In Next.js, Cache Components can optimize performance by ensuring fresh data fetching during the runtime.
+A common cause of large client bundles is doing expensive rendering work in Client Components, which often happens with libraries that exist only to transform data into UI, such as syntax highlighting, chart rendering, or markdown parsing. If that work does not require browser APIs or user interaction, it can be run in a Server Component.
+Also, package bundling should optimize performance. If a large module is identified through analysis, it's good to optimize package in `next.config.js`.
+
+
 ### Q: What is tree shaking?
 
+Tree shaking is the process of removing the unused code from the JavaScript bundles during build time. Next.js automatically tree-shakes code to reduce bundle sizes.
+
 ### Q: How would you reduce bundle size?
+
+It reduces bundle size keeping as many components as possible as Server Components. It is because that RSC reduces the amount of JavaScript sent to the browser.
+Also, package bundling should reduce bundle size.
 
 ## 4. Data Fetching
 
