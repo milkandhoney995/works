@@ -29,7 +29,7 @@ export function Sidebar({ activeSlug }: SidebarProps) {
                   activeSlug === topic.slug ? styles.active : ''
                 }
               >
-                {topic.title}
+                {topic.title.ja}
               </Link>
             </li>
           ))}

@@ -66,7 +66,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
             {prevTopic ? (
               <Link href={`/jsbook/${prevTopic.slug}`} className={styles.navLink}>
                 ← 前のトピック
-                <span>{prevTopic.title}</span>
+                <span>{prevTopic.title.ja}</span>
               </Link>
             ) : (
               <div />
@@ -76,7 +76,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
             {nextTopic ? (
               <Link href={`/jsbook/${nextTopic.slug}`} className={styles.navLink}>
                 次のトピック →
-                <span>{nextTopic.title}</span>
+                <span>{nextTopic.title.ja}</span>
               </Link>
             ) : (
               <div />

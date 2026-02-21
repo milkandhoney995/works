@@ -39,7 +39,7 @@ const JSBookPage = () => {
               <TopicCard
                 key={topic.slug}
                 slug={topic.slug}
-                title={topic.title}
+                title={topic.title.ja}
               />
             ))}
           </div>
