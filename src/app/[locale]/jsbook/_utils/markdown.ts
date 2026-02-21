@@ -3,7 +3,7 @@ import path from 'path';
 
 export function getMarkdownContent(topic: string, lang: 'ja' | 'en' = 'ja'): string {
   const basePath = path.join(process.cwd(), 'src/app/jsbook/_content');
-  
+
   const enPath = path.join(basePath, `${topic}.en.md`);
   const jaPath = path.join(basePath, `${topic}.md`);
 

@@ -3,21 +3,29 @@
 import { useState, useRef, useEffect } from 'react';
 import { useLocale } from 'next-intl';
 import Link from 'next/link';
-import { searchTopics, highlightMatch, getContextSnippet } from './searchUtils';
+import { searchTopics, highlightMatch, getContextSnippet, SearchResult } from './searchUtils';
 import styles from './searchInput.module.scss';
 
 export function SearchInput() {
   const locale = useLocale();
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState(searchTopics('', locale));
+  const [results, setResults] = useState<SearchResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const newResults = searchTopics(query, locale);
-    setResults(newResults);
-    setIsOpen(query.trim().length > 0 && newResults.length > 0);
+    let ignore = false;
+    async function doSearch() {
+      const newResults = await searchTopics(query, locale);
+      if (!ignore) {
+        setResults(newResults);
+        setIsOpen(query.trim().length > 0 && newResults.length > 0);
+        console.log('[SearchInput] setResults:', newResults);
+      }
+    }
+    doSearch();
+    return () => { ignore = true; };
   }, [query, locale]);
 
   useEffect(() => {
