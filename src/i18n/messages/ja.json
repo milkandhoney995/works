@@ -12,7 +12,8 @@
       "events": "イベント処理",
       "arrays": "配列とメソッド",
       "advanced": "JavaScriptの高度なトピック",
-      "interview": "面接で出るJavaScriptの問題"
+      "interview": "面接で出るJavaScriptの問題",
+      "nextjs": "面接で出るNext.jsの問題"
     },
     "features": "このコースの特徴",
     "coverage": "包括的なカバレッジ",

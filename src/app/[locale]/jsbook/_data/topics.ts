@@ -14,4 +14,8 @@ export const topics = [
     slug: 'interview',
     title: { ja: '面接で出るJavaScriptの問題', en: 'Interview Q&A (Front-End)' },
   },
+  {
+    slug: 'nextjs',
+    title: { ja: '面接で出るNext.jsの問題', en: 'Interview Q&A (Next.js)' },
+  },
 ];

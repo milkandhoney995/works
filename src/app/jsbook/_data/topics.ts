@@ -41,4 +41,11 @@ export const topics = [
       en: 'JavaScript Interview Questions',
     },
   },
+  {
+    slug: 'nextjs',
+    title: {
+      ja: '面接で出るNext.jsの問題',
+      en: 'Next.js Interview Questions',
+    },
+  },
 ];
