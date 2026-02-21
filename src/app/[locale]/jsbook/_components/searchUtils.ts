@@ -1,5 +1,15 @@
 let cachedTopics: any[] | null = null;
 
+/**
+ * ロケールに基づいてトピックのリストを取得する関数
+ * @param locale ロケール（デフォルトは 'en'）
+ * @returns トピックの配列
+ * @example
+ * const topics = await fetchTopics('ja');
+ * topics.forEach(topic => {
+ *   console.log(topic.title); // トピックタイトル
+ * });
+ */
 export async function fetchTopics(locale: string = 'en') {
   if (typeof window === 'undefined') return [];
   if (cachedTopics) return cachedTopics;
@@ -18,8 +28,19 @@ export interface SearchResult {
   matchStart: number;
 }
 
+/**
+ * クエリに基づいてトピックのタイトルとコンテンツを検索する関数
+ * @param query 検索クエリ
+ * @param locale ロケール（デフォルトは 'en'）
+ * @returns 検索結果の配列
+ * @example
+ * const results = await searchTopics('event', 'en');
+ * results.forEach(result => {
+ *   console.log(result.title); // トピックタイトル
+ *   console.log(result.context); // マッチしたコンテキスト（タイトルや内容の一部）
+ * });
+ */
 export async function searchTopics(query: string, locale: string = 'en'): Promise<SearchResult[]> {
-  console.log('[searchTopics] query:', query, 'locale:', locale);
   if (!query.trim()) return [];
 
   let topics: any[] = [];
@@ -117,12 +138,31 @@ export async function searchTopics(query: string, locale: string = 'en'): Promis
   return results;
 }
 
+/**
+ * テキスト内のクエリにマッチする部分をハイライトする関数
+ * @param text ハイライト対象のテキスト
+ * @param query クエリ文字列
+ * @returns クエリにマッチする部分がハイライトされたテキスト（HTML文字列）
+ * @example
+ * const highlighted = highlightMatch('JavaScript Book', 'script');
+ * console.log(highlighted); // Java<b>Script</b> Book
+ */
 export function highlightMatch(text: string, query: string): string {
   if (!query.trim()) return text;
   const regex = new RegExp(`(${query})`, 'gi');
   return text.replace(regex, '$1');
 }
 
+/**
+ * クエリにマッチする部分を中心に前後のテキストを含むスニペットを生成する関数
+ * @param text 元のテキスト
+ * @param query クエリ文字列
+ * @param contextLength クエリの前後に含める文字数（デフォルトは50）
+ * @returns クエリにマッチする部分を中心としたスニペット
+ * @example
+ * const snippet = getContextSnippet('This is a JavaScript book about React.', 'JavaScript', 10);
+ * console.log(snippet); // "...a JavaScript book a..."
+ */
 export function getContextSnippet(text: string, query: string, contextLength: number = 50): string {
   if (!query.trim()) return text.substring(0, contextLength);
 
