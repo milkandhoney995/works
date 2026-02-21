@@ -80,11 +80,55 @@ In short, App Router is the newer, more powerful routing system with better perf
 
 ## 2. Rendering
 
+### Q: What is hydration ?
+
+**A:**
+
+Hydration is React process that connects event handler to existing static HTML. Page has interactive UI after hydration ends.
+
+### Q: Why can hydration fail?
+
+**A:**
+
+Hydration fails when browser rendering result mismatchs with server rendering.
+
+
+
 ### Q: What are React Server Components?
 
-### Q: When would you use use client?
+**A:**
+
+React Server Components enable pages or layouts to fetch data, rendering UI, caching, and streaming to the client.
+Server Components should be used to:
+- Fetch data from database or API
+- Remain API keys or client secrets private
+- Reduce JavaScript sent to the client
+- Improve First Contentful Paint (FCP), distribute content incrementally from the server
+
+### Q: What are the benefits of Server Components?
+
+**A:**
+
+By keeping as much components as possible as Server Components, you can reduce the amount of JavaScript sent to the client and improve page load performance.
+
+### Q: When would you use `use client`?
+
+**A:**
+
+`use client` should be used to implement interactivity such as:
+- state management (`useState`) and event handler (`onClick`, `onChange`) within components
+- React lifecycle hooks (`useEffect` etc.) or custom hooks
+- browser API (`localStorage`, `window`, `Navigator.geolocation` etc.)
 
 ### Q: What happens when a user accesses a Next.js page?
+
+**A:**
+
+First, server components are rendered as React Server Component Payload (RSCP). RSCP is a binary payload of React tree rendered as Server Components, which includes Server Components' rendering result, Client Components' placeholder, JavaScript references, and props listings from Client Components to Server Components. The server generates HTML in advance, with RSCP and Client Components.
+When browser loads page, HTML generated from the server is firstly displayed. After that, tree structure of Server Components and Client Components is restructured with RSCP.
+At the end of the process, browser executes necessary JavaScript and hydrates Client Components for interactive UI.
+
+If user moves to other page, RSC Payload is prefetched and cached, which makes the site speed fast. In addition, Client Components don't use HTML generated from the server and are rendered completely in client side.
 
 ## 3. Performance
 
@@ -113,7 +157,6 @@ In short, App Router is the newer, more powerful routing system with better perf
 ### Q: How would you deploy a Next.js application?
 
 ## Other Questions
-### Q: What is hydration and why can it fail?
 
 ### Q: What is the difference between Node runtime and Edge runtime?
 
