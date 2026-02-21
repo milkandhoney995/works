@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
 import { usePathname } from 'next/navigation';
 import { topics } from '../_data/topics';
+import { SearchInput } from './SearchInput';
 import styles from './layout.module.scss';
 
 interface SidebarProps {
@@ -25,14 +26,14 @@ export function Sidebar({ activeSlug }: SidebarProps) {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
           <h2>{t('title')}</h2>
           <div style={{ display: 'flex', gap: 8 }}>
-            <Link 
+            <Link
               href={`/en/jsbook`}
               className={styles.langButton}
               style={{ fontWeight: locale === 'en' ? 'bold' : 'normal' }}
             >
               EN
             </Link>
-            <Link 
+            <Link
               href={`/ja/jsbook`}
               className={styles.langButton}
               style={{ fontWeight: locale === 'ja' ? 'bold' : 'normal' }}
@@ -42,6 +43,7 @@ export function Sidebar({ activeSlug }: SidebarProps) {
           </div>
         </div>
       </div>
+      <SearchInput />
       <nav className={styles.nav}>
         <Link href={`/${locale}/jsbook`} className={styles.homeLink}>
           {t('home')}
