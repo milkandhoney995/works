@@ -188,12 +188,17 @@ In App Router, Server Components are rendered on the server, while Client Compon
 
 ---
 
+## 2-1. Performance & Advanced Rendering
+
 ### Q: Can Server Components use state?
 
 **A:**
 
-No, React Server Components (RSC) can't directly use state, or other client-side hooks like `useState`, `useReducer`, or `useEffect`.
-RSC is designed to run only once on the server and send the resulting HTML to the client. It doesn't persist in the memory after the initial render and doesn't have the mechanisms for re-rendering based on UI or state changes.
+No, React Server Components (RSC) cannot use client-side state or effects such as `useState`, `useReducer`, or `useEffect`.
+
+Server Components run only on the server and generate a serialized component payload. They do not persist in the browser and do not re-render in response to client-side interactions.
+
+If interactivity or state is required, the component must be marked with `"use client"` and become a Client Component.
 
 
 ---
@@ -202,32 +207,59 @@ RSC is designed to run only once on the server and send the resulting HTML to th
 
 **A:**
 
-React Server Components (RSC) are components, and SSR (Server-Side Rendering) is one of the rendering strategy.
-RSCs are rendered on the server when a user accesses the page and do not send their JavaScript code to the client.
-By contrast, in SSR, the page is rendered on the server for each request, and the server generates HTML after a user accesses the page. The generated HTML is sent to the browser.
+React Server Components (RSC) and Server-Side Rendering (SSR) are related but fundamentally different concepts.
+
+- **RSC** is a component model. Server Components are rendered on the server and do not send their JavaScript code to the client.
+- **SSR** is a rendering strategy. It generates HTML on the server for each request and sends that HTML to the browser.
+
+With SSR, the full React application (including client-side JavaScript) is still sent to the browser for hydration.
+
+With RSC, only Client Components send JavaScript to the browser. Server Components remain server-only, which reduces bundle size.
+
+In short:
+- SSR = how a page is rendered.
+- RSC = where a component runs.
+
 
 ---
 
-
-### Q: What is partial rendering?
+### Q: What is partial rendering (Partial Prerendering)?
 
 **A:**
 
-Partial Prerendering (PPR) is the default behaviour of Cache Components. It is rendering optimization that combines static and dynamic rendering in a signal route. The static shell is served immediately while dynamic content streams ready in when ready, providing the best of both rendering strategies.
+Partial Prerendering (PPR) is a rendering strategy that combines static and dynamic content in a single route.
 
-When Next.js renders components tree, if components don't access network resources (like certain system API), Cache components outputs is automatically added to the static shell, which is called prerendering. Prerendering generates a static shell consisting of HTML for initial page loads and a serialized RSC Payload for client-side navigation. It also ensures the browser receives fully rendered content instantly.
+Next.js generates a static shell at build time for parts of the page that can be pre-rendered. Dynamic parts are streamed from the server when they are ready.
 
-Next.js requires us to explicitly handle components that can't complete during prerendering. If they aren't wrapped in <Suspense> or marked with`use cache`, an Uncached data was accessed outside of <Suspense> error is thrown during development and build time.
+This allows:
+
+- Fast initial page load (static shell)
+- Progressive streaming of dynamic content
+- Better perceived performance
+
+When dynamic data cannot be resolved during prerendering, it must be wrapped in `<Suspense>` so that Next.js can stream it properly.
+
+PPR combines the benefits of static rendering and dynamic rendering.
+
 
 ---
 
-## How does streaming improve performance?
+### Q: How does streaming improve performance?
 
 **A:**
 
-Streaming fastens perceived performance...
----
+Streaming improves perceived performance by sending parts of the UI to the browser as soon as they are ready, instead of waiting for the entire page to finish rendering.
 
+This means:
+
+- The user sees content earlier.
+- The static layout appears immediately.
+- Slow data fetching does not block the entire page.
+
+Streaming reduces Time to First Byte (TTFB) impact and improves user experience, especially for pages with slow API calls.
+
+
+---
 
 ## 3. Performance
 
@@ -235,19 +267,50 @@ Streaming fastens perceived performance...
 
 **A:**
 
-In Next.js, Cache Components can optimize performance by ensuring fresh data fetching during the runtime.
-A common cause of large client bundles is doing expensive rendering work in Client Components, which often happens with libraries that exist only to transform data into UI, such as syntax highlighting, chart rendering, or markdown parsing. If that work does not require browser APIs or user interaction, it can be run in a Server Component.
-Also, package bundling should optimize performance. If a large module is identified through analysis, it's good to optimize package in `next.config.js`.
+Next.js optimizes performance through several mechanisms:
 
+- Automatic code splitting
+- Tree shaking
+- React Server Components (reducing client-side JavaScript)
+- Static optimization (SSG)
+- Image optimization
+- Streaming and Suspense support
+- Built-in caching for data fetching
+
+Additionally, moving heavy logic (such as markdown parsing or data transformation) into Server Components can significantly reduce client bundle size.
+
+Bundle analysis tools can help identify large dependencies that should be optimized or replaced.
+
+
+---
 
 ### Q: What is tree shaking?
 
-Tree shaking is the process of removing the unused code from the JavaScript bundles during build time. Next.js automatically tree-shakes code to reduce bundle sizes.
+**A:**
+
+Tree shaking is the process of removing unused JavaScript code during the build step.
+
+Modern bundlers such as Webpack analyze ES module imports and exclude code that is not used in the application.
+
+This reduces the final bundle size and improves load performance.
+
+
+---
 
 ### Q: How would you reduce bundle size?
 
-It reduces bundle size keeping as many components as possible as Server Components. It is because that RSC reduces the amount of JavaScript sent to the browser.
-Also, package bundling should reduce bundle size.
+**A:**
+
+To reduce bundle size:
+
+- Keep as many components as possible as Server Components.
+- Avoid large client-side libraries unless necessary.
+- Use dynamic imports for heavy components.
+- Remove unused dependencies.
+- Analyze bundle size using build tools.
+- Ensure tree shaking works correctly by using ES modules.
+
+Reducing client-side JavaScript improves initial load performance and overall user experience.
 
 ## 4. Data Fetching
 
