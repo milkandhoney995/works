@@ -80,55 +80,111 @@ In short, App Router is the newer, more powerful routing system with better perf
 
 ## 2. Rendering
 
-### Q: What is hydration ?
+### Q: What is hydration?
 
 **A:**
 
-Hydration is React process that connects event handler to existing static HTML. Page has interactive UI after hydration ends.
+Hydration is the process where React attaches event listeners and restores interactivity to the server-rendered HTML.
+
+When a page is pre-rendered on the server, the browser initially receives static HTML. After the JavaScript loads, React **hydrates** the page by attaching event handlers and making the UI interactive.
+
+Without hydration, the page would remain static and non-interactive.
+
+
+---
 
 ### Q: Why can hydration fail?
 
 **A:**
 
-Hydration fails when browser rendering result mismatchs with server rendering.
+Hydration can fail when the HTML generated on the server does not match the HTML generated on the client.
+
+Common causes include:
+
+- Using browser-only APIs (e.g., `window`, `localStorage`) during server rendering
+- Rendering dynamic values like `Date.now()` or `Math.random()` on the server
+- Conditional rendering that behaves differently between server and client
+
+When a mismatch occurs, React throws a hydration error because it cannot safely attach event listeners to inconsistent DOM structures.
 
 
+---
 
 ### Q: What are React Server Components?
 
 **A:**
 
-React Server Components enable pages or layouts to fetch data, rendering UI, caching, and streaming to the client.
-Server Components should be used to:
-- Fetch data from database or API
-- Remain API keys or client secrets private
-- Reduce JavaScript sent to the client
-- Improve First Contentful Paint (FCP), distribute content incrementally from the server
+React Server Components (RSC) are components that are rendered on the server and do not send their JavaScript code to the client.
+
+They allow you to:
+
+- Fetch data directly from a database or API on the server
+- Keep API keys and sensitive logic secure
+- Reduce the amount of JavaScript sent to the browser
+- Improve performance by minimizing client-side bundle size
+- Stream content progressively from the server
+
+Server Components cannot use client-side React features such as `useState` or `useEffect`.
+
+
+---
 
 ### Q: What are the benefits of Server Components?
 
 **A:**
 
-By keeping as much components as possible as Server Components, you can reduce the amount of JavaScript sent to the client and improve page load performance.
+The main benefits of Server Components are:
 
-### Q: When would you use `use client`?
+- Reduced JavaScript bundle size
+- Better performance and faster initial load
+- Improved security (sensitive logic stays on the server)
+- Built-in data fetching without additional API layers
+- Streaming support for faster perceived performance
+
+By keeping as many components as possible as Server Components, we can significantly optimize performance and scalability.
+
+
+---
+
+### Q: When would you use `"use client"`?
 
 **A:**
 
-`use client` should be used to implement interactivity such as:
-- state management (`useState`) and event handler (`onClick`, `onChange`) within components
-- React lifecycle hooks (`useEffect` etc.) or custom hooks
-- browser API (`localStorage`, `window`, `Navigator.geolocation` etc.)
+`"use client"` is required when a component needs client-side interactivity.
+
+You should use it when:
+
+- Managing state with `useState`
+- Using lifecycle hooks like `useEffect`
+- Handling user events (`onClick`, `onChange`, etc.)
+- Using browser APIs such as `window`, `localStorage`, or `navigator.geolocation`
+- Using custom hooks that depend on client-side behavior
+
+In general, only components that require interactivity should be marked as Client Components.
+
+
+---
 
 ### Q: What happens when a user accesses a Next.js page?
 
 **A:**
 
-First, server components are rendered as React Server Component Payload (RSCP). RSCP is a binary payload of React tree rendered as Server Components, which includes Server Components' rendering result, Client Components' placeholder, JavaScript references, and props listings from Client Components to Server Components. The server generates HTML in advance, with RSCP and Client Components.
-When browser loads page, HTML generated from the server is firstly displayed. After that, tree structure of Server Components and Client Components is restructured with RSCP.
-At the end of the process, browser executes necessary JavaScript and hydrates Client Components for interactive UI.
+When a user accesses a Next.js page using the App Router:
 
-If user moves to other page, RSC Payload is prefetched and cached, which makes the site speed fast. In addition, Client Components don't use HTML generated from the server and are rendered completely in client side.
+1. The server renders Server Components and generates an RSC payload (React Server Component Payload).
+2. The server also generates HTML for the initial view.
+3. The browser receives the HTML and displays it immediately.
+4. The RSC payload is used to reconstruct the component tree on the client.
+5. JavaScript for Client Components is downloaded and executed.
+6. React hydrates the Client Components to enable interactivity.
+
+For subsequent navigations:
+
+- Next.js fetches and caches the RSC payload.
+- Only necessary data and Client Component JavaScript are sent.
+- Navigation becomes faster because a full page reload is not required.
+
+In App Router, Server Components are rendered on the server, while Client Components are hydrated and executed in the browser.
 
 ## 3. Performance
 
