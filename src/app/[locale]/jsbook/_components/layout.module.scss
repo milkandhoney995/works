@@ -1,5 +1,20 @@
 @use '../../../../../styles/index' as *;
 
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
 .container {
   display: flex;
   min-height: 100vh;
@@ -13,12 +28,11 @@
   overflow-y: auto;
   position: sticky;
   top: 0;
-  height: 100vh;
 
   @media (max-width: 768px) {
     position: fixed;
-    left: -280px;
     z-index: 1000;
+    left: -280px;
     transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     width: 280px;
     height: 100vh;
@@ -26,6 +40,33 @@
     &.open {
       left: 0;
     }
+  }
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+
+  span {
+    display: block;
+    width: 24px;
+    height: 3px;
+    margin: 4px 0;
+    background: $sentence;
+    border-radius: 2px;
+    transition: 0.3s;
+  }
+
+  @include mq(tab) {
+    display: flex;
   }
 }
 

@@ -3,15 +3,18 @@
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
 import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 import { topics } from '../_data/topics';
 import { SearchInput } from './SearchInput';
 import styles from './layout.module.scss';
 
 interface SidebarProps {
   activeSlug?: string;
+  open?: boolean;
+  setOpen?: (open: boolean) => void;
 }
 
-export function Sidebar({ activeSlug }: SidebarProps) {
+export function Sidebar({ activeSlug, open, setOpen }: SidebarProps) {
   const t = useTranslations('jsbook');
   const item = useTranslations('jsbook.slugs');
   const locale = useLocale();
@@ -20,8 +23,17 @@ export function Sidebar({ activeSlug }: SidebarProps) {
   // Extract the topic slug from the pathname if activeSlug is not provided
   const currentSlug = activeSlug || pathname.split('/').pop();
 
+  // Close sidebar on navigation (optional)
+  useEffect(() => {
+    setOpen && setOpen(false);
+  }, [pathname, setOpen]);
+
+
   return (
-    <aside className={styles.sidebar}>
+    <aside
+      className={open ? `${styles.sidebar} ${styles.open}` : styles.sidebar}
+      aria-hidden={open ? undefined : 'true'}
+    >
       <div className={styles.header}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
           <h2>{t('title')}</h2>

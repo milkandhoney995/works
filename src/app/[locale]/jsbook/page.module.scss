@@ -2,6 +2,14 @@
 
 .container {
   max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 16px;
+
+    @include mq(sp) {
+      max-width: 100%;
+      padding: 0 8px;
+    }
 }
 
 .header {
@@ -10,7 +18,10 @@
 
   h1 {
     margin: 0 0 $space-4 0;
-    font-size: 3rem;
+        font-size: 3rem;
+        @include mq(sp) {
+          font-size: 1.7rem;
+        }
     font-weight: 200;
     letter-spacing: -1.5px;
     color: $title;
@@ -20,7 +31,10 @@
 
 .subtitle {
   font-size: 1.25rem;
-  color: var(--color-text-secondary);
+    @include mq(sp) {
+      font-size: 1rem;
+    }
+  color: $secondary;
   margin: 0;
   font-weight: 300;
   letter-spacing: 0.3px;
@@ -38,6 +52,9 @@
   p {
     margin: $space-2 0;
     line-height: 1.8;
+      @include mq(sp) {
+        font-size: 0.95rem;
+      }
 
     &:last-child {
       margin-bottom: 0;
@@ -47,6 +64,9 @@
 
 .topics {
   margin-bottom: $space-5;
+    @include mq(sp) {
+      margin-bottom: $space-3;
+    }
 
   h2 {
     margin-bottom: $space-4;
@@ -58,6 +78,11 @@
 .topicGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: $space-4;
+    @include mq(sp) {
+      grid-template-columns: 1fr;
+      gap: $space-2;
+    }
   gap: $space-5;
   margin-bottom: $space-5;
 }
@@ -67,6 +92,10 @@
   padding: $space-5;
   border-radius: 8px;
   margin-bottom: $space-5;
+    @include mq(sp) {
+      padding: $space-3;
+      border-radius: 6px;
+    }
 
   h2 {
     margin-top: 0;
@@ -96,9 +125,13 @@
   border-radius: 8px;
   background: linear-gradient(
     135deg,
-    var(--color-bg-primary) 0%,
-    var(--color-bg-secondary) 100%
+    $pageBg 0%,
+    $bgSecondary 100%
   );
+    @include mq(sp) {
+      padding: $space-3;
+      border-radius: 6px;
+    }
 
   h2 {
     margin-top: 0;
@@ -120,6 +153,11 @@
   border-radius: 6px;
   font-weight: 600;
   transition: all 0.3s ease;
+
+    @include mq(sp) {
+      padding: $space-2 $space-3;
+      font-size: 1rem;
+    }
 
   &:hover {
     transform: scale(1.05);

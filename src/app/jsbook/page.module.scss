@@ -20,7 +20,7 @@
 
 .subtitle {
   font-size: 1.25rem;
-  color: var(--color-text-secondary);
+  color: $secondary;
   margin: 0;
   font-weight: 300;
   letter-spacing: 0.3px;
@@ -96,8 +96,8 @@
   border-radius: 8px;
   background: linear-gradient(
     135deg,
-    var(--color-bg-primary) 0%,
-    var(--color-bg-secondary) 100%
+    $pageBg 0%,
+    $bgSecondary 100%
   );
 
   h2 {

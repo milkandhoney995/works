@@ -2,6 +2,14 @@
 
 .container {
   max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 16px;
+
+    @include mq(sp) {
+      max-width: 100%;
+      padding: 0 8px;
+    }
 }
 
 .header {
@@ -9,7 +17,10 @@
 
   h1 {
     margin: $space-4 0 0 0;
-    font-size: 2rem;
+        font-size: 2rem;
+        @include mq(sp) {
+          font-size: 1.3rem;
+        }
     font-weight: 300;
     letter-spacing: -1px;
     color: $title;
@@ -33,6 +44,11 @@
 .content {
   line-height: 1.8;
   margin-bottom: $space-5;
+    word-break: break-word;
+    font-size: 1rem;
+    @include mq(sp) {
+      font-size: 0.95rem;
+    }
 }
 
 .loading {
@@ -44,6 +60,9 @@
 .notFound {
   text-align: center;
   padding: $space-5;
+    @include mq(sp) {
+      padding: $space-3;
+    }
 
   h1 {
     margin-bottom: $space-4;
@@ -71,6 +90,11 @@
   padding-top: $space-5;
   border-top: 1px solid #e8e8e8;
   gap: $space-4;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: $space-2;
+    }
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -104,6 +128,9 @@
 
   span {
     font-size: 0.9rem;
+      @include mq(sp) {
+        font-size: 0.8rem;
+      }
     color: $sentence;
     font-weight: 500;
   }
