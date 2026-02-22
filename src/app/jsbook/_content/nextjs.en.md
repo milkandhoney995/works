@@ -432,65 +432,133 @@ In summary:
 
 ---
 
-### Q: What is Route Handlers?
+## Q: What are Route Handlers?
 
 **A:**
 
-Route Handlers enable us to create custome API endpoints in `app/api` folder. Route Handler can use most of HTTP methods as `fetch`. Also, by using `NextResponse` or `NextRequest`, we can use some function specific in Next.js, such as `cookies`, `rewrite`, or `redirect`.
+Route Handlers allow us to create custom backend endpoints inside the `app` directory, typically under `app/api`.
 
+They are the App Router equivalent of traditional API routes.
+
+Key characteristics:
+
+- They support standard HTTP methods such as `GET`, `POST`, `PUT`, `PATCH`, and `DELETE`.
+- They use the Web Request/Response API.
+- We can use `NextRequest` and `NextResponse` to access Next.js-specific features.
+
+For example, using `NextResponse` we can:
+
+- Return JSON responses
+- Set cookies
+- Perform redirects
+- Perform rewrites
+
+Route Handlers are typically used for:
+
+- Handling form submissions
+- Authentication flows
+- Server-side data processing
+- Acting as a backend for client components
+
+Unlike Proxy, Route Handlers are designed for full request handling and data processing.
 
 ---
 
-### Q: Does Proxy run on Node or Edge?
+## Q: Does Proxy run on Node or Edge?
 
 **A:**
 
-Proxy run on Edge runtime.
+Proxy runs on the **Edge Runtime** by default.
+
+The Edge Runtime is optimized for low-latency execution at the network edge and supports Web standard APIs, but not full Node.js APIs.
 
 ---
 
-### Q: Can Proxy read request bodies?
+## Q: Can Proxy read request bodies?
 
 **A:**
 
-Yes, proxy read request bodies because proxy support Network APIs.
+Proxy can access the request object, but it is not designed for heavy request body processing.
+
+Because Proxy runs on the Edge Runtime:
+
+- It supports standard Web APIs.
+- However, reading and processing large request bodies is discouraged.
+- It is primarily intended for lightweight request interception, such as authentication checks or redirects.
+
+For full body parsing or complex logic, Route Handlers are more appropriate.
 
 ---
 
-### Q: What are limitations of proxy handlers?
+## Q: What are the limitations of Proxy handlers?
 
 **A:**
 
-Proxy is not well-suited heavy data fetching or complex session management. Those tasks are better handled by dedicated API routes or backend services.
+Proxy has several important limitations:
 
+- Runs only on the Edge Runtime (no native Node.js APIs).
+- Not suitable for heavy data fetching or database operations.
+- Not ideal for complex session management.
+- Limited execution time compared to Node runtime environments.
+
+Proxy should be used for lightweight request-level logic such as:
+
+- Authentication gating
+- Header manipulation
+- Redirects and rewrites
+- A/B testing
+
+Heavy business logic should be handled in Route Handlers or backend services.
 
 ---
 
-### Q: When should you choose proxy vs redirects?
+## Q: When should you choose Proxy vs redirects?
 
 **A:**
 
-Proxy should be used for **lightweight request-level logic**.
-For static or simple redirects, using the `redirects` option in `next.config.js` is usually better.
+Use **Proxy** when:
+
+- Redirect logic depends on runtime conditions (e.g., cookies, headers, authentication state).
+- You need to inspect or modify the request before routing.
+
+Use the `redirects` option in `next.config.js` when:
+
+- Redirects are static and deterministic.
+- No runtime logic is required.
+- You want better performance and simpler configuration.
+
+In short:
+
+- `redirects` → static configuration
+- `proxy` → dynamic request-level logic
 
 ---
 
-### Q: What is the difference between Node runtime and Edge runtime?
+## Q: What is the difference between Node runtime and Edge runtime?
 
 **A:**
 
-They are both Next.js server runtime.
+Both are server runtimes in Next.js, but they differ significantly.
 
-####  Node runtime
-- default
-- is able to access all the Node.js API
-- is used to render the application
+#### Node Runtime
 
-####  Edge runtime
-- contains more limited set of APIs
-- used in Proxy
-- doesn't support Incremental Static Regeneration (ISR)
-- native Node.js APIs are not supported
+- Default runtime for Route Handlers and Server Components.
+- Full access to Node.js APIs.
+- Suitable for database access and heavy computation.
+- Supports features like ISR (Incremental Static Regeneration).
+
+#### Edge Runtime
+
+- Lightweight runtime based on Web standard APIs.
+- No access to native Node.js modules.
+- Optimized for low-latency global execution.
+- Used by Proxy by default.
+- Does not support some Node-dependent features like ISR.
+
+In summary:
+
+- Node runtime → full backend capability
+- Edge runtime → fast, lightweight request interception
 
 ---
 
