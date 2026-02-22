@@ -412,8 +412,7 @@ This file-based approach makes routing declarative and closely aligned with the 
 
 **A:**
 
-In Next.js 16 and later, `proxy` replaces the older middleware convention.
-A **proxy file** runs code on the server (or Edge runtime) before a request is fully handled by a route or page.
+In Next.js 16 and later, `proxy` replaces the older middleware convention. A **proxy file** runs code on the server (or Edge runtime) before a request is fully handled by a route or page.
 
 It enables you to intercept and modify requests or responses early in the routing pipeline.
 
@@ -426,13 +425,74 @@ Proxy is typically used for:
 
 Proxy runs before rendering and applies to routes based on its placement and configuration.
 
-Proxy should be used for **lightweight request-level logic**.  
-For static or simple redirects, using the `redirects` option in `next.config.js` is usually better.
-
 In summary:
 
 - Proxy handles request-level logic
 - Route handlers and Server Components handle rendering and data fetching
+
+---
+
+### Q: What is Route Handlers?
+
+**A:**
+
+Route Handlers enable us to create custome API endpoints in `app/api` folder. Route Handler can use most of HTTP methods as `fetch`. Also, by using `NextResponse` or `NextRequest`, we can use some function specific in Next.js, such as `cookies`, `rewrite`, or `redirect`.
+
+
+---
+
+### Q: Does Proxy run on Node or Edge?
+
+**A:**
+
+Proxy run on Edge runtime.
+
+---
+
+### Q: Can Proxy read request bodies?
+
+**A:**
+
+Yes, proxy read request bodies because proxy support Network APIs.
+
+---
+
+### Q: What are limitations of proxy handlers?
+
+**A:**
+
+Proxy is not well-suited heavy data fetching or complex session management. Those tasks are better handled by dedicated API routes or backend services.
+
+
+---
+
+### Q: When should you choose proxy vs redirects?
+
+**A:**
+
+Proxy should be used for **lightweight request-level logic**.
+For static or simple redirects, using the `redirects` option in `next.config.js` is usually better.
+
+---
+
+### Q: What is the difference between Node runtime and Edge runtime?
+
+**A:**
+
+They are both Next.js server runtime.
+
+####  Node runtime
+- default
+- is able to access all the Node.js API
+- is used to render the application
+
+####  Edge runtime
+- contains more limited set of APIs
+- used in Proxy
+- doesn't support Incremental Static Regeneration (ISR)
+- native Node.js APIs are not supported
+
+---
 
 ## 6. Build and Deploy
 
@@ -441,8 +501,6 @@ In summary:
 ### Q: How would you deploy a Next.js application?
 
 ## 7. Practical Questions
-
-### Q: What is the difference between Node runtime and Edge runtime?
 
 ### Q: How does caching work in Next.js 13+?
 
