@@ -386,25 +386,53 @@ This pattern enables streaming and progressive rendering.
 
 ### Q: How does Next.js handle routing?
 
-Next.js adopts file-base routing. Folders define URL segments, and nested folder means nested URL segment.
-If folder has `page.tsx` or `layout.tsx`, route is public.
+**A:**
 
-Square brackets is used in folders for dynamic routing.
+Next.js uses file-based routing.
 
-Folders under `app` folder are allowed collocation.
+In the App Router:
 
+- Each folder inside the `app` directory represents a URL segment.
+- A route becomes accessible when a folder contains a `page.tsx` file.
+- `layout.tsx` defines shared UI for a route segment and its children.
+- Nested folders create nested routes automatically.
 
+For dynamic routing:
 
-### Q: What is middleware in Next.js?
+- Square brackets are used for dynamic segments (e.g., `[id]`).
+- Catch-all routes can be defined using `[...slug]`.
 
-Middleware is a previous name of `proxy`. Proxy is a file that runs code on the server before request is completed. It is used to implement the server-side logic, like logging, redirect, or rewrites.
+Route groups (parentheses syntax) allow organizing files without affecting the URL.
 
-Proxy is effective when:
-- changes request/response headers for all/each pages
-- rewrites page URLs
-- conditionally redirects
+This file-based approach makes routing declarative and closely aligned with the project structure.
 
-Proxy should be used when data fetching or complex logics are required. Therefore, `redirects` options of `next.config.js` should be used in a simpler logic.
+---
+
+### Q: What is Proxy in Next.js?
+
+**A:**
+
+In Next.js 16 and later, `proxy` replaces the older middleware convention.
+A **proxy file** runs code on the server (or Edge runtime) before a request is fully handled by a route or page.
+
+It enables you to intercept and modify requests or responses early in the routing pipeline.
+
+Proxy is typically used for:
+
+- Authentication and authorization checks
+- Redirects and rewrites
+- Modifying request or response headers
+- Logging, analytics, or A/B testing
+
+Proxy runs before rendering and applies to routes based on its placement and configuration.
+
+Proxy should be used for **lightweight request-level logic**.  
+For static or simple redirects, using the `redirects` option in `next.config.js` is usually better.
+
+In summary:
+
+- Proxy handles request-level logic
+- Route handlers and Server Components handle rendering and data fetching
 
 ## 6. Build and Deploy
 
