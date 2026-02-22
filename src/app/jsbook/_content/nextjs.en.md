@@ -386,7 +386,25 @@ This pattern enables streaming and progressive rendering.
 
 ### Q: How does Next.js handle routing?
 
+Next.js adopts file-base routing. Folders define URL segments, and nested folder means nested URL segment.
+If folder has `page.tsx` or `layout.tsx`, route is public.
+
+Square brackets is used in folders for dynamic routing.
+
+Folders under `app` folder are allowed collocation.
+
+
+
 ### Q: What is middleware in Next.js?
+
+Middleware is a previous name of `proxy`. Proxy is a file that runs code on the server before request is completed. It is used to implement the server-side logic, like logging, redirect, or rewrites.
+
+Proxy is effective when:
+- changes request/response headers for all/each pages
+- rewrites page URLs
+- conditionally redirects
+
+Proxy should be used when data fetching or complex logics are required. Therefore, `redirects` options of `next.config.js` should be used in a simpler logic.
 
 ## 6. Build and Deploy
 
