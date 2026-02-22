@@ -41,7 +41,19 @@ export function markdownToHtml(markdown: string): string {
   // Headings
   src = src.replace(/^####\s+(.*)$/gm, '<h4>$1</h4>');
   src = src.replace(/^###\s+(.*)$/gm, '<h3>$1</h3>');
-  src = src.replace(/^##\s+(.*)$/gm, '<h2>$1</h2>');
+  // h2: add id via slugify
+  function slugify(str: string): string {
+    return str
+      .normalize('NFKC')
+      .replace(/[^a-zA-Z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .toLowerCase()
+      .replace(/^-+|-+$/g, '');
+  }
+  src = src.replace(/^##\s+(.*)$/gm, (_m, title) => {
+    const id = slugify(title.trim());
+    return `<h2 id="${id}">${title}</h2>`;
+  });
   src = src.replace(/^#\s+(.*)$/gm, '<h1>$1</h1>');
 
   // Horizontal rules
